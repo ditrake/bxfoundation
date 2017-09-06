@@ -21,7 +21,7 @@ class Iblock extends Base
      * Массив с сущностями, которые нужно отображать.
      * iblock - инфоблок
      * section - раздел инфоблока
-     * element - элемент инфоблока
+     * element - элемент инфоблока.
      *
      * @var array
      */
@@ -30,9 +30,9 @@ class Iblock extends Base
     /**
      * Конструктор.
      *
-     * @param string $iblock Символьный код или идентификатор инфоблока
+     * @param string       $iblock   Символьный код или идентификатор инфоблока
      * @param array|string $entities Массив с сущностями, которые нужно отображать
-     * @param array $filters
+     * @param array        $filters
      *
      * @throws \creative\foundation\routing\Exception
      */
@@ -104,7 +104,7 @@ class Iblock extends Base
     /**
      * Запускает механизм битрикса для определения данных из ЧПУ.
      *
-     * @param string $link Ссылка, для которой нужно попробовать определить ЧПУ
+     * @param string                                        $link    Ссылка, для которой нужно попробовать определить ЧПУ
      * @param \creative\foundation\request\RequestInterface $request Ссылка на текущий запрос
      *
      * @return array|null
