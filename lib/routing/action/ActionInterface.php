@@ -18,7 +18,7 @@ interface ActionInterface
      *
      * @param \creative\foundation\routing\rule\RuleResultInterface $ruleResult Ссылка на объект с параметрами, полученными от обработчика url
      * @param \creative\foundation\request\RequestInterface         $request    Ссылка на текущий объект запроса
-     * @param \creative\foundation\response\ResponseInterface         $response    Ссылка на текущий объект запроса
+     * @param \creative\foundation\response\ResponseInterface       $response   Ссылка на текущий объект запроса
      *
      * @return string
      */

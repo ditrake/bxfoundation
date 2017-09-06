@@ -21,7 +21,7 @@ class Chain implements ActionInterface
     /**
      * Конструктор.
      *
-     * @param array $actions Список действий, которые нужно выполнить по цепочке.
+     * @param array $actions Список действий, которые нужно выполнить по цепочке
      *
      * @throws \creative\foundation\routing\Exception
      */
