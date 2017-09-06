@@ -3,6 +3,7 @@
 namespace creative\foundation\routing\action;
 
 use creative\foundation\request\RequestInterface;
+use creative\foundation\response\ResponseInterface;
 use creative\foundation\routing\rule\RuleResultInterface;
 use creative\foundation\routing\Exception;
 
@@ -44,8 +45,11 @@ class Chain implements ActionInterface
      */
     public function run(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response)
     {
+        $return = '';
         foreach ($this->actions as $action) {
-            $action->run($ruleResult, $request, $response);
+            $return .= $action->run($ruleResult, $request, $response);
         }
+
+        return $return;
     }
 }

@@ -149,7 +149,7 @@ class Iblock extends Base
             }
         }
 
-        return $return ? '/^' . implode('', $return) . '$/' : null;
+        return $return ? '/^' . implode('\/', $return) . '$/' : null;
     }
 
     /**
