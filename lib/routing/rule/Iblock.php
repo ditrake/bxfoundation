@@ -32,10 +32,11 @@ class Iblock extends Base
      *
      * @param string $iblock Символьный код или идентификатор инфоблока
      * @param array|string $entities Массив с сущностями, которые нужно отображать
+     * @param array $filters
      *
      * @throws \creative\foundation\routing\Exception
      */
-    public function __construct($iblock, $entities = null)
+    public function __construct($iblock, $entities = null, array $filters = null)
     {
         if (empty($iblock)) {
             throw new Exception('Empty iblock identity');
@@ -47,6 +48,9 @@ class Iblock extends Base
                 throw new Exception('Undefined entities: ' . implode(', ', $diff));
             }
             $this->entities = $entities;
+        }
+        if ($filters) {
+            $this->attachFilters($filters);
         }
     }
 
