@@ -82,7 +82,7 @@ class Router implements RouterInterface
         foreach ($this->routes as $route) {
             list($rule, $action) = $route;
             if ($ruleResult = $rule->parse($request)) {
-                $return = $action->run($ruleResult, $request);
+                $return = $action->run($ruleResult, $request, $response);
                 break;
             }
         }
@@ -109,7 +109,7 @@ class Router implements RouterInterface
         if (isset($this->routesExceptions[$exception->getHttpCode()])) {
             $ruleResult = new RuleResult(['exception' => $exception]);
             $action = $this->routesExceptions[$exception->getHttpCode()];
-            $return = $action->run($ruleResult, $request);
+            $return = $action->run($ruleResult, $request, $response);
         } else {
             throw $exception;
         }

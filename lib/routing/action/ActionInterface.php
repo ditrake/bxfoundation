@@ -3,6 +3,7 @@
 namespace creative\foundation\routing\action;
 
 use creative\foundation\request\RequestInterface;
+use creative\foundation\response\ResponseInterface;
 use creative\foundation\routing\rule\RuleResultInterface;
 
 /**
@@ -17,8 +18,9 @@ interface ActionInterface
      *
      * @param \creative\foundation\routing\rule\RuleResultInterface $ruleResult Ссылка на объект с параметрами, полученными от обработчика url
      * @param \creative\foundation\request\RequestInterface         $request    Ссылка на текущий объект запроса
+     * @param \creative\foundation\response\ResponseInterface         $response    Ссылка на текущий объект запроса
      *
      * @return string
      */
-    public function run(RuleResultInterface $ruleResult, RequestInterface $request);
+    public function run(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response);
 }

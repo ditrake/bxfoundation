@@ -3,6 +3,7 @@
 namespace creative\foundation\routing\action;
 
 use creative\foundation\request\RequestInterface;
+use creative\foundation\response\ResponseInterface;
 use creative\foundation\routing\rule\RuleResultInterface;
 use creative\foundation\routing\Exception;
 
@@ -55,7 +56,7 @@ class Component implements ActionInterface
     /**
      * @inheritdoc
      */
-    public function run(RuleResultInterface $ruleResult, RequestInterface $request)
+    public function run(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response)
     {
         $params = $this->setRuleResultReplaces($this->params, $ruleResult);
 
