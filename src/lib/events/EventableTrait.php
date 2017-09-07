@@ -91,9 +91,7 @@ trait EventableTrait
 
         if (
             !is_callable($callback)
-            && (
-                !is_array($callback) || empty($callback[0]) || empty($callback[1])
-            )
+            && (!is_array($callback) || empty($callback[0]) || empty($callback[1]))
         ) {
             throw new Exception('Callback param must be a callble or an array instance ready for call_user_func');
         }
@@ -119,15 +117,6 @@ trait EventableTrait
 
         if ($eventName === '') {
             throw new Exception("Event name can't be empty");
-        }
-
-        if (
-            !is_callable($callback)
-            && (
-                !is_array($callback) || empty($callback[0]) || empty($callback[1])
-            )
-        ) {
-            throw new Exception('Callback param must be a callble or an array instance ready for call_user_func');
         }
 
         if (!empty($this->events[$eventName])) {
