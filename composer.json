@@ -1,0 +1,23 @@
+{
+    "name": "marvin255/creative.foundation",
+    "description": "",
+    "type": "library",
+    "keywords": ["php", "bitrix"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": { "creative\\foundation\\tests\\": "tests/" }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "<=5.0",
+        "friendsofphp/php-cs-fixer": "*"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/marvin255/creative.foundation"
+        }
+    ]
+}

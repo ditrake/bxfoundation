@@ -1,0 +1,8 @@
+index.php
+vendor
+composer.lock
+tests/coverage
+.php_cs.cache
+composer.phar
+phpDocumentor.phar
+phpdoc-cache-*
