@@ -10,7 +10,7 @@ use creative\foundation\routing\Exception;
 /**
  * Действие, которое вызывает компонент битрикса с указанными настройками.
  */
-class Component implements ActionInterface
+class Component extends Base
 {
     /**
      * Название компонента в пространстве имен битрикса.
@@ -56,17 +56,31 @@ class Component implements ActionInterface
     /**
      * @inheritdoc
      */
-    public function run(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response)
+    protected function runInternal(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response)
     {
         $params = $this->setRuleResultReplaces($this->params, $ruleResult);
 
+        return $this->includeComponent($this->component, $this->template, $params);
+    }
+
+    /**
+     * Подключает компонент 1С-Битрикс по указаным параметрам.
+     *
+     * @param string $componentName Название компонента
+     * @param string $template      Шаблон компонента
+     * @param array  $arParams      Массив настроек компонента
+     *
+     * @return string
+     */
+    protected function includeComponent($componentName, $template = '', array $arParams = array())
+    {
         ob_start();
         ob_implicit_flush(false);
         global $APPLICATION;
         $APPLICATION->IncludeComponent(
-            $this->component,
-            $this->template,
-            $params,
+            $componentName,
+            $template,
+            $arParams,
             false
         );
 

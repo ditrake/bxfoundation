@@ -10,7 +10,7 @@ use creative\foundation\routing\Exception;
 /**
  * Цепочка из нескольки последовательно выполняющихся действий.
  */
-class Chain implements ActionInterface
+class Chain extends Base
 {
     /**
      * Список действий, которые нужно выполнить по цепочке.
@@ -43,9 +43,9 @@ class Chain implements ActionInterface
     /**
      * @inheritdoc
      */
-    public function run(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response)
+    protected function runInternal(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response)
     {
-        $return = '';
+        $return = null;
         foreach ($this->actions as $action) {
             $return .= $action->run($ruleResult, $request, $response);
         }
