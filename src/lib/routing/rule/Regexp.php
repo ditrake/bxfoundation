@@ -25,7 +25,7 @@ class Regexp extends Base
     {
         $regexp = trim($regexp);
         if (!$regexp) {
-            throw Exception('regexp param must be set');
+            throw new Exception('regexp param must be set');
         }
         $this->regexp = $regexp;
         if ($filters) {
@@ -67,7 +67,7 @@ class Regexp extends Base
             'regexp' => null,
             'params' => [],
         ];
-        $arRegexp = explode('/', $this->regexp);
+        $arRegexp = explode('/', trim($this->regexp, " \t\n\r\0\x0B/"));
         foreach ($arRegexp as $key => $value) {
             if (preg_match('/^([a-z_0-9\-]*)<([a-z_]{1}[a-z_0-9]*):?\s*([^><:]*)\s*>([a-z_0-9\-]*)$/i', $value, $matches)) {
                 $return['params'][] = $matches[2];

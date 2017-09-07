@@ -27,7 +27,9 @@ trait EventableTrait
         $eventName = $this->prepareEventName($result->getName());
 
         $this->riseInternalEvents($eventName, $result);
-        $this->riseBitrixEvents($eventName, $result);
+        if (class_exists('\Bitrix\Main\Event')) {
+            $this->riseBitrixEvents($eventName, $result);
+        }
 
         return $result;
     }
