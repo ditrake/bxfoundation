@@ -2,6 +2,7 @@
 
 namespace creative\foundation\routing\filter;
 
+use creative\foundation\routing\Exception;
 use creative\foundation\events\ResultInterface;
 use creative\foundation\events\EventableInterface;
 
@@ -24,6 +25,9 @@ class Method implements FilterInterface
      */
     public function __construct($method)
     {
+        if (empty($method)) {
+            throw new Exception('Constructor parameter can\'t be empty');
+        }
         $method = is_array($method) ? $method : [$method];
         $this->methods = array_map('mb_strtoupper', $method);
     }
