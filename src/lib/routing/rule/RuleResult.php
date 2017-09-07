@@ -34,6 +34,7 @@ class RuleResult implements RuleResultInterface
      */
     public function setParams(array $params)
     {
+        $this->params = [];
         foreach ($params as $key => $value) {
             $this->setParam($key, $value);
         }
