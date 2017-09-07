@@ -66,10 +66,20 @@ class Bitrix implements RequestInterface
         } elseif ($method === 'POST') {
             $return = $this->bitrixRequest->getPostList()->toArray();
         } else {
-            parse_str(file_get_contents('php://input'), $return);
+            parse_str($this->getPhpInputData(), $return);
         }
 
         return $return;
+    }
+
+    /**
+     * Возвращает данные из входящего потока php.
+     *
+     * @return string
+     */
+    protected function getPhpInputData()
+    {
+        return file_get_contents('php://input');
     }
 
     /**
@@ -78,15 +88,11 @@ class Bitrix implements RequestInterface
     public function getHeaders()
     {
         $return = [];
-        if (function_exists('getallheaders')) {
-            $return = getallheaders();
-        } else {
-            foreach ($_SERVER as $key => $value) {
-                if (!strpos($key, 'HTTP_') === 0) {
-                    continue;
-                }
-                $return[str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))))] = $value;
+        foreach ($_SERVER as $key => $value) {
+            if (strpos($key, 'HTTP_') !== 0) {
+                continue;
             }
+            $return[str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))))] = $value;
         }
 
         return $return;

@@ -48,9 +48,7 @@ class Result implements ResultInterface
             throw new Exception('Event result name can\'t be empty');
         }
         $this->name = $name;
-        if (empty($target)) {
-            throw new Exception('Event target can\'t be empty');
-        } elseif (!is_object($target)) {
+        if (!is_object($target)) {
             throw new Exception('Event target must be an object instance');
         }
         $this->target = $target;
@@ -88,6 +86,7 @@ class Result implements ResultInterface
      */
     public function setParams(array $params)
     {
+        $this->params = [];
         foreach ($params as $key => $value) {
             $this->setParam($key, $value);
         }
