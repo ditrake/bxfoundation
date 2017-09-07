@@ -17,7 +17,6 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
         $rule = new \creative\foundation\routing\rule\Regexp('test', [$filter]);
     }
 
-
     public function testEmptyRegexpConstructorException()
     {
         $this->setExpectedException('\creative\foundation\routing\Exception');
