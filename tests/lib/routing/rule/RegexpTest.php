@@ -192,11 +192,11 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
         $rule = new \creative\foundation\routing\rule\Regexp('test');
 
         $eventTrigger2 = 0;
-        $callback2 = function () use (&$eventTrigger2) { $eventTrigger2++; };
+        $callback2 = function () use (&$eventTrigger2) { ++$eventTrigger2; };
         $rule->attachEventCallback('test_event', $callback2);
 
         $eventTrigger1 = 0;
-        $callback1 = function () use (&$eventTrigger1) { $eventTrigger1++; };
+        $callback1 = function () use (&$eventTrigger1) { ++$eventTrigger1; };
         $rule->attachEventCallback('test_event', $callback1);
         $rule->detachEventCallback('test_event', $callback1);
 
