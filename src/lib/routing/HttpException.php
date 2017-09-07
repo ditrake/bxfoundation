@@ -12,12 +12,12 @@ class HttpException extends Exception
      *
      * @var int
      */
-    protected $httpCode = 500;
+    protected $httpCode = null;
 
     /**
      * @inheritdoc
      */
-    public function __construct($message, $code = 0, \Exception $previous = null)
+    public function __construct($message = 'Internal Server Error', $code = 500, \Exception $previous = null)
     {
         $this->httpCode = (int) $code ?: $this->httpCode;
         parent::__construct($message, $code, $previous);
@@ -40,6 +40,6 @@ class HttpException extends Exception
      */
     public function getHttpStatus()
     {
-        return $this->getHttpCode() . ' Internal Server Error';
+        return $this->getHttpCode() . ' ' . $this->getMessage();
     }
 }

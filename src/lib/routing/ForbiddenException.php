@@ -14,12 +14,4 @@ class ForbiddenException extends HttpException
     {
         parent::__construct($message, 403, $previous);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getHttpStatus()
-    {
-        return $this->getHttpCode() . ' Forbidden';
-    }
 }

@@ -14,12 +14,4 @@ class NotFoundException extends HttpException
     {
         parent::__construct($message, 404, $previous);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getHttpStatus()
-    {
-        return $this->getHttpCode() . ' Not Found';
-    }
 }
