@@ -4,8 +4,10 @@ namespace creative\foundation\installer;
 
 use Composer\Script\Event;
 use Composer\Factory;
-use InvalidArgumentException;
 use Composer\Util\Filesystem;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use InvalidArgumentException;
 
 /**
  * Класс-установщик, который необходим для того, чтобы скопировать файлы модуля
@@ -39,9 +41,12 @@ class Composer
 
         $fileSystem = new Filesystem();
         if (is_dir($bitrixModulesFolder)) {
-            $fileSystem->removeDirectory($fileSystem);
+            $fileSystem->removeDirectory($bitrixModulesFolder);
         }
-        $fileSystem->copy($libraryFolder, $bitrixModulesFolder);
+
+        if (!self::copy($libraryFolder, $bitrixModulesFolder, $fileSystem)) {
+            throw new InvalidArgumentException('Can\'t project src folder');
+        }
     }
 
     /**
@@ -62,7 +67,7 @@ class Composer
             $bitrixModulesFolder = 'web/local/modules';
         }
 
-        return realpath($projectRootPath . '/' . trim($bitrixModulesFolder, '/'));
+        return (string) realpath($projectRootPath . '/' . trim($bitrixModulesFolder, '/'));
     }
 
     /**
@@ -87,6 +92,36 @@ class Composer
             }
         }
 
-        return $srcFolder;
+        return (string) $srcFolder;
+    }
+
+    /**
+     * Копирует содержимое одной папки в другую.
+     *
+     * @param string $source
+     * @param string $target
+     *
+     * @return bool
+     */
+    protected static function copy($source, $target, $fileSystem)
+    {
+        if (!is_dir($source)) {
+            return copy($source, $target);
+        }
+        $it = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
+        $ri = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::SELF_FIRST);
+        $fileSystem->ensureDirectoryExists($target);
+
+        $result = true;
+        foreach ($ri as $file) {
+            $targetPath = $target . DIRECTORY_SEPARATOR . $ri->getSubPathName();
+            if ($file->isDir()) {
+                $fileSystem->ensureDirectoryExists($targetPath);
+            } else {
+                $result = $result && copy($file->getPathname(), $targetPath);
+            }
+        }
+
+        return $result;
     }
 }
