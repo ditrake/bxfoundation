@@ -33,9 +33,9 @@ class Bitrix implements CacheInterface
     /**
      * Конструктор.
      *
-     * @param \Bitrix\Main\Data\Cache $cache Ссылка на битриксовый объект для кэширования
+     * @param \Bitrix\Main\Data\Cache       $cache       Ссылка на битриксовый объект для кэширования
      * @param \Bitrix\Main\Data\TaggedCache $taggedCache Ссылка на битриксовый объект для тэггирования кэша
-     * @param int $defaultTime Время по умолчанию, на которое кэшируются объекты
+     * @param int                           $defaultTime Время по умолчанию, на которое кэшируются объекты
      */
     public function __construct(Cache $cache, TaggedCache $taggedCache = null, $defaultTime = 3600)
     {

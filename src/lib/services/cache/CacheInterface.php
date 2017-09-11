@@ -10,10 +10,10 @@ interface CacheInterface
     /**
      * Сохраняет данные в кэше.
      *
-     * @param string $key Ключ кэша
-     * @param mixed  $data Данные для кэширования
-     * @param int  $duration Время, на которое нужно кэшировать
-     * @param array  $tags Теги, от которых зависит кэш
+     * @param string $key      Ключ кэша
+     * @param mixed  $data     Данные для кэширования
+     * @param int    $duration Время, на которое нужно кэшировать
+     * @param array  $tags     Теги, от которых зависит кэш
      *
      * @return \creative\foundation\services\cache\CacheInterface
      */
