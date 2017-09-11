@@ -43,7 +43,7 @@ class Component extends Base
      *
      * @throws \creative\foundation\routing\Exception
      */
-    public function __construct($component, array $params = array(), $template = '')
+    public function __construct($component, $template = '', array $params = array())
     {
         if (empty($component)) {
             throw new Exception('Component name can\'t be empty');
