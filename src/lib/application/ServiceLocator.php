@@ -5,23 +5,18 @@ namespace creative\foundation\application;
 /**
  * Простейшая реализация паттерна Service Locator для 1С-Битрикс.
  */
-class ServiceLocator
+class ServiceLocator implements ServiceLocatorInterface
 {
     /**
      * Массив с сервисами, которые установлены для данного локатора.
-     * Массив вида `название сервиса => объект`
+     * Массив вида `название сервиса => объект`.
      *
      * @var array
      */
     protected $services = [];
 
     /**
-     * Задает новый сервис под указанным именем.
-     *
-     * @param string $name
-     * @param object $service
-     *
-     * @return \creative\foundation\application\ServiceLocator
+     * {@inheritdoc}
      *
      * @throws \creative\foundation\application\Exception
      */
@@ -40,11 +35,7 @@ class ServiceLocator
     }
 
     /**
-     * Возвращает объект сервиса по его имени.
-     *
-     * @param string $name
-     *
-     * @return mixed
+     * {@inheritdoc}
      *
      * @throws \creative\foundation\application\Exception
      */
@@ -59,11 +50,7 @@ class ServiceLocator
     }
 
     /**
-     * Проверяет существует ли сервис с указанным именем.
-     *
-     * @param string $name
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function has($name)
     {
@@ -73,11 +60,7 @@ class ServiceLocator
     }
 
     /**
-     * Удаляет сервис по его имени.
-     *
-     * @param string $name
-     *
-     * @return \creative\foundation\application\ServiceLocator
+     * {@inheritdoc}
      *
      * @throws \creative\foundation\application\Exception
      */
@@ -109,7 +92,7 @@ class ServiceLocator
      * Магия. Задает сервис по имени.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function __set($name, $value)
     {
