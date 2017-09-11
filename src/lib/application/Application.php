@@ -88,7 +88,7 @@ class Application
             $serviceLocator = new ServiceLocator;
         }
         $this->serviceLocator = $serviceLocator;
-        $this->setDefaultServices($serviceLocator);
+        $this->setDefaultServices($bitrixApplication, $serviceLocator);
     }
 
     /**
