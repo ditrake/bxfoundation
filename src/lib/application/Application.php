@@ -64,6 +64,8 @@ class Application
     {
         if ($name === 'locator') {
             return $this->serviceLocator;
+        } elseif ($this->serviceLocator->has($name)) {
+            return $this->serviceLocator->get($name);
         } else {
             throw new Exception("Property {$name} doesn't exist");
         }
