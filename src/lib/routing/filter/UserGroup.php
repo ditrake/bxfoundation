@@ -32,30 +32,15 @@ class UserGroup implements FilterInterface
      *
      * @param array|string $groups         Массив с группами или строка, которые проходят фильтр
      * @param bool         $allowedToAdmin Флаг, который обозначает, что администратору доступ разрешен в любом случае
+     *
+     * @throws \creative\foundation\routing\Exception
      */
     public function __construct($groups, $allowedToAdmin = true)
     {
         if (empty($groups)) {
             throw new Exception('Constructor parameter can\'t be empty');
         }
-        $groups = is_array($groups) ? $groups : [$groups];
-        foreach ($groups as $groupKey => $group) {
-            $id = null;
-            foreach (static::getGroups() as $siteGroup) {
-                if (
-                    (int) $siteGroup['ID'] !== (int) $group
-                    && $siteGroup['STRING_ID'] !== $group
-                ) {
-                    continue;
-                }
-                $id = (int) $siteGroup['ID'];
-                break;
-            }
-            if (!$id) {
-                throw new Exception("Wrong group identity {$group} with key {$groupKey}");
-            }
-            $this->groups[] = $id;
-        }
+        $this->groups = is_array($groups) ? $groups : [$groups];
         $this->allowedToAdmin = $allowedToAdmin;
     }
 
@@ -73,16 +58,38 @@ class UserGroup implements FilterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws \creative\foundation\routing\Exception
      */
     public function filter(ResultInterface $eventResult)
     {
         global $USER;
+
+        $groups = [];
+        foreach ($this->groups as $groupKey => $group) {
+            $id = null;
+            foreach (static::getGroups() as $siteGroup) {
+                if (
+                    (int) $siteGroup['ID'] !== (int) $group
+                    && $siteGroup['STRING_ID'] !== $group
+                ) {
+                    continue;
+                }
+                $id = (int) $siteGroup['ID'];
+                break;
+            }
+            if (!$id) {
+                throw new Exception("Wrong group identity {$group} with key {$groupKey}");
+            }
+            $groups[] = $id;
+        }
+
         if (!$USER->isAuthorized()) {
             $eventResult->fail();
         } elseif (!$this->allowedToAdmin || !$USER->isAdmin()) {
             $userGroups = array_map('intval', $USER->GetUserGroupArray());
-            if (!array_intersect($this->groups, $userGroups)) {
+            if (!array_intersect($groups, $userGroups)) {
                 $eventResult->fail();
             }
         }
