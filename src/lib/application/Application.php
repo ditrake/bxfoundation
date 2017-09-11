@@ -32,7 +32,7 @@ class Application
      * Магия. Передаем неизвестные данному объекту функции в Application или service locator.
      *
      * @param string $name
-     * @param array $params
+     * @param array  $params
      *
      * @return mixed
      *
@@ -74,7 +74,7 @@ class Application
      *
      * Реализация singleton. Видимость private апрещает прямое создание новых объектов.
      *
-     * @param \Bitrix\Main\Application $bitrixApplication
+     * @param \Bitrix\Main\Application                                 $bitrixApplication
      * @param \creative\foundation\application\ServiceLocatorInterface $serviceLocator
      */
     private function __construct(\Bitrix\Main\Application $bitrixApplication = null, ServiceLocatorInterface $serviceLocator = null)
@@ -94,7 +94,7 @@ class Application
     /**
      * Задает сервисы по умолчанию.
      *
-     * @param \Bitrix\Main\Application $bitrixApplication
+     * @param \Bitrix\Main\Application                                 $bitrixApplication
      * @param \creative\foundation\application\ServiceLocatorInterface $serviceLocator
      */
     protected function setDefaultServices(\Bitrix\Main\Application $bitrixApplication, ServiceLocatorInterface $serviceLocator)
@@ -134,13 +134,12 @@ class Application
         }
     }
 
-
     /**
      * Объект для реализации singleton.
      *
      * @var \creative\foundation\application\Application
      */
-    static private $instance = null;
+    private static $instance = null;
 
     /**
      * Возвращает объект singleton, если он уже создан, либо создает новый
@@ -148,7 +147,7 @@ class Application
      *
      * @return \creative\foundation\application\Application
      */
-    static public function getInstance()
+    public static function getInstance()
     {
         return self::$instance === null
             ? self::$instance = new self
