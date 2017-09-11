@@ -5,6 +5,7 @@ namespace creative\foundation\application;
 use creative\foundation\request\Bitrix as Request;
 use creative\foundation\response\Bitrix as Response;
 use creative\foundation\routing\router\Router;
+use creative\foundation\services\cache\Bitrix as LibCache;
 
 /**
  * Класс-фасад для битриксового Bitrix\Main\Application.
@@ -120,18 +121,9 @@ class Application
             $serviceLocator->set('db', $bitrixApplication->getConnection());
         }
         if (!$serviceLocator->has('cache')) {
-            $serviceLocator->set('cache', $bitrixApplication->getCache());
-        }
-        if (!$serviceLocator->has('managed_cache')) {
             $serviceLocator->set(
-                'managed_cache',
-                $bitrixApplication->getManagedCache()
-            );
-        }
-        if (!$serviceLocator->has('tagged_cache')) {
-            $serviceLocator->set(
-                'tagged_cache',
-                $bitrixApplication->getTaggedCache()
+                'cache',
+                new LibCache($bitrixApplication->getCache(), $bitrixApplication->getTaggedCache())
             );
         }
     }
