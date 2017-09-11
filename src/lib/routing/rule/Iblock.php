@@ -139,9 +139,6 @@ class Iblock extends Base
         $path = trim($link, " \t\n\r\0\x0B/");
         $arPath = explode('/', $path);
         foreach ($arPath as $chainItem) {
-            if ($chainItem === '') {
-                continue;
-            }
             if (preg_match('/^#[^#]+#$/', $chainItem)) {
                 $return[] = '[^\/]+';
             } else {
