@@ -27,21 +27,26 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($testParam));
 
         $content = (string) mt_rand();
-        $action = $this->getMock(
-            '\creative\foundation\routing\action\Component',
-            ['includeComponent'],
-            ['component', 'template', ['test' => '$ruleResult.TEST', 'test2' => 'test2']],
-            '',
-            true
-        );
-        $action->expects($this->once())
-            ->method('includeComponent')
+        global $APPLICATION;
+        $APPLICATION = $this->getMockBuilder('\StdClass')
+            ->setMethods(['IncludeComponent'])
+            ->getMock();
+        $APPLICATION->expects($this->once())
+            ->method('IncludeComponent')
             ->with(
                 $this->equalTo('component'),
                 $this->equalTo('template'),
-                $this->equalTo(['test' => $testParam, 'test2' => 'test2'])
+                ['test' => $testParam, 'test2' => 'test2']
             )
-            ->will($this->returnValue($content));
+            ->will($this->returnCallback(function () use ($content) {
+                echo $content;
+            }));
+
+        $action = new \creative\foundation\routing\action\Component(
+            'component',
+            'template',
+            ['test' => '$ruleResult.TEST', 'test2' => 'test2']
+        );
 
         $this->assertSame(
             $content,
@@ -89,21 +94,28 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $content = (string) mt_rand();
-        $action = $this->getMock(
-            '\creative\foundation\routing\action\Component',
-            ['includeComponent'],
-            ['component', 'template', ['test2' => 'test2']],
-            '',
-            true
-        );
-        $action->expects($this->once())
-            ->method('includeComponent')
+        global $APPLICATION;
+        $APPLICATION = $this->getMockBuilder('\StdClass')
+            ->setMethods(['IncludeComponent'])
+            ->getMock();
+        $APPLICATION->expects($this->once())
+            ->method('IncludeComponent')
             ->with(
                 $this->equalTo('component'),
                 $this->equalTo('template'),
-                $this->equalTo(['test2' => 'test2'])
+                ['test2' => 'test2']
             )
-            ->will($this->returnValue((string) mt_rand()));
+            ->will($this->returnCallback(function () {
+                echo mt_rand();
+            }));
+
+        $action = new \creative\foundation\routing\action\Component(
+            'component',
+            'template',
+            ['test2' => 'test2']
+        );
+
+        $content = (string) mt_rand();
         $action->attachEventCallback('onAfterActionRun', function ($eventResult) use ($content) {
             $eventResult->setParam('return', $content);
         });
