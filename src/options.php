@@ -54,7 +54,7 @@ if ((!empty($save) || !empty($restore)) && $request->isPost() && check_bitrix_se
 $tabControl->begin();
 ?>
 
-<form method="post" action="<?php echo sprintf('%s?mid=%s&lang=%s', $request->getRequestedPage(), urlencode($mid), LANGUAGE_ID)?>">
+<form method="post" action="<?php echo sprintf('%s?mid=%s&lang=%s', $request->getRequestedPage(), urlencode($mid), LANGUAGE_ID); ?>">
 	<?php
     echo bitrix_sessid_post();
     $tabControl->beginNextTab();
@@ -77,15 +77,15 @@ $tabControl->begin();
     ?>
 	<input type="submit"
 		   name="save"
-		   value="<?php echo Loc::getMessage('MAIN_SAVE') ?>"
-		   title="<?php echo Loc::getMessage('MAIN_OPT_SAVE_TITLE') ?>"
+		   value="<?php echo Loc::getMessage('MAIN_SAVE'); ?>"
+		   title="<?php echo Loc::getMessage('MAIN_OPT_SAVE_TITLE'); ?>"
 		   class="adm-btn-save"
 		   />
 	<input type="submit"
 		   name="restore"
-		   title="<?php echo Loc::getMessage('MAIN_HINT_RESTORE_DEFAULTS') ?>"
-		   onclick="return confirm('<?php echo  addslashes(GetMessage('MAIN_HINT_RESTORE_DEFAULTS_WARNING')) ?>')"
-		   value="<?php echo Loc::getMessage('MAIN_RESTORE_DEFAULTS') ?>"
+		   title="<?php echo Loc::getMessage('MAIN_HINT_RESTORE_DEFAULTS'); ?>"
+		   onclick="return confirm('<?php echo  addslashes(GetMessage('MAIN_HINT_RESTORE_DEFAULTS_WARNING')); ?>')"
+		   value="<?php echo Loc::getMessage('MAIN_RESTORE_DEFAULTS'); ?>"
 		   />
 	<?php
     $tabControl->end();
