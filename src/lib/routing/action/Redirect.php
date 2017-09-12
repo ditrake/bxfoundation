@@ -40,6 +40,18 @@ class Redirect extends Base
      */
     protected function runInternal(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response)
     {
-        LocalRedirect($this->url);
+        return $this->localRedirect($this->url);
+    }
+
+    /**
+     * Переадресует пользователя с помощью битриксового метода.
+     *
+     * @param string $url
+     *
+     * @return mixed
+     */
+    protected function localRedirect($url)
+    {
+        return \LocalRedirect($url);
     }
 }
