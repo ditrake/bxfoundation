@@ -48,18 +48,21 @@ class Locator
         if ($filter !== null && !is_array($filter)) {
             throw new InvalidArgumentException('Wrong filter parameter type');
         }
-        $this->filter = $filter ?: [
-            'ACTIVE' => 'Y',
-            'CHECK_PERMISSIONS' => 'N',
-            'SITE_ID' => SITE_ID,
-        ];
+        if ($filter === null) {
+            $this->filter = [
+                'ACTIVE' => 'Y',
+                'CHECK_PERMISSIONS' => 'N',
+                'SITE_ID' => defined('SITE_ID') ? SITE_ID : null,
+            ];
+        } else {
+            $this->filter = $filter;
+        }
 
         if ($select !== null && !is_array($select)) {
             throw new InvalidArgumentException('Wrong select parameter type');
         }
-        $this->select = $select
-            ? array_unique(array_merge($select, ['ID']))
-            : [
+        if ($select === null) {
+            $this->select = [
                 'ID',
                 'CODE',
                 'NAME',
@@ -70,6 +73,9 @@ class Locator
                 'LIST_PAGE_URL',
                 'PROPERTIES',
             ];
+        } else {
+            $this->select = array_unique(array_merge($select, ['ID']));
+        }
 
         $this->cache = $cache;
     }
@@ -160,7 +166,9 @@ class Locator
 
                     return $carry;
                 }, ['iblock_id_new']);
-                $this->cache->set($cid, $list, null, $arCacheTags);
+                if ($this->cache) {
+                    $this->cache->set($cid, $list, null, $arCacheTags);
+                }
             }
             $this->list = $list;
         }
