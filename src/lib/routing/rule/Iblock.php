@@ -4,13 +4,19 @@ namespace creative\foundation\routing\rule;
 
 use creative\foundation\routing\Exception;
 use creative\foundation\request\RequestInterface;
-use Bitrix\Main\Loader;
+use creative\foundation\services\iblock\Locator;
 
 /**
  * Правило, которое использует настройки инфоблока для проверки url.
  */
 class Iblock extends Base
 {
+    /**
+     * Ссылка на объект для поиска инфоблоков.
+     *
+     * @var \creative\foundation\services\iblock\Locator
+     */
+    protected $locator = null;
     /**
      * Символьный код или идентификатор инфоблока.
      *
@@ -30,14 +36,16 @@ class Iblock extends Base
     /**
      * Конструктор.
      *
-     * @param string       $iblock   Символьный код или идентификатор инфоблока
-     * @param array|string $entities Массив с сущностями, которые нужно отображать
-     * @param array        $filters
+     * @param \creative\foundation\services\iblock\Locator $locator  Ссылка на объект для поиска инфоблоков
+     * @param string                                       $iblock   Символьный код или идентификатор инфоблока
+     * @param array|string                                 $entities Массив с сущностями, которые нужно отображать
+     * @param array                                        $filters
      *
      * @throws \creative\foundation\routing\Exception
      */
-    public function __construct($iblock, $entities = null, array $filters = null)
+    public function __construct(Locator $locator, $iblock, $entities = null, array $filters = null)
     {
+        $this->locator = $locator;
         if (empty($iblock)) {
             throw new Exception('Empty iblock identity');
         }
@@ -158,51 +166,8 @@ class Iblock extends Base
      */
     protected function getIblockArrayByIdentity($iblock)
     {
-        $return = null;
+        $field = is_numeric($iblock) ? 'ID' : 'CODE';
 
-        foreach (static::getIblocks() as $arIblock) {
-            if ((int) $arIblock['ID'] !== (int) $iblock && $arIblock['CODE'] !== $iblock) {
-                continue;
-            }
-            $return = $arIblock;
-            break;
-        }
-
-        return $return;
-    }
-
-    /**
-     * Список кэшированных инфоблоков для данного правила.
-     *
-     * Получаем одним запросом все инфоблоки и сохраняем в статическую переменную,
-     * которой сможет пользоваться каждый инстанс данного правила.
-     *
-     * @var array
-     */
-    protected static $loadedIblocks = null;
-
-    /**
-     * Возвращает список всех доступных на сайте инфоблоков.
-     *
-     * Получает инфоблоки при первом же запросе и кэширует список
-     * в статическую переменную, при каждом последующем обращении
-     * возвращает данные из этой переменной.
-     *
-     * @return array
-     */
-    protected static function getIblocks()
-    {
-        if (static::$loadedIblocks === null) {
-            Loader::includeModule('iblock');
-            $res = \CIBlock::getList([], [
-                'CHECK_PERMISSIONS' => 'N',
-                'SITE_ID' => SITE_ID,
-            ]);
-            while ($ob = $res->fetch()) {
-                static::$loadedIblocks[] = $ob;
-            }
-        }
-
-        return static::$loadedIblocks;
+        return $this->locator->findBy($field, $iblock);
     }
 }
