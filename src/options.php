@@ -4,7 +4,7 @@ use Bitrix\Main\Application;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
 
-defined('ADMIN_MODULE_NAME') or define('ADMIN_MODULE_NAME', 'creative.phpmailer');
+defined('ADMIN_MODULE_NAME') or define('ADMIN_MODULE_NAME', 'creative.foundation');
 
 if (!$USER->isAdmin()) {
     $APPLICATION->authForm('Nope');
