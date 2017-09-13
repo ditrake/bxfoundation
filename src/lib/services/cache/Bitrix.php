@@ -4,7 +4,7 @@ namespace creative\foundation\services\cache;
 
 use Bitrix\Main\Data\Cache;
 use Bitrix\Main\Data\TaggedCache;
-use InvalidArgumentException;
+use creative\foundation\services\Exception;
 
 /**
  * Объект для кэширования, который упрощает обращение к битриксовому кэшу.
@@ -47,12 +47,12 @@ class Bitrix implements CacheInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException
+     * @throws \creative\foundation\services\Exception
      */
     public function set($key, $data, $duration = null, array $tags = null)
     {
         if (trim($key) === '') {
-            throw new InvalidArgumentException('key parameter for cache setting can\'t be empty');
+            throw new Exception('key parameter for cache setting can\'t be empty');
         }
         $time = $duration !== null ? (int) $duration : $this->defaultTime;
         if ($time) {
@@ -88,12 +88,12 @@ class Bitrix implements CacheInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException
+     * @throws \creative\foundation\services\Exception
      */
     public function clear($key)
     {
         if (trim($key) === '') {
-            throw new InvalidArgumentException('key parameter for cache clearing can\'t be empty');
+            throw new Exception('key parameter for cache clearing can\'t be empty');
         }
         $this->cache->initCache(100, $key, $this->getFolder($key));
         $this->cache->cleanDir($this->getFolder($key));

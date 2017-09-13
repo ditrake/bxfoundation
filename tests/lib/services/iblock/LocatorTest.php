@@ -6,13 +6,13 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorWrongFilterException()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException('\creative\foundation\services\Exception');
         new \creative\foundation\services\iblock\Locator(123, []);
     }
 
     public function testConstructorWrongSelectException()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException('\creative\foundation\services\Exception');
         new \creative\foundation\services\iblock\Locator([], 123);
     }
 

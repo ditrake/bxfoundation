@@ -78,7 +78,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
 
         $bxCache = new \creative\foundation\services\cache\Bitrix($cache);
 
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException('\creative\foundation\services\Exception');
         $bxCache->set('', ['test']);
     }
 
@@ -159,7 +159,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
 
         $bxCache = new \creative\foundation\services\cache\Bitrix($cache);
 
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException('\creative\foundation\services\Exception');
         $bxCache->clear('');
     }
 }

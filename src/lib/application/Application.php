@@ -7,6 +7,7 @@ use creative\foundation\response\Bitrix as Response;
 use creative\foundation\routing\router\Router;
 use creative\foundation\services\cache\Bitrix as LibCache;
 use creative\foundation\services\iblock\Locator as IblockLocator;
+use creative\foundation\services\config\BitrixOptions;
 
 /**
  * Класс-фасад для битриксового Bitrix\Main\Application.
@@ -136,6 +137,9 @@ class Application
                     $serviceLocator->has('cache') ? $serviceLocator->get('cache') : null
                 )
             );
+        }
+        if (!$serviceLocator->has('options')) {
+            $serviceLocator->set('options', new BitrixOptions);
         }
     }
 

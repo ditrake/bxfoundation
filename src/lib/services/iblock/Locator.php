@@ -4,7 +4,7 @@ namespace creative\foundation\services\iblock;
 
 use creative\foundation\services\cache\CacheInterface;
 use Bitrix\Main\Loader;
-use InvalidArgumentException;
+use creative\foundation\services\Exception;
 
 /**
  * Сервис для быстрого поиска данных об инфоблоках.
@@ -42,11 +42,13 @@ class Locator
      * @param array                                              $filter Массив с фильтрами для поиска инфоблоков
      * @param array                                              $select Поля инфоблока, которые необходимо получить
      * @param \creative\foundation\services\cache\CacheInterface $cache  Ссылка на объект кэша
+     *
+     * @throws \creative\foundation\services\Exception
      */
     public function __construct($filter = null, $select = null, CacheInterface $cache = null)
     {
         if ($filter !== null && !is_array($filter)) {
-            throw new InvalidArgumentException('Wrong filter parameter type');
+            throw new Exception('Wrong filter parameter type');
         }
         if ($filter === null) {
             $this->filter = [
@@ -59,7 +61,7 @@ class Locator
         }
 
         if ($select !== null && !is_array($select)) {
-            throw new InvalidArgumentException('Wrong select parameter type');
+            throw new Exception('Wrong select parameter type');
         }
         if ($select === null) {
             $this->select = [
@@ -183,6 +185,8 @@ class Locator
      * @param array $select Список полей для загрузки
      *
      * @return array
+     *
+     * @throws \creative\foundation\services\Exception
      */
     protected function loadList(array $filter, array $select)
     {
@@ -207,7 +211,7 @@ class Locator
                     continue;
                 }
                 if (empty($pOb['CODE'])) {
-                    throw new InvalidArgumentException("Property '{$pOb['NAME']}'({$pOb['ID']}) has no code");
+                    throw new Exception("Property '{$pOb['NAME']}'({$pOb['ID']}) has no code");
                 }
                 $return[$pOb['IBLOCK_ID']]['PROPERTIES'][$pOb['CODE']] = $pOb;
             }
