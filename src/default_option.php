@@ -1,4 +1,3 @@
 <?php
 
-$creative_foundation_default_option = array(
-);
+$creative_foundation_default_option = [];
