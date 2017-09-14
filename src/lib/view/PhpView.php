@@ -20,9 +20,7 @@ class PhpView implements ViewInterface
      * из представления в компонент.
      *
      * @param string $name
-     * @param array $params
-     *
-     * @return null
+     * @param array  $params
      */
     public function __call($name, $params)
     {

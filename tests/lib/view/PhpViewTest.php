@@ -22,7 +22,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
     public function testCall()
     {
         $view = new \creative\foundation\view\PhpView([
-            pathinfo($this->file, PATHINFO_DIRNAME)
+            pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
 
         $this->assertSame(
@@ -37,7 +37,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
 
         $view = new \creative\foundation\view\PhpView([
             '/',
-            pathinfo($this->file, PATHINFO_DIRNAME)
+            pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
 
         $this->assertSame(
@@ -53,7 +53,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
     {
         $viewName = 'view_' . mt_rand();
         $view = new \creative\foundation\view\PhpView([
-            pathinfo($this->file, PATHINFO_DIRNAME)
+            pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
         $this->setExpectedException('\creative\foundation\view\Exception', $viewName);
         $view->render(
@@ -65,7 +65,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
     public function testRenderNumericDataKeyException()
     {
         $view = new \creative\foundation\view\PhpView([
-            pathinfo($this->file, PATHINFO_DIRNAME)
+            pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
         $this->setExpectedException('\creative\foundation\view\Exception', 2);
         $view->render(
