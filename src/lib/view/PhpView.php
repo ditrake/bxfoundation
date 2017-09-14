@@ -8,17 +8,57 @@ namespace creative\foundation\view;
 class PhpView implements ViewInterface
 {
     /**
+     * Массив с папками, в которых следует искать файлы для подключения.
+     *
+     * @var array
+     */
+    protected $folders = [];
+
+    /**
+     * Магия. Наглый хак, чтобы стандартные шаблоны не падали при обращении к
+     * несуществующим методам представления. Связано прежде всего с обращениями
+     * из представления в компонент.
+     *
+     * @param string $name
+     * @param array $params
+     *
+     * @return null
+     */
+    public function __call($name, $params)
+    {
+        return null;
+    }
+
+    /**
+     * Конструктор.
+     *
+     * @param array $folders Массив с папками, в которых следует искать файлы для подключения
+     *
+     * @throws \creative\foundation\view\Exception
+     */
+    public function __construct(array $folders)
+    {
+        if (empty($folders)) {
+            throw new Exception('PhpView folders parameter must be set');
+        }
+        foreach ($folders as $folder) {
+            $folder = $folder === '/' ? $folder : rtrim(trim($folder), '/');
+            if (!is_dir($folder)) {
+                throw new Exception("{$folder} is not a directory");
+            }
+            $this->folders[] = $folder;
+        }
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @throws \creative\foundation\view\Exception
      */
     public function render($viewName, array $data = array())
     {
-        if (!preg_match('/^[a-zA-Z0-9_\/]+$/', $viewName)) {
-            throw new Exception("Wrong view name: {$viewName}");
-        }
-        $viewPath = realpath(preg_replace('/\/{2,}/', '/', $viewName) . '.php');
-        if (!$viewPath || !file_exists($viewPath)) {
+        $viewPath = $this->findPathToView($viewName);
+        if (!$viewPath) {
             throw new Exception("Can't find file {$viewPath} for view {$viewName}");
         }
 
@@ -29,6 +69,34 @@ class PhpView implements ViewInterface
         }
 
         return $this->renderInternal($viewPath, $data);
+    }
+
+    /**
+     * Пробует найти файл шаблона в указанных в конструкторе папках.
+     *
+     * @param string $view
+     *
+     * @return string|null
+     */
+    protected function findPathToView($view)
+    {
+        $return = null;
+        $viewPath = str_replace(
+            ['./', '../'],
+            '',
+            trim($view, " \t\n\r\0\x0B./")
+        );
+        $viewPath = preg_replace('/\/{2,}/', '/', $viewPath) . '.php';
+        foreach ($this->folders as $folder) {
+            $testedPath = $folder . '/' . $viewPath;
+            if (!file_exists($testedPath)) {
+                continue;
+            }
+            $return = $testedPath;
+            break;
+        }
+
+        return $return;
     }
 
     /**

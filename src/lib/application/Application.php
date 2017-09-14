@@ -147,7 +147,10 @@ class Application
             $serviceLocator->set('user', new BitrixUser);
         }
         if (!$serviceLocator->has('view')) {
-            $serviceLocator->set('view', new PhpView);
+            $documentRoot = $bitrixApplication->getContext()
+                ->getServer()
+                ->getDocumentRoot();
+            $serviceLocator->set('view', new PhpView([$documentRoot]));
         }
     }
 
