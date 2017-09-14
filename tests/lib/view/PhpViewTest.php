@@ -14,7 +14,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
         $viewName = pathinfo($this->file, PATHINFO_DIRNAME) . '/' . pathinfo($this->file, PATHINFO_FILENAME);
 
         $this->assertSame(
-            $testVariable,
+            'html ' . $testVariable,
             $view->render(
                 $viewName,
                 ['testVariable' => $testVariable, 'test2' => 'test2']
@@ -59,7 +59,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->file = tempnam(sys_get_temp_dir(), 'test') . '.php';
-        file_put_contents($this->file, "<?php\r\necho \$testVariable;\r\n");
+        file_put_contents($this->file, "html <?php echo \$testVariable;\r\n");
     }
 
     protected function tearDown()
