@@ -9,7 +9,7 @@ use creative\foundation\services\cache\Bitrix as LibCache;
 use creative\foundation\services\iblock\Locator as IblockLocator;
 use creative\foundation\services\config\BitrixOptions;
 use creative\foundation\services\user\Bitrix as BitrixUser;
-use creative\foundation\views\PhpView;
+use creative\foundation\view\PhpView;
 
 /**
  * Класс-фасад для битриксового Bitrix\Main\Application.
