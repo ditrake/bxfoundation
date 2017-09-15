@@ -90,7 +90,7 @@ class Component extends Base
     /**
      * Заменяет ссылки на значение из результат обработки url на сами параметры.
      *
-     * @param array                                                 $params     Список параметров из конструктора
+     * @param array                                                    $params     Список параметров из конструктора
      * @param \marvin255\bxfoundation\routing\rule\RuleResultInterface $ruleResult Значение полученные из обработки url
      *
      * @return array

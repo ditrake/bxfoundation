@@ -26,7 +26,7 @@ interface RouterInterface
     /**
      * Регистрирует соответствие между правилом и действием для исключительной ситуации.
      *
-     * @param int                                                 $code   Код http ответа
+     * @param int                                                    $code   Код http ответа
      * @param \marvin255\bxfoundation\routing\action\ActionInterface $action Ссылка на действие
      *
      * @return \marvin255\bxfoundation\routing\router\RouterInterface

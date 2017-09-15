@@ -81,7 +81,7 @@ class Application
      *
      * Реализация singleton. Видимость private апрещает прямое создание новых объектов.
      *
-     * @param \Bitrix\Main\Application                                 $bitrixApplication
+     * @param \Bitrix\Main\Application                                    $bitrixApplication
      * @param \marvin255\bxfoundation\application\ServiceLocatorInterface $serviceLocator
      */
     private function __construct(\Bitrix\Main\Application $bitrixApplication = null, ServiceLocatorInterface $serviceLocator = null)
@@ -101,7 +101,7 @@ class Application
     /**
      * Задает сервисы по умолчанию.
      *
-     * @param \Bitrix\Main\Application                                 $bitrixApplication
+     * @param \Bitrix\Main\Application                                    $bitrixApplication
      * @param \marvin255\bxfoundation\application\ServiceLocatorInterface $serviceLocator
      */
     protected function setDefaultServices(\Bitrix\Main\Application $bitrixApplication, ServiceLocatorInterface $serviceLocator)

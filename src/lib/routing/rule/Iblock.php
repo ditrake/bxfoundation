@@ -37,9 +37,9 @@ class Iblock extends Base
      * Конструктор.
      *
      * @param \marvin255\bxfoundation\services\iblock\Locator $locator  Ссылка на объект для поиска инфоблоков
-     * @param string                                       $iblock   Символьный код или идентификатор инфоблока
-     * @param array|string                                 $entities Массив с сущностями, которые нужно отображать
-     * @param array                                        $filters
+     * @param string                                          $iblock   Символьный код или идентификатор инфоблока
+     * @param array|string                                    $entities Массив с сущностями, которые нужно отображать
+     * @param array                                           $filters
      *
      * @throws \marvin255\bxfoundation\routing\Exception
      */
@@ -112,7 +112,7 @@ class Iblock extends Base
     /**
      * Запускает механизм битрикса для определения данных из ЧПУ.
      *
-     * @param string                                        $link    Ссылка, для которой нужно попробовать определить ЧПУ
+     * @param string                                           $link    Ссылка, для которой нужно попробовать определить ЧПУ
      * @param \marvin255\bxfoundation\request\RequestInterface $request Ссылка на текущий запрос
      *
      * @return array|null

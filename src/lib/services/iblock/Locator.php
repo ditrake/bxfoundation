@@ -39,8 +39,8 @@ class Locator
     /**
      * Конструктор.
      *
-     * @param array                                              $filter Массив с фильтрами для поиска инфоблоков
-     * @param array                                              $select Поля инфоблока, которые необходимо получить
+     * @param array                                                 $filter Массив с фильтрами для поиска инфоблоков
+     * @param array                                                 $select Поля инфоблока, которые необходимо получить
      * @param \marvin255\bxfoundation\services\cache\CacheInterface $cache  Ссылка на объект кэша
      *
      * @throws \marvin255\bxfoundation\services\Exception
