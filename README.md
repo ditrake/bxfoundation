@@ -24,8 +24,8 @@
     ```javascript
     "scripts": [
         {
-            "post-install-cmd": "\\creative\\foundation\\installer\\Composer::injectModule",
-            "post-update-cmd": "\\creative\\foundation\\installer\\Composer::injectModule",
+            "post-install-cmd": "\\marvin255\\bxfoundation\\installer\\Composer::injectModule",
+            "post-update-cmd": "\\marvin255\\bxfoundation\\installer\\Composer::injectModule",
         }
     ]
     ```

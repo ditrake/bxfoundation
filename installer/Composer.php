@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\installer;
+namespace marvin255\bxfoundation\installer;
 
 use Composer\Script\Event;
 use Composer\Factory;
