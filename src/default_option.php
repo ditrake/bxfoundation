@@ -1,3 +1,3 @@
 <?php
 
-$creative_foundation_default_option = [];
+$marvin255_bxfoundation_default_option = [];
