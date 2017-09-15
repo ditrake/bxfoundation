@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\tests\lib\application;
+namespace marvin255\bxfoundation\tests\lib\application;
 
 class ServiceLocatortTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,7 +10,7 @@ class ServiceLocatortTest extends \PHPUnit_Framework_TestCase
         $service1 = $this->getMockBuilder('\StdClass')->getMock();
         $serviceName2 = 'test' . mt_rand();
         $service2 = $this->getMockBuilder('\StdClass')->getMock();
-        $locator = new \creative\foundation\application\ServiceLocator;
+        $locator = new \marvin255\bxfoundation\application\ServiceLocator;
 
         $this->assertSame(
             $locator,
@@ -35,24 +35,24 @@ class ServiceLocatortTest extends \PHPUnit_Framework_TestCase
     public function testSetWithNonObjectException()
     {
         $serviceName = 'test' . mt_rand();
-        $locator = new \creative\foundation\application\ServiceLocator;
-        $this->setExpectedException('\creative\foundation\application\Exception', $serviceName);
+        $locator = new \marvin255\bxfoundation\application\ServiceLocator;
+        $this->setExpectedException('\marvin255\bxfoundation\application\Exception', $serviceName);
         $locator->set($serviceName, '123');
     }
 
     public function testSetWithEmptyNameException()
     {
         $service = $this->getMockBuilder('\StdClass')->getMock();
-        $locator = new \creative\foundation\application\ServiceLocator;
-        $this->setExpectedException('\creative\foundation\application\Exception');
+        $locator = new \marvin255\bxfoundation\application\ServiceLocator;
+        $this->setExpectedException('\marvin255\bxfoundation\application\Exception');
         $locator->set(false, $service);
     }
 
     public function testGetWithUnaviableServiceException()
     {
         $serviceName = 'test' . mt_rand();
-        $locator = new \creative\foundation\application\ServiceLocator;
-        $this->setExpectedException('\creative\foundation\application\Exception', $serviceName);
+        $locator = new \marvin255\bxfoundation\application\ServiceLocator;
+        $this->setExpectedException('\marvin255\bxfoundation\application\Exception', $serviceName);
         $locator->get($serviceName);
     }
 
@@ -60,7 +60,7 @@ class ServiceLocatortTest extends \PHPUnit_Framework_TestCase
     {
         $serviceName = 'test' . mt_rand();
         $service = $this->getMockBuilder('\StdClass')->getMock();
-        $locator = new \creative\foundation\application\ServiceLocator;
+        $locator = new \marvin255\bxfoundation\application\ServiceLocator;
         $locator->set($serviceName, $service);
 
         $this->assertSame(
@@ -82,7 +82,7 @@ class ServiceLocatortTest extends \PHPUnit_Framework_TestCase
         $service1 = $this->getMockBuilder('\StdClass')->getMock();
         $serviceName2 = 'test' . mt_rand();
         $service2 = $this->getMockBuilder('\StdClass')->getMock();
-        $locator = new \creative\foundation\application\ServiceLocator;
+        $locator = new \marvin255\bxfoundation\application\ServiceLocator;
 
         $locator->set($serviceName1, $service1);
         $this->assertSame(
@@ -108,8 +108,8 @@ class ServiceLocatortTest extends \PHPUnit_Framework_TestCase
     public function testDeleteUnaviableServiceException()
     {
         $serviceName = 'test' . mt_rand();
-        $locator = new \creative\foundation\application\ServiceLocator;
-        $this->setExpectedException('\creative\foundation\application\Exception', $serviceName);
+        $locator = new \marvin255\bxfoundation\application\ServiceLocator;
+        $this->setExpectedException('\marvin255\bxfoundation\application\Exception', $serviceName);
         $locator->delete($serviceName);
     }
 }

@@ -1,20 +1,20 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing\filter;
+namespace marvin255\bxfoundation\tests\lib\routing\filter;
 
 class MethodTest extends \PHPUnit_Framework_TestCase
 {
     public function testEmptyConstructorException()
     {
-        $this->setExpectedException('\creative\foundation\routing\Exception');
-        $filter = new \creative\foundation\routing\filter\Method([]);
+        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
+        $filter = new \marvin255\bxfoundation\routing\filter\Method([]);
     }
 
     public function testAttachTo()
     {
-        $filter = new \creative\foundation\routing\filter\Method(['POST']);
+        $filter = new \marvin255\bxfoundation\routing\filter\Method(['POST']);
 
-        $eventable = $this->getMockBuilder('\creative\foundation\events\EventableInterface')
+        $eventable = $this->getMockBuilder('\marvin255\bxfoundation\events\EventableInterface')
             ->getMock();
         $eventable->expects($this->once())
             ->method('attachEventCallback')
@@ -32,12 +32,12 @@ class MethodTest extends \PHPUnit_Framework_TestCase
 
     public function testFilter()
     {
-        $request = $this->getMockBuilder('\creative\foundation\request\RequestInterface')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\RequestInterface')
             ->getMock();
         $request->method('getMethod')
             ->will($this->returnValue('PUT'));
 
-        $result = $this->getMockBuilder('\creative\foundation\events\ResultInterface')
+        $result = $this->getMockBuilder('\marvin255\bxfoundation\events\ResultInterface')
             ->getMock();
         $result->method('getParam')
             ->with($this->equalTo('request'))
@@ -45,7 +45,7 @@ class MethodTest extends \PHPUnit_Framework_TestCase
         $result->expects($this->once())
             ->method('fail');
 
-        $filter = new \creative\foundation\routing\filter\Method(['POST', 'DELETE']);
+        $filter = new \marvin255\bxfoundation\routing\filter\Method(['POST', 'DELETE']);
         $filter->filter($result);
     }
 }

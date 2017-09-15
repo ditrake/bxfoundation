@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\tests\lib\views;
+namespace marvin255\bxfoundation\tests\lib\views;
 
 class PhpViewTest extends \PHPUnit_Framework_TestCase
 {
@@ -8,20 +8,20 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorEmptyFoldersException()
     {
-        $this->setExpectedException('\creative\foundation\view\Exception');
-        $view = new \creative\foundation\view\PhpView([]);
+        $this->setExpectedException('\marvin255\bxfoundation\view\Exception');
+        $view = new \marvin255\bxfoundation\view\PhpView([]);
     }
 
     public function testConstructorWrondFolderException()
     {
         $folder = '/folder_' . mt_rand();
-        $this->setExpectedException('\creative\foundation\view\Exception', $folder);
-        $view = new \creative\foundation\view\PhpView([$folder]);
+        $this->setExpectedException('\marvin255\bxfoundation\view\Exception', $folder);
+        $view = new \marvin255\bxfoundation\view\PhpView([$folder]);
     }
 
     public function testCall()
     {
-        $view = new \creative\foundation\view\PhpView([
+        $view = new \marvin255\bxfoundation\view\PhpView([
             pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
 
@@ -35,7 +35,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
     {
         $testVariable = 'var_' . mt_rand();
 
-        $view = new \creative\foundation\view\PhpView([
+        $view = new \marvin255\bxfoundation\view\PhpView([
             '/',
             pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
@@ -52,10 +52,10 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
     public function testRenderWrongViewNameException()
     {
         $viewName = 'view_' . mt_rand();
-        $view = new \creative\foundation\view\PhpView([
+        $view = new \marvin255\bxfoundation\view\PhpView([
             pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
-        $this->setExpectedException('\creative\foundation\view\Exception', $viewName);
+        $this->setExpectedException('\marvin255\bxfoundation\view\Exception', $viewName);
         $view->render(
             $viewName,
             ['testVariable' => 'test']
@@ -64,10 +64,10 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderNumericDataKeyException()
     {
-        $view = new \creative\foundation\view\PhpView([
+        $view = new \marvin255\bxfoundation\view\PhpView([
             pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
-        $this->setExpectedException('\creative\foundation\view\Exception', 2);
+        $this->setExpectedException('\marvin255\bxfoundation\view\Exception', 2);
         $view->render(
             pathinfo($this->file, PATHINFO_FILENAME),
             ['testVariable' => 'test', 2 => 'test2']
@@ -76,7 +76,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFileExtensions()
     {
-        $view = new \creative\foundation\view\PhpView([pathinfo($this->file, PATHINFO_DIRNAME)]);
+        $view = new \marvin255\bxfoundation\view\PhpView([pathinfo($this->file, PATHINFO_DIRNAME)]);
 
         $this->assertSame(
             ['php'],

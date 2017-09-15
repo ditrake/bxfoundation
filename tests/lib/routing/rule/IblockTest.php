@@ -1,38 +1,38 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing\rule;
+namespace marvin255\bxfoundation\tests\lib\routing\rule;
 
 class IblockTest extends \PHPUnit_Framework_TestCase
 {
     public function testAttachFiltersInConstructor()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\filter\Header')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
             ->disableOriginalConstructor()
             ->setMethods(['attachTo'])
             ->getMock();
         $filter->expects($this->once())
             ->method('attachTo');
 
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', 'element', [$filter]);
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', 'element', [$filter]);
     }
 
     public function testConstructEmptyIblockEntity()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
-        $this->setExpectedException('\creative\foundation\routing\Exception');
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, false);
+        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, false);
     }
 
     public function testConstructWrongIblockEntitites()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
-        $this->setExpectedException('\creative\foundation\routing\Exception', 'diff1, diff2');
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element', 'diff1', 'diff2']);
+        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception', 'diff1, diff2');
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element', 'diff1', 'diff2']);
     }
 
     public function testParseDetail()
@@ -40,7 +40,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
         $iblockId = mt_rand();
         $iblockType = mt_rand();
 
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
         $locator->method('findBy')
             ->with($this->equalTo('ID'), $this->equalTo($iblockId))
@@ -52,7 +52,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
                 'IBLOCK_TYPE_ID' => $iblockType,
             ]));
 
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
@@ -60,7 +60,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/news/section_code/123'));
 
         $rule = $this->getMock(
-            '\creative\foundation\routing\rule\Iblock',
+            '\marvin255\bxfoundation\routing\rule\Iblock',
             ['processBitrixSef'],
             [$locator, $iblockId, ['element', 'iblock', 'section']],
             '',
@@ -94,7 +94,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
         $iblockId = mt_rand();
         $iblockType = mt_rand();
 
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
         $locator->method('findBy')
             ->with($this->equalTo('ID'), $this->equalTo($iblockId))
@@ -106,7 +106,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
                 'IBLOCK_TYPE_ID' => $iblockType,
             ]));
 
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
@@ -114,7 +114,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/news/section_code'));
 
         $rule = $this->getMock(
-            '\creative\foundation\routing\rule\Iblock',
+            '\marvin255\bxfoundation\routing\rule\Iblock',
             ['processBitrixSef'],
             [$locator, $iblockId, ['element', 'iblock', 'section']],
             '',
@@ -146,7 +146,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
         $iblockId = mt_rand();
         $iblockType = mt_rand();
 
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
         $locator->method('findBy')
             ->with($this->equalTo('ID'), $this->equalTo($iblockId))
@@ -158,7 +158,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
                 'IBLOCK_TYPE_ID' => $iblockType,
             ]));
 
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
@@ -166,7 +166,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/news/'));
 
         $rule = $this->getMock(
-            '\creative\foundation\routing\rule\Iblock',
+            '\marvin255\bxfoundation\routing\rule\Iblock',
             ['processBitrixSef'],
             [$locator, $iblockId, ['element', 'iblock', 'section']],
             '',
@@ -195,36 +195,36 @@ class IblockTest extends \PHPUnit_Framework_TestCase
         $iblockId = mt_rand();
         $iblockType = mt_rand();
 
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
         $locator->method('findBy')
             ->with($this->equalTo('ID'), $this->equalTo($iblockId))
             ->will($this->returnValue(null));
 
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
 
         $rule = $this->getMock(
-            '\creative\foundation\routing\rule\Iblock',
+            '\marvin255\bxfoundation\routing\rule\Iblock',
             ['processBitrixSef'],
             [$locator, $iblockId, ['element', 'iblock', 'section']],
             '',
             true
         );
 
-        $this->setExpectedException('\creative\foundation\routing\Exception', $iblockId);
+        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception', $iblockId);
         $ruleResult = $rule->parse($request);
     }
 
     public function testAttachFilters()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
 
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element']);
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element']);
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\filter\Header')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
             ->disableOriginalConstructor()
             ->setMethods(['attachTo'])
             ->getMock();
@@ -237,17 +237,17 @@ class IblockTest extends \PHPUnit_Framework_TestCase
 
     public function testAttachFiltersWrongClassException()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
 
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element']);
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element']);
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\rule\Regexp')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\Regexp')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->setExpectedException(
-            '\creative\foundation\routing\Exception',
+            '\marvin255\bxfoundation\routing\Exception',
             'testKey'
         );
         $rule->attachFilters(['testKey' => $filter]);
@@ -255,19 +255,19 @@ class IblockTest extends \PHPUnit_Framework_TestCase
 
     public function testOnBeforeRouteParsing()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
 
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
         $request->method('getPath')
             ->will($this->returnValue('test'));
 
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element']);
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element']);
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\filter\Header')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
             ->disableOriginalConstructor()
             ->setMethods(['attachTo'])
             ->getMock();
@@ -291,7 +291,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
 
     public function testOnAfterRouteParsing()
     {
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
@@ -301,7 +301,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
         $iblockId = mt_rand();
         $iblockType = mt_rand();
 
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
         $locator->method('findBy')
             ->with($this->equalTo('ID'), $this->equalTo($iblockId))
@@ -314,7 +314,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
             ]));
 
         $rule = $this->getMock(
-            '\creative\foundation\routing\rule\Iblock',
+            '\marvin255\bxfoundation\routing\rule\Iblock',
             ['processBitrixSef'],
             [$locator, $iblockId, ['element', 'iblock', 'section']],
             '',
@@ -329,7 +329,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
                 'SECTION_CODE' => 'section_code',
             ]));
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\filter\Header')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
             ->disableOriginalConstructor()
             ->setMethods(['attachTo'])
             ->getMock();
@@ -342,47 +342,47 @@ class IblockTest extends \PHPUnit_Framework_TestCase
 
         $rule->attachFilters([$filter]);
 
-        $this->setExpectedException('\creative\foundation\routing\ForbiddenException');
+        $this->setExpectedException('\marvin255\bxfoundation\routing\ForbiddenException');
         $rule->parse($request);
     }
 
     public function testAttachEventCallbackEmptyNameException()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element']);
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element']);
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $rule->attachEventCallback(null, function () {});
     }
 
     public function testAttachEventCallbackEmptyCallbackException()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element']);
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element']);
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $rule->attachEventCallback('test', 123);
     }
 
     public function testAttachEventCallbackDuplicateException()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element']);
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element']);
         $callback1 = function () {};
         $callback2 = function () {};
         $rule->attachEventCallback('test_event', $callback1);
         $rule->attachEventCallback('test_event', $callback2);
-        $this->setExpectedException('\creative\foundation\events\Exception', 'test_event');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception', 'test_event');
         $rule->attachEventCallback('test_event', $callback1);
     }
 
     public function testDetachEventCallback()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
 
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element']);
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element']);
 
         $eventTrigger2 = 0;
         $callback2 = function () use (&$eventTrigger2) { ++$eventTrigger2; };
@@ -393,7 +393,7 @@ class IblockTest extends \PHPUnit_Framework_TestCase
         $rule->attachEventCallback('test_event', $callback1);
         $rule->detachEventCallback('test_event', $callback1);
 
-        $event = $this->getMockBuilder('\creative\foundation\events\ResultInterface')
+        $event = $this->getMockBuilder('\marvin255\bxfoundation\events\ResultInterface')
             ->getMock();
         $event->method('getName')->will($this->returnValue('test_event'));
         $event->method('isSuccess')->will($this->returnValue(true));
@@ -416,11 +416,11 @@ class IblockTest extends \PHPUnit_Framework_TestCase
 
     public function testDetachEventCallbackEmptyNameException()
     {
-        $locator = $this->getMockBuilder('\creative\foundation\services\iblock\Locator')
+        $locator = $this->getMockBuilder('\marvin255\bxfoundation\services\iblock\Locator')
             ->getMock();
-        $rule = new \creative\foundation\routing\rule\Iblock($locator, 'test', ['element']);
+        $rule = new \marvin255\bxfoundation\routing\rule\Iblock($locator, 'test', ['element']);
         $callback = function () {};
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $rule->detachEventCallback(null, $callback);
     }
 }

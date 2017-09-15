@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing\rule;
+namespace marvin255\bxfoundation\tests\lib\routing\rule;
 
 class RuleResultTest extends \PHPUnit_Framework_TestCase
 {
@@ -9,7 +9,7 @@ class RuleResultTest extends \PHPUnit_Framework_TestCase
         $defaultParams = ['default1' => mt_rand(), 'default2' => mt_rand(), 'default3' => mt_rand()];
         $newParams = ['new1' => mt_rand(), 'new2' => mt_rand()];
 
-        $result = new \creative\foundation\routing\rule\RuleResult($defaultParams);
+        $result = new \marvin255\bxfoundation\routing\rule\RuleResult($defaultParams);
 
         $this->assertSame(
             $defaultParams,
@@ -35,7 +35,7 @@ class RuleResultTest extends \PHPUnit_Framework_TestCase
         $defaultParams = ['default1' => mt_rand(), 'default2' => mt_rand(), 'default3' => mt_rand()];
         $newParam = mt_rand();
 
-        $result = new \creative\foundation\routing\rule\RuleResult($defaultParams);
+        $result = new \marvin255\bxfoundation\routing\rule\RuleResult($defaultParams);
 
         $this->assertSame(
             $defaultParams['default2'],

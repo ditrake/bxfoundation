@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing\router;
+namespace marvin255\bxfoundation\tests\lib\routing\router;
 
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -8,30 +8,30 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $content = (string) mt_rand();
 
-        $router = new \creative\foundation\routing\router\Router;
+        $router = new \marvin255\bxfoundation\routing\router\Router;
 
-        $request = $this->getMockBuilder('\creative\foundation\request\RequestInterface')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\RequestInterface')
             ->getMock();
 
-        $response = $this->getMockBuilder('\creative\foundation\response\ResponseInterface')
+        $response = $this->getMockBuilder('\marvin255\bxfoundation\response\ResponseInterface')
             ->getMock();
 
-        $rule1 = $this->getMockBuilder('\creative\foundation\routing\rule\RuleInterface')
+        $rule1 = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleInterface')
             ->getMock();
         $rule1->method('parse')->will($this->returnValue(null));
-        $action1 = $this->getMockBuilder('\creative\foundation\routing\action\ActionInterface')
+        $action1 = $this->getMockBuilder('\marvin255\bxfoundation\routing\action\ActionInterface')
             ->getMock();
         $action1->expects($this->never())->method('run');
         $router->registerRoute($rule1, $action1);
 
-        $ruleResult = $this->getMockBuilder('\creative\foundation\routing\rule\RuleResultInterface')
+        $ruleResult = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleResultInterface')
             ->getMock();
-        $rule2 = $this->getMockBuilder('\creative\foundation\routing\rule\RuleInterface')
+        $rule2 = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleInterface')
             ->getMock();
         $rule2->method('parse')
             ->with($this->equalTo($request))
             ->will($this->returnValue($ruleResult));
-        $action2 = $this->getMockBuilder('\creative\foundation\routing\action\ActionInterface')
+        $action2 = $this->getMockBuilder('\marvin255\bxfoundation\routing\action\ActionInterface')
             ->getMock();
         $action2->expects($this->once())
             ->method('run')
@@ -48,23 +48,23 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRouteNotFoundException()
     {
-        $router = new \creative\foundation\routing\router\Router;
+        $router = new \marvin255\bxfoundation\routing\router\Router;
 
-        $request = $this->getMockBuilder('\creative\foundation\request\RequestInterface')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\RequestInterface')
             ->getMock();
 
-        $response = $this->getMockBuilder('\creative\foundation\response\ResponseInterface')
+        $response = $this->getMockBuilder('\marvin255\bxfoundation\response\ResponseInterface')
             ->getMock();
 
-        $rule1 = $this->getMockBuilder('\creative\foundation\routing\rule\RuleInterface')
+        $rule1 = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleInterface')
             ->getMock();
         $rule1->method('parse')->will($this->returnValue(null));
-        $action1 = $this->getMockBuilder('\creative\foundation\routing\action\ActionInterface')
+        $action1 = $this->getMockBuilder('\marvin255\bxfoundation\routing\action\ActionInterface')
             ->getMock();
         $action1->expects($this->never())->method('run');
         $router->registerRoute($rule1, $action1);
 
-        $this->setExpectedException('\creative\foundation\routing\NotFoundException');
+        $this->setExpectedException('\marvin255\bxfoundation\routing\NotFoundException');
 
         $router->route($request, $response);
     }
@@ -73,23 +73,23 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $content = (string) mt_rand();
 
-        $router = new \creative\foundation\routing\router\Router;
+        $router = new \marvin255\bxfoundation\routing\router\Router;
 
-        $request = $this->getMockBuilder('\creative\foundation\request\RequestInterface')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\RequestInterface')
             ->getMock();
 
-        $response = $this->getMockBuilder('\creative\foundation\response\ResponseInterface')
+        $response = $this->getMockBuilder('\marvin255\bxfoundation\response\ResponseInterface')
             ->getMock();
 
-        $rule1 = $this->getMockBuilder('\creative\foundation\routing\rule\RuleInterface')
+        $rule1 = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleInterface')
             ->getMock();
         $rule1->method('parse')->will($this->returnValue(null));
-        $action1 = $this->getMockBuilder('\creative\foundation\routing\action\ActionInterface')
+        $action1 = $this->getMockBuilder('\marvin255\bxfoundation\routing\action\ActionInterface')
             ->getMock();
         $action1->expects($this->never())->method('run');
         $router->registerRoute($rule1, $action1);
 
-        $actionException = $this->getMockBuilder('\creative\foundation\routing\action\ActionInterface')
+        $actionException = $this->getMockBuilder('\marvin255\bxfoundation\routing\action\ActionInterface')
             ->getMock();
         $actionException->expects($this->once())
             ->method('run')

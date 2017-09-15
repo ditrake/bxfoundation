@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\tests\lib\request;
+namespace marvin255\bxfoundation\tests\lib\request;
 
 class BitrixTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,7 +12,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $bxRequest->method('getRequestMethod')
             ->will($this->returnValue('PUT'));
 
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $this->assertSame(
             'PUT',
@@ -29,7 +29,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $bxRequest->method('isHttps')
             ->will($this->returnValue(true));
 
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $this->assertSame(
             'https',
@@ -47,7 +47,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $bxRequest->method('getHttpHost')
             ->will($this->returnValue($host));
 
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $this->assertSame(
             $host,
@@ -66,7 +66,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $bxRequest->method('getRequestUri')
             ->will($this->returnValue($uri));
 
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $this->assertSame(
             $path,
@@ -93,7 +93,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $bxRequest->method('getQueryList')
             ->will($this->returnValue($listMock));
 
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $this->assertSame(
             $data,
@@ -120,7 +120,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $bxRequest->method('getPostList')
             ->will($this->returnValue($listMock));
 
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $this->assertSame(
             $data,
@@ -140,7 +140,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('PUT'));
 
         $request = $this->getMock(
-            '\creative\foundation\request\Bitrix',
+            '\marvin255\bxfoundation\request\Bitrix',
             ['getPhpInputData'],
             [$bxRequest],
             '',
@@ -159,7 +159,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
     public function testGetHeadersFromServer()
     {
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')->getMock();
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $oldServer = $_SERVER;
         $_SERVER = [
@@ -199,7 +199,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $bxRequest->method('getCookieList')
             ->will($this->returnValue($listMock));
 
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $this->assertSame(
             $cookie,
@@ -217,7 +217,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $bxRequest->method('getRemoteAddress')
             ->will($this->returnValue($remote));
 
-        $request = new \creative\foundation\request\Bitrix($bxRequest);
+        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
 
         $this->assertSame(
             $remote,

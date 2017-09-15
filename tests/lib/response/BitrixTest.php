@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\tests\lib\response;
+namespace marvin255\bxfoundation\tests\lib\response;
 
 class BitrixTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +16,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('addHeader')
             ->with($this->equalTo($name), $this->equalTo($value));
 
-        $response = new \creative\foundation\response\Bitrix($bxResponse);
+        $response = new \marvin255\bxfoundation\response\Bitrix($bxResponse);
 
         $this->assertSame(
             $response,
@@ -42,7 +42,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('setStatus')
             ->with($this->equalTo($status));
 
-        $response = new \creative\foundation\response\Bitrix($bxResponse);
+        $response = new \marvin255\bxfoundation\response\Bitrix($bxResponse);
 
         $this->assertSame(
             $response,

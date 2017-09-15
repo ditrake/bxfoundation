@@ -1,12 +1,12 @@
 <?php
 
-namespace creative\foundation\tests\lib\events;
+namespace marvin255\bxfoundation\tests\lib\events;
 
 class ResultTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetName()
     {
-        $result = new \creative\foundation\events\Result('name', new \StdClass);
+        $result = new \marvin255\bxfoundation\events\Result('name', new \StdClass);
 
         $this->assertSame(
             'name',
@@ -17,7 +17,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
 
     public function testFail()
     {
-        $result = new \creative\foundation\events\Result('name', new \StdClass);
+        $result = new \marvin255\bxfoundation\events\Result('name', new \StdClass);
 
         $this->assertSame(
             true,
@@ -43,7 +43,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $defaultParams = ['default1' => mt_rand(), 'default2' => mt_rand(), 'default3' => mt_rand()];
         $newParams = ['new1' => mt_rand(), 'new2' => mt_rand()];
 
-        $result = new \creative\foundation\events\Result('name', new \StdClass, $defaultParams);
+        $result = new \marvin255\bxfoundation\events\Result('name', new \StdClass, $defaultParams);
 
         $this->assertSame(
             $defaultParams,
@@ -69,7 +69,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $defaultParams = ['default1' => mt_rand(), 'default2' => mt_rand(), 'default3' => mt_rand()];
         $newParam = mt_rand();
 
-        $result = new \creative\foundation\events\Result('name', new \StdClass, $defaultParams);
+        $result = new \marvin255\bxfoundation\events\Result('name', new \StdClass, $defaultParams);
 
         $this->assertSame(
             $defaultParams['default2'],
@@ -93,7 +93,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     public function testGetTraget()
     {
         $obj = new \StdClass;
-        $result = new \creative\foundation\events\Result('name', $obj);
+        $result = new \marvin255\bxfoundation\events\Result('name', $obj);
 
         $this->assertSame(
             $obj,
@@ -104,13 +104,13 @@ class ResultTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorEmptyNameException()
     {
-        $this->setExpectedException('\creative\foundation\events\Exception');
-        $result = new \creative\foundation\events\Result('', new \StdClass);
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
+        $result = new \marvin255\bxfoundation\events\Result('', new \StdClass);
     }
 
     public function testConstructorNonObjectTargetException()
     {
-        $this->setExpectedException('\creative\foundation\events\Exception');
-        $result = new \creative\foundation\events\Result('name', null);
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
+        $result = new \marvin255\bxfoundation\events\Result('name', null);
     }
 }

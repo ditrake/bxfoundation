@@ -1,12 +1,12 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing\rule;
+namespace marvin255\bxfoundation\tests\lib\routing\rule;
 
 class RegexpTest extends \PHPUnit_Framework_TestCase
 {
     public function testAttachFiltersInConstructor()
     {
-        $filter = $this->getMockBuilder('\creative\foundation\routing\filter\Header')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
             ->disableOriginalConstructor()
             ->setMethods(['attachTo'])
             ->getMock();
@@ -14,13 +14,13 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
         $filter->expects($this->once())
             ->method('attachTo');
 
-        $rule = new \creative\foundation\routing\rule\Regexp('test', [$filter]);
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test', [$filter]);
     }
 
     public function testEmptyRegexpConstructorException()
     {
-        $this->setExpectedException('\creative\foundation\routing\Exception');
-        $rule = new \creative\foundation\routing\rule\Regexp(null);
+        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp(null);
     }
 
     public function testParse()
@@ -28,7 +28,7 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
         $id = (string) mt_rand();
         $code = 'qwe';
         $truePath = "/test/{$id}/{$code}/";
-        $requestTrue = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $requestTrue = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
@@ -36,14 +36,14 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($truePath));
 
         $falsePath = '/test1/' . mt_rand() . '/qwe/' . mt_rand();
-        $requestFalse = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $requestFalse = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
         $requestFalse->method('getPath')
             ->will($this->returnValue($falsePath));
 
-        $rule = new \creative\foundation\routing\rule\Regexp('/test/<id:\d+>/<code:[a-z]+>');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('/test/<id:\d+>/<code:[a-z]+>');
 
         $this->assertSame(
             ['id' => $id, 'code' => $code],
@@ -60,12 +60,12 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
 
     public function testParseException()
     {
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
-        $rule = new \creative\foundation\routing\rule\Regexp('/test/ ewer/<code:[a-z]+>');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('/test/ ewer/<code:[a-z]+>');
         $this->setExpectedException(
-            '\creative\foundation\routing\Exception',
+            '\marvin255\bxfoundation\routing\Exception',
             ' ewer'
         );
         $rule->parse($request);
@@ -73,9 +73,9 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
 
     public function testAttachFilters()
     {
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\filter\Header')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
             ->disableOriginalConstructor()
             ->setMethods(['attachTo'])
             ->getMock();
@@ -88,14 +88,14 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
 
     public function testAttachFiltersWrongClassException()
     {
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\rule\Regexp')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\Regexp')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->setExpectedException(
-            '\creative\foundation\routing\Exception',
+            '\marvin255\bxfoundation\routing\Exception',
             'testKey'
         );
         $rule->attachFilters(['testKey' => $filter]);
@@ -103,16 +103,16 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
 
     public function testOnBeforeRouteParsing()
     {
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
         $request->method('getPath')
             ->will($this->returnValue('test'));
 
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\filter\Header')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
             ->disableOriginalConstructor()
             ->setMethods(['attachTo'])
             ->getMock();
@@ -136,16 +136,16 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
 
     public function testOnAfterRouteParsing()
     {
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
         $request->method('getPath')
             ->will($this->returnValue('test'));
 
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
 
-        $filter = $this->getMockBuilder('\creative\foundation\routing\filter\Header')
+        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
             ->disableOriginalConstructor()
             ->setMethods(['attachTo'])
             ->getMock();
@@ -158,38 +158,38 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
 
         $rule->attachFilters([$filter]);
 
-        $this->setExpectedException('\creative\foundation\routing\ForbiddenException');
+        $this->setExpectedException('\marvin255\bxfoundation\routing\ForbiddenException');
         $rule->parse($request);
     }
 
     public function testAttachEventCallbackEmptyNameException()
     {
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $rule->attachEventCallback(null, function () {});
     }
 
     public function testAttachEventCallbackEmptyCallbackException()
     {
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $rule->attachEventCallback('test', 123);
     }
 
     public function testAttachEventCallbackDuplicateException()
     {
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
         $callback1 = function () {};
         $callback2 = function () {};
         $rule->attachEventCallback('test_event', $callback1);
         $rule->attachEventCallback('test_event', $callback2);
-        $this->setExpectedException('\creative\foundation\events\Exception', 'test_event');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception', 'test_event');
         $rule->attachEventCallback('test_event', $callback1);
     }
 
     public function testDetachEventCallback()
     {
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
 
         $eventTrigger2 = 0;
         $callback2 = function () use (&$eventTrigger2) { ++$eventTrigger2; };
@@ -200,7 +200,7 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
         $rule->attachEventCallback('test_event', $callback1);
         $rule->detachEventCallback('test_event', $callback1);
 
-        $event = $this->getMockBuilder('\creative\foundation\events\ResultInterface')
+        $event = $this->getMockBuilder('\marvin255\bxfoundation\events\ResultInterface')
             ->getMock();
         $event->method('getName')->will($this->returnValue('test_event'));
         $event->method('isSuccess')->will($this->returnValue(true));
@@ -223,9 +223,9 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
 
     public function testDetachEventCallbackEmptyNameException()
     {
-        $rule = new \creative\foundation\routing\rule\Regexp('test');
+        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
         $callback = function () {};
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $rule->detachEventCallback(null, $callback);
     }
 }

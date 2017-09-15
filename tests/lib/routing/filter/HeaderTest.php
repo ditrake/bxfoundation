@@ -1,20 +1,20 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing\filter;
+namespace marvin255\bxfoundation\tests\lib\routing\filter;
 
 class HeaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testEmptyConstructorException()
     {
-        $this->setExpectedException('\creative\foundation\routing\Exception');
-        $filter = new \creative\foundation\routing\filter\Header([]);
+        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
+        $filter = new \marvin255\bxfoundation\routing\filter\Header([]);
     }
 
     public function testAttachTo()
     {
-        $filter = new \creative\foundation\routing\filter\Header(['test' => 'test']);
+        $filter = new \marvin255\bxfoundation\routing\filter\Header(['test' => 'test']);
 
-        $eventable = $this->getMockBuilder('\creative\foundation\events\EventableInterface')
+        $eventable = $this->getMockBuilder('\marvin255\bxfoundation\events\EventableInterface')
             ->getMock();
         $eventable->expects($this->once())
             ->method('attachEventCallback')
@@ -35,13 +35,13 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
         $name = (string) mt_rand();
         $value = (string) mt_rand();
 
-        $request = $this->getMockBuilder('\creative\foundation\request\RequestInterface')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\RequestInterface')
             ->getMock();
         $request->method('getHeader')
             ->with($this->equalTo($name))
             ->will($this->returnValue(mt_rand()));
 
-        $result = $this->getMockBuilder('\creative\foundation\events\ResultInterface')
+        $result = $this->getMockBuilder('\marvin255\bxfoundation\events\ResultInterface')
             ->getMock();
         $result->method('getParam')
             ->with($this->equalTo('request'))
@@ -49,7 +49,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
         $result->expects($this->once())
             ->method('fail');
 
-        $filter = new \creative\foundation\routing\filter\Header([$name => $value]);
+        $filter = new \marvin255\bxfoundation\routing\filter\Header([$name => $value]);
         $filter->filter($result);
     }
 }

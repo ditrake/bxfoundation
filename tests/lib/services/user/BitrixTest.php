@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\tests\lib\services\user;
+namespace marvin255\bxfoundation\tests\lib\services\user;
 
 class BitrixTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue($id));
 
-        $user = new \creative\foundation\services\user\Bitrix($bxUser);
+        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
 
         $this->assertSame(
             $id,
@@ -32,7 +32,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('isAuthorized')
             ->will($this->returnValue(false));
 
-        $user = new \creative\foundation\services\user\Bitrix($bxUser);
+        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
 
         $this->assertSame(
             false,
@@ -49,7 +49,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('isAdmin')
             ->will($this->returnValue(true));
 
-        $user = new \creative\foundation\services\user\Bitrix($bxUser);
+        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
 
         $this->assertSame(
             true,
@@ -70,7 +70,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($id), $this->equalTo($remember))
             ->will($this->returnValue(false));
 
-        $user = new \creative\foundation\services\user\Bitrix($bxUser);
+        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
 
         $this->assertSame(
             false,
@@ -97,7 +97,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue(['error']));
 
-        $user = new \creative\foundation\services\user\Bitrix($bxUser);
+        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
 
         $this->assertSame(
             false,
@@ -117,7 +117,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue($id));
 
-        $user = new \creative\foundation\services\user\Bitrix;
+        $user = new \marvin255\bxfoundation\services\user\Bitrix;
 
         $this->assertSame(
             $id,
@@ -127,8 +127,8 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobalUserException()
     {
-        $user = new \creative\foundation\services\user\Bitrix;
-        $this->setExpectedException('\creative\foundation\services\Exception');
+        $user = new \marvin255\bxfoundation\services\user\Bitrix;
+        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
         $user->getId();
     }
 }

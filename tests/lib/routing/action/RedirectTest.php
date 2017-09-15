@@ -1,29 +1,29 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing\action;
+namespace marvin255\bxfoundation\tests\lib\routing\action;
 
 class RedirectTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorEmptyUrlException()
     {
-        $this->setExpectedException('\creative\foundation\routing\Exception');
-        new \creative\foundation\routing\action\Redirect(null);
+        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
+        new \marvin255\bxfoundation\routing\action\Redirect(null);
     }
 
     public function testRun()
     {
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
-        $response = $this->getMockBuilder('\creative\foundation\response\Bitrix')
+        $response = $this->getMockBuilder('\marvin255\bxfoundation\response\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
-        $ruleResult = $this->getMockBuilder('\creative\foundation\routing\rule\RuleResultInterface')
+        $ruleResult = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleResultInterface')
             ->getMock();
 
         $url = '/' . mt_rand() . '/';
         $action = $this->getMock(
-            '\creative\foundation\routing\action\Redirect',
+            '\marvin255\bxfoundation\routing\action\Redirect',
             ['localRedirect'],
             [$url],
             '',

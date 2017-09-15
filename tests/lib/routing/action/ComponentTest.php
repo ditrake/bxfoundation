@@ -1,26 +1,26 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing\action;
+namespace marvin255\bxfoundation\tests\lib\routing\action;
 
 class ComponentTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorEmptyComponentException()
     {
-        $this->setExpectedException('\creative\foundation\routing\Exception');
-        new \creative\foundation\routing\action\Component('');
+        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
+        new \marvin255\bxfoundation\routing\action\Component('');
     }
 
     public function testRun()
     {
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
-        $response = $this->getMockBuilder('\creative\foundation\response\Bitrix')
+        $response = $this->getMockBuilder('\marvin255\bxfoundation\response\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
 
         $testParam = mt_rand();
-        $ruleResult = $this->getMockBuilder('\creative\foundation\routing\rule\RuleResultInterface')
+        $ruleResult = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleResultInterface')
             ->getMock();
         $ruleResult->method('getParam')
             ->with($this->equalTo('TEST'))
@@ -42,7 +42,7 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
                 echo $content;
             }));
 
-        $action = new \creative\foundation\routing\action\Component(
+        $action = new \marvin255\bxfoundation\routing\action\Component(
             'component',
             'template',
             ['test' => '$ruleResult.TEST', 'test2' => 'test2']
@@ -57,16 +57,16 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
 
     public function testOnBeforeActionRun()
     {
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
-        $response = $this->getMockBuilder('\creative\foundation\response\Bitrix')
+        $response = $this->getMockBuilder('\marvin255\bxfoundation\response\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
-        $ruleResult = $this->getMockBuilder('\creative\foundation\routing\rule\RuleResultInterface')
+        $ruleResult = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleResultInterface')
             ->getMock();
 
-        $action = new \creative\foundation\routing\action\Component('component');
+        $action = new \marvin255\bxfoundation\routing\action\Component('component');
         $action->attachEventCallback('onBeforeActionRun', function ($eventResult) use ($action) {
             if ($action === $eventResult->getTarget()) {
                 $eventResult->fail();
@@ -84,13 +84,13 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
     {
         $content = (string) mt_rand();
 
-        $request = $this->getMockBuilder('\creative\foundation\request\Bitrix')
+        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
-        $response = $this->getMockBuilder('\creative\foundation\response\Bitrix')
+        $response = $this->getMockBuilder('\marvin255\bxfoundation\response\Bitrix')
             ->disableOriginalConstructor()
             ->getMock();
-        $ruleResult = $this->getMockBuilder('\creative\foundation\routing\rule\RuleResultInterface')
+        $ruleResult = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleResultInterface')
             ->getMock();
 
         $content = (string) mt_rand();
@@ -109,7 +109,7 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
                 echo mt_rand();
             }));
 
-        $action = new \creative\foundation\routing\action\Component(
+        $action = new \marvin255\bxfoundation\routing\action\Component(
             'component',
             'template',
             ['test2' => 'test2']
@@ -129,35 +129,35 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
 
     public function testAttachEventCallbackEmptyNameException()
     {
-        $action = new \creative\foundation\routing\action\Component('component');
+        $action = new \marvin255\bxfoundation\routing\action\Component('component');
 
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $action->attachEventCallback(null, function () {});
     }
 
     public function testAttachEventCallbackEmptyCallbackException()
     {
-        $action = new \creative\foundation\routing\action\Component('component');
+        $action = new \marvin255\bxfoundation\routing\action\Component('component');
 
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $action->attachEventCallback('test', 123);
     }
 
     public function testAttachEventCallbackDuplicateException()
     {
-        $action = new \creative\foundation\routing\action\Component('component');
+        $action = new \marvin255\bxfoundation\routing\action\Component('component');
 
         $callback1 = function () {};
         $callback2 = function () {};
         $action->attachEventCallback('test_event', $callback1);
         $action->attachEventCallback('test_event', $callback2);
-        $this->setExpectedException('\creative\foundation\events\Exception', 'test_event');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception', 'test_event');
         $action->attachEventCallback('test_event', $callback1);
     }
 
     public function testDetachEventCallback()
     {
-        $action = new \creative\foundation\routing\action\Component('component');
+        $action = new \marvin255\bxfoundation\routing\action\Component('component');
 
         $eventTrigger2 = 0;
         $callback2 = function () use (&$eventTrigger2) { ++$eventTrigger2; };
@@ -168,7 +168,7 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
         $action->attachEventCallback('test_event', $callback1);
         $action->detachEventCallback('test_event', $callback1);
 
-        $event = $this->getMockBuilder('\creative\foundation\events\ResultInterface')
+        $event = $this->getMockBuilder('\marvin255\bxfoundation\events\ResultInterface')
             ->getMock();
         $event->method('getName')->will($this->returnValue('test_event'));
         $event->method('isSuccess')->will($this->returnValue(true));
@@ -191,10 +191,10 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
 
     public function testDetachEventCallbackEmptyNameException()
     {
-        $action = new \creative\foundation\routing\action\Component('component');
+        $action = new \marvin255\bxfoundation\routing\action\Component('component');
 
         $callback = function () {};
-        $this->setExpectedException('\creative\foundation\events\Exception');
+        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
         $action->detachEventCallback(null, $callback);
     }
 }

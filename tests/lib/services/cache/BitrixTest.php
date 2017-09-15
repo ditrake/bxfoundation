@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\tests\lib\services\cache;
+namespace marvin255\bxfoundation\tests\lib\services\cache;
 
 class BitrixTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +39,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $taggedCache->expects($this->once())
             ->method('endTagCache');
 
-        $bxCache = new \creative\foundation\services\cache\Bitrix($cache, $taggedCache);
+        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache, $taggedCache);
 
         $this->assertSame(
             $bxCache,
@@ -67,7 +67,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('endDataCache')
             ->with($this->equalTo($vars));
 
-        $bxCache = new \creative\foundation\services\cache\Bitrix($cache, null, $time);
+        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache, null, $time);
         $bxCache->set($key, $vars);
     }
 
@@ -76,9 +76,9 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $cache = $this->getMockBuilder('\Bitrix\Main\Data\Cache')
             ->getMock();
 
-        $bxCache = new \creative\foundation\services\cache\Bitrix($cache);
+        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
 
-        $this->setExpectedException('\creative\foundation\services\Exception');
+        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
         $bxCache->set('', ['test']);
     }
 
@@ -98,7 +98,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('getVars')
             ->will($this->returnValue($vars));
 
-        $bxCache = new \creative\foundation\services\cache\Bitrix($cache);
+        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
 
         $this->assertSame(
             $vars,
@@ -119,7 +119,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->with($this->anything(), $this->equalTo($key), $this->anything())
             ->will($this->returnValue(false));
 
-        $bxCache = new \creative\foundation\services\cache\Bitrix($cache);
+        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
 
         $this->assertSame(
             false,
@@ -143,7 +143,7 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
             ->method('cleanDir')
             ->with($this->anything());
 
-        $bxCache = new \creative\foundation\services\cache\Bitrix($cache);
+        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
 
         $this->assertSame(
             $bxCache,
@@ -157,9 +157,9 @@ class BitrixTest extends \PHPUnit_Framework_TestCase
         $cache = $this->getMockBuilder('\Bitrix\Main\Data\Cache')
             ->getMock();
 
-        $bxCache = new \creative\foundation\services\cache\Bitrix($cache);
+        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
 
-        $this->setExpectedException('\creative\foundation\services\Exception');
+        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
         $bxCache->clear('');
     }
 }

@@ -1,19 +1,19 @@
 <?php
 
-namespace creative\foundation\tests\lib\services\iblock;
+namespace marvin255\bxfoundation\tests\lib\services\iblock;
 
 class LocatorTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorWrongFilterException()
     {
-        $this->setExpectedException('\creative\foundation\services\Exception');
-        new \creative\foundation\services\iblock\Locator(123, []);
+        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
+        new \marvin255\bxfoundation\services\iblock\Locator(123, []);
     }
 
     public function testConstructorWrongSelectException()
     {
-        $this->setExpectedException('\creative\foundation\services\Exception');
-        new \creative\foundation\services\iblock\Locator([], 123);
+        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
+        new \marvin255\bxfoundation\services\iblock\Locator([], 123);
     }
 
     public function testGetList()
@@ -39,7 +39,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
             ],
         ];
         $locator = $this->getMock(
-            '\creative\foundation\services\iblock\Locator',
+            '\marvin255\bxfoundation\services\iblock\Locator',
             ['loadList'],
             [$testFilter, $testSelect],
             '',
@@ -68,7 +68,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
             ],
         ];
         $locator = $this->getMock(
-            '\creative\foundation\services\iblock\Locator',
+            '\marvin255\bxfoundation\services\iblock\Locator',
             ['loadList'],
             [],
             '',
@@ -119,11 +119,11 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $cache = $this->getMockBuilder('\creative\foundation\services\cache\CacheInterface')
+        $cache = $this->getMockBuilder('\marvin255\bxfoundation\services\cache\CacheInterface')
             ->getMock();
 
         $locator = $this->getMock(
-            '\creative\foundation\services\iblock\Locator',
+            '\marvin255\bxfoundation\services\iblock\Locator',
             ['loadList'],
             [$testFilter, $testSelect, $cache],
             '',
@@ -175,11 +175,11 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $cache = $this->getMockBuilder('\creative\foundation\services\cache\CacheInterface')
+        $cache = $this->getMockBuilder('\marvin255\bxfoundation\services\cache\CacheInterface')
             ->getMock();
 
         $locator = $this->getMock(
-            '\creative\foundation\services\iblock\Locator',
+            '\marvin255\bxfoundation\services\iblock\Locator',
             ['loadList'],
             [$testFilter, $testSelect, $cache],
             '',
@@ -213,7 +213,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
         ];
 
         $locator = $this->getMock(
-            '\creative\foundation\services\iblock\Locator',
+            '\marvin255\bxfoundation\services\iblock\Locator',
             ['loadList'],
             [],
             '',
@@ -249,7 +249,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
         ];
 
         $locator = $this->getMock(
-            '\creative\foundation\services\iblock\Locator',
+            '\marvin255\bxfoundation\services\iblock\Locator',
             ['loadList'],
             [],
             '',
@@ -283,7 +283,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
         ];
 
         $locator = $this->getMock(
-            '\creative\foundation\services\iblock\Locator',
+            '\marvin255\bxfoundation\services\iblock\Locator',
             ['loadList'],
             [],
             '',
@@ -317,7 +317,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
         ];
 
         $locator = $this->getMock(
-            '\creative\foundation\services\iblock\Locator',
+            '\marvin255\bxfoundation\services\iblock\Locator',
             ['loadList'],
             [],
             '',

@@ -1,12 +1,12 @@
 <?php
 
-namespace creative\foundation\tests\lib\routing;
+namespace marvin255\bxfoundation\tests\lib\routing;
 
 class ForbiddenExceptionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetHttpStatus()
     {
-        $exception = new \creative\foundation\routing\ForbiddenException;
+        $exception = new \marvin255\bxfoundation\routing\ForbiddenException;
 
         $this->assertSame(
             '403 Forbidden',
