@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\view;
+namespace marvin255\bxfoundation\view;
 
 /**
  * Интерфейс для объектов-шаблонизаторов.

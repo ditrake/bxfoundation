@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\events;
+namespace marvin255\bxfoundation\events;
 
 use Bitrix\Main\Event;
 use Bitrix\Main\EventResult;
@@ -38,7 +38,7 @@ trait EventableTrait
      * Запускает на выполнение события, привязанные к данному объекту.
      *
      * @param string                                      $eventName
-     * @param \creative\foundation\events\ResultInterface $result
+     * @param \marvin255\bxfoundation\events\ResultInterface $result
      */
     protected function riseInternalEvents($eventName, ResultInterface $result)
     {
@@ -56,7 +56,7 @@ trait EventableTrait
      * Запускает на выполнение события, объявленные через механизмы 1C-Битрикс.
      *
      * @param string                                      $eventName
-     * @param \creative\foundation\events\ResultInterface $result
+     * @param \marvin255\bxfoundation\events\ResultInterface $result
      */
     protected function riseBitrixEvents($eventName, ResultInterface $result)
     {

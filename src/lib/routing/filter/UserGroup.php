@@ -1,11 +1,11 @@
 <?php
 
-namespace creative\foundation\routing\filter;
+namespace marvin255\bxfoundation\routing\filter;
 
-use creative\foundation\routing\Exception;
+use marvin255\bxfoundation\routing\Exception;
 use Bitrix\Main\GroupTable;
-use creative\foundation\events\EventableInterface;
-use creative\foundation\events\ResultInterface;
+use marvin255\bxfoundation\events\EventableInterface;
+use marvin255\bxfoundation\events\ResultInterface;
 
 /**
  * Фильтр по группам пользователя.
@@ -33,7 +33,7 @@ class UserGroup implements FilterInterface
      * @param array|string $groups         Массив с группами или строка, которые проходят фильтр
      * @param bool         $allowedToAdmin Флаг, который обозначает, что администратору доступ разрешен в любом случае
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     public function __construct($groups, $allowedToAdmin = true)
     {
@@ -60,7 +60,7 @@ class UserGroup implements FilterInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     public function filter(ResultInterface $eventResult)
     {

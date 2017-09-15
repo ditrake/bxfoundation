@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\events;
+namespace marvin255\bxfoundation\events;
 
 /**
  * Объект, который представляет результат обработки события.
@@ -41,7 +41,7 @@ interface ResultInterface
     /**
      * Устанавливает статус, что событие провалено.
      *
-     * @return \creative\foundation\events\ResultInterface
+     * @return \marvin255\bxfoundation\events\ResultInterface
      */
     public function fail();
 
@@ -50,7 +50,7 @@ interface ResultInterface
      *
      * @param array $params Массив вида "название параметра => значение" для дополнительных параметров события
      *
-     * @return \creative\foundation\events\ResultInterface
+     * @return \marvin255\bxfoundation\events\ResultInterface
      */
     public function setParams(array $params);
 
@@ -67,7 +67,7 @@ interface ResultInterface
      * @param string $name  Имя параметра
      * @param mixed  $value Значение параметра
      *
-     * @return \creative\foundation\events\ResultInterface
+     * @return \marvin255\bxfoundation\events\ResultInterface
      */
     public function setParam($name, $value);
 

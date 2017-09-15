@@ -1,9 +1,9 @@
 <?php
 
-namespace creative\foundation\services\config;
+namespace marvin255\bxfoundation\services\config;
 
 use Bitrix\Main\Config\Option;
-use creative\foundation\services\Exception;
+use marvin255\bxfoundation\services\Exception;
 
 /**
  * Класс, который инкапсулирует в себе обращение к \Bitrix\Main\Config\Option.
@@ -23,7 +23,7 @@ class BitrixOptions
      *
      * @return string
      *
-     * @throws \creative\foundation\services\Exception
+     * @throws \marvin255\bxfoundation\services\Exception
      */
     public function get($moduleId, $name, $default = null, $siteId = false)
     {
@@ -46,7 +46,7 @@ class BitrixOptions
      *
      * @return \Bitrix\Main\Config\Option\BitrixOptions
      *
-     * @throws \creative\foundation\services\Exception
+     * @throws \marvin255\bxfoundation\services\Exception
      */
     public function set($moduleId, $name, $value, $siteId = '')
     {

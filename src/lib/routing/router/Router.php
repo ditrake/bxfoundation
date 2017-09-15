@@ -1,14 +1,14 @@
 <?php
 
-namespace creative\foundation\routing\router;
+namespace marvin255\bxfoundation\routing\router;
 
-use creative\foundation\routing\rule\RuleInterface;
-use creative\foundation\routing\action\ActionInterface;
-use creative\foundation\routing\rule\RuleResult;
-use creative\foundation\request\RequestInterface;
-use creative\foundation\response\ResponseInterface;
-use creative\foundation\routing\HttpException;
-use creative\foundation\routing\NotFoundException;
+use marvin255\bxfoundation\routing\rule\RuleInterface;
+use marvin255\bxfoundation\routing\action\ActionInterface;
+use marvin255\bxfoundation\routing\rule\RuleResult;
+use marvin255\bxfoundation\request\RequestInterface;
+use marvin255\bxfoundation\response\ResponseInterface;
+use marvin255\bxfoundation\routing\HttpException;
+use marvin255\bxfoundation\routing\NotFoundException;
 
 /**
  * Объект, который ищет подходящее правило для url
@@ -71,8 +71,8 @@ class Router implements RouterInterface
     /**
      * Обрабатывает ссылку.
      *
-     * @param \creative\foundation\request\RequestInterface   $request  Ссылка на текущий объект запроса
-     * @param \creative\foundation\response\ResponseInterface $response Ссылка на текущий объект ответа
+     * @param \marvin255\bxfoundation\request\RequestInterface   $request  Ссылка на текущий объект запроса
+     * @param \marvin255\bxfoundation\response\ResponseInterface $response Ссылка на текущий объект ответа
      *
      * @return string
      */
@@ -93,13 +93,13 @@ class Router implements RouterInterface
     /**
      * Обработка исключения, связанного с ответами http.
      *
-     * @param \creative\foundation\routing\HttpException      $exception Ссылка на объект пойманного исключения
-     * @param \creative\foundation\request\RequestInterface   $request   Ссылка на текущий объект запроса
-     * @param \creative\foundation\response\ResponseInterface $response  Ссылка на текущий объект ответа
+     * @param \marvin255\bxfoundation\routing\HttpException      $exception Ссылка на объект пойманного исключения
+     * @param \marvin255\bxfoundation\request\RequestInterface   $request   Ссылка на текущий объект запроса
+     * @param \marvin255\bxfoundation\response\ResponseInterface $response  Ссылка на текущий объект ответа
      *
      * @return string
      *
-     * @throws \creative\foundation\routing\HttpException
+     * @throws \marvin255\bxfoundation\routing\HttpException
      */
     protected function routeException(HttpException $exception, RequestInterface $request, ResponseInterface $response)
     {

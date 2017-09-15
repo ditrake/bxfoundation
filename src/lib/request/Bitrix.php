@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\request;
+namespace marvin255\bxfoundation\request;
 
 /**
  * Обертка над битриксовым классом запроса для того, чтобы добавить к нему интерфейс.

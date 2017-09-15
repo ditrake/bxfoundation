@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\routing;
+namespace marvin255\bxfoundation\routing;
 
 /**
  * Класс для исключений, с недостаточными правами доступа.

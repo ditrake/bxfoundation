@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\routing\rule;
+namespace marvin255\bxfoundation\routing\rule;
 
 /**
  * Объект, в котором хранится результат,

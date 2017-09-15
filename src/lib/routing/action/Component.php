@@ -1,11 +1,11 @@
 <?php
 
-namespace creative\foundation\routing\action;
+namespace marvin255\bxfoundation\routing\action;
 
-use creative\foundation\request\RequestInterface;
-use creative\foundation\response\ResponseInterface;
-use creative\foundation\routing\rule\RuleResultInterface;
-use creative\foundation\routing\Exception;
+use marvin255\bxfoundation\request\RequestInterface;
+use marvin255\bxfoundation\response\ResponseInterface;
+use marvin255\bxfoundation\routing\rule\RuleResultInterface;
+use marvin255\bxfoundation\routing\Exception;
 
 /**
  * Действие, которое вызывает компонент битрикса с указанными настройками.
@@ -41,7 +41,7 @@ class Component extends Base
      * @param array  $params    Список параметров для инициализации компонента
      * @param string $template  Название шаблона компонента битрикса
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     public function __construct($component, $template = '', array $params = array())
     {
@@ -91,7 +91,7 @@ class Component extends Base
      * Заменяет ссылки на значение из результат обработки url на сами параметры.
      *
      * @param array                                                 $params     Список параметров из конструктора
-     * @param \creative\foundation\routing\rule\RuleResultInterface $ruleResult Значение полученные из обработки url
+     * @param \marvin255\bxfoundation\routing\rule\RuleResultInterface $ruleResult Значение полученные из обработки url
      *
      * @return array
      */

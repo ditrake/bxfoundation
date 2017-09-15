@@ -1,10 +1,10 @@
 <?php
 
-namespace creative\foundation\view;
+namespace marvin255\bxfoundation\view;
 
 /**
  * Исключение, связанное с отображением шаблона.
  */
-class Exception extends \creative\foundation\Exception
+class Exception extends \marvin255\bxfoundation\Exception
 {
 }

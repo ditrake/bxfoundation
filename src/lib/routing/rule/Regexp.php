@@ -1,9 +1,9 @@
 <?php
 
-namespace creative\foundation\routing\rule;
+namespace marvin255\bxfoundation\routing\rule;
 
-use creative\foundation\routing\Exception;
-use creative\foundation\request\RequestInterface;
+use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\request\RequestInterface;
 
 /**
  * Правило, которое использует регулярное выражение для проверки url.
@@ -19,7 +19,7 @@ class Regexp extends Base
      * @param string $regexp
      * @param array  $filters
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     public function __construct($regexp, array $filters = null)
     {
@@ -59,7 +59,7 @@ class Regexp extends Base
      *
      * @return string
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     protected function getPreparedRegexp()
     {

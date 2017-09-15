@@ -1,10 +1,10 @@
 <?php
 
-namespace creative\foundation\services;
+namespace marvin255\bxfoundation\services;
 
 /**
  * Исключения для сервисов.
  */
-class Exception extends \creative\foundation\Exception
+class Exception extends \marvin255\bxfoundation\Exception
 {
 }

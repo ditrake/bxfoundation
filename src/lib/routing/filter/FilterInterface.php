@@ -1,9 +1,9 @@
 <?php
 
-namespace creative\foundation\routing\filter;
+namespace marvin255\bxfoundation\routing\filter;
 
-use creative\foundation\events\EventableInterface;
-use creative\foundation\events\ResultInterface;
+use marvin255\bxfoundation\events\EventableInterface;
+use marvin255\bxfoundation\events\ResultInterface;
 
 /**
  * Объект, с дополнительной фильтрацией запроса.
@@ -16,16 +16,16 @@ interface FilterInterface
     /**
      * Добавялет фильтр к указанному роуту.
      *
-     * @param \creative\foundation\routing\route\RouteInterface $route
+     * @param \marvin255\bxfoundation\routing\route\RouteInterface $route
      *
-     * @return \creative\foundation\routing\filter\FilterInterface
+     * @return \marvin255\bxfoundation\routing\filter\FilterInterface
      */
     public function attachTo(EventableInterface $route);
 
     /**
      * Проверяет, чтобы в текущем запросе был верныйй метод http.
      *
-     * @param \creative\foundation\events\ResultInterface $eventResult
+     * @param \marvin255\bxfoundation\events\ResultInterface $eventResult
      */
     public function filter(ResultInterface $eventResult);
 }

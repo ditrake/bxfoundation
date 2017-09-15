@@ -32,7 +32,7 @@ class Composer
         if (!$bitrixModulesFolder) {
             throw new InvalidArgumentException('Can\'t find modules\' folder');
         }
-        $bitrixModulesFolder .= '/creative.foundation';
+        $bitrixModulesFolder .= '/marvin255.bxfoundation';
 
         $libraryFolder = self::getLibraryFolder($event);
         if (!$libraryFolder) {
@@ -86,7 +86,7 @@ class Composer
         $localRepository = $repositoryManager->getLocalRepository();
         $packages = $localRepository->getPackages();
         foreach ($packages as $package) {
-            if ($package->getName() === 'marvin255/creative.foundation') {
+            if ($package->getName() === 'marvin255/bxfoundation') {
                 $srcFolder = realpath(rtrim($installationManager->getInstallPath($package), '/') . '/src');
                 break;
             }

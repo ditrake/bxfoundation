@@ -1,11 +1,11 @@
 <?php
 
-namespace creative\foundation\routing\action;
+namespace marvin255\bxfoundation\routing\action;
 
-use creative\foundation\request\RequestInterface;
-use creative\foundation\response\ResponseInterface;
-use creative\foundation\routing\rule\RuleResultInterface;
-use creative\foundation\routing\Exception;
+use marvin255\bxfoundation\request\RequestInterface;
+use marvin255\bxfoundation\response\ResponseInterface;
+use marvin255\bxfoundation\routing\rule\RuleResultInterface;
+use marvin255\bxfoundation\routing\Exception;
 
 /**
  * Переадресация на указанную ссылку.
@@ -24,7 +24,7 @@ class Redirect extends Base
      *
      * @param string $url Ссылка, на которую нужно будете переадресовать пользователя
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     public function __construct($url)
     {

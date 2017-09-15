@@ -1,10 +1,10 @@
 <?php
 
-namespace creative\foundation\events;
+namespace marvin255\bxfoundation\events;
 
 /**
  * Класс для исключений, возникших во время обработки событий.
  */
-class Exception extends \creative\foundation\Exception
+class Exception extends \marvin255\bxfoundation\Exception
 {
 }

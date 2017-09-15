@@ -1,5 +1,5 @@
 {
-    "name": "marvin255/creative.foundation",
+    "name": "marvin255/bxfoundation",
     "description": "",
     "type": "library",
     "keywords": ["php", "bitrix"],
@@ -9,8 +9,8 @@
     },
     "autoload": {
         "psr-4": {
-            "creative\\foundation\\tests\\": "tests/",
-            "creative\\foundation\\installer\\": "installer/"
+            "marvin255\\bxfoundation\\tests\\": "tests/",
+            "marvin255\\bxfoundation\\installer\\": "installer/"
         }
     },
     "require-dev": {
@@ -20,7 +20,7 @@
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/marvin255/creative.foundation"
+            "url": "https://github.com/marvin255/bxfoundation"
         }
     ]
 }

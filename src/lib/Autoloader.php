@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation;
+namespace marvin255\bxfoundation;
 
 /**
  * Автозагрузчик для классов модуля.

@@ -1,15 +1,15 @@
 <?php
 
-namespace creative\foundation\application;
+namespace marvin255\bxfoundation\application;
 
-use creative\foundation\request\Bitrix as Request;
-use creative\foundation\response\Bitrix as Response;
-use creative\foundation\routing\router\Router;
-use creative\foundation\services\cache\Bitrix as LibCache;
-use creative\foundation\services\iblock\Locator as IblockLocator;
-use creative\foundation\services\config\BitrixOptions;
-use creative\foundation\services\user\Bitrix as BitrixUser;
-use creative\foundation\view\PhpView;
+use marvin255\bxfoundation\request\Bitrix as Request;
+use marvin255\bxfoundation\response\Bitrix as Response;
+use marvin255\bxfoundation\routing\router\Router;
+use marvin255\bxfoundation\services\cache\Bitrix as LibCache;
+use marvin255\bxfoundation\services\iblock\Locator as IblockLocator;
+use marvin255\bxfoundation\services\config\BitrixOptions;
+use marvin255\bxfoundation\services\user\Bitrix as BitrixUser;
+use marvin255\bxfoundation\view\PhpView;
 
 /**
  * Класс-фасад для битриксового Bitrix\Main\Application.
@@ -29,7 +29,7 @@ class Application
     /**
      * Объект service locator.
      *
-     * @var \creative\foundation\application\ServiceLocatorInterface
+     * @var \marvin255\bxfoundation\application\ServiceLocatorInterface
      */
     protected $serviceLocator = null;
 
@@ -41,7 +41,7 @@ class Application
      *
      * @return mixed
      *
-     * @throws \creative\foundation\application\Exception
+     * @throws \marvin255\bxfoundation\application\Exception
      */
     public function __call($name, array $params)
     {
@@ -63,7 +63,7 @@ class Application
      *
      * @return mixed
      *
-     * @throws \creative\foundation\application\Exception
+     * @throws \marvin255\bxfoundation\application\Exception
      */
     public function __get($name)
     {
@@ -82,7 +82,7 @@ class Application
      * Реализация singleton. Видимость private апрещает прямое создание новых объектов.
      *
      * @param \Bitrix\Main\Application                                 $bitrixApplication
-     * @param \creative\foundation\application\ServiceLocatorInterface $serviceLocator
+     * @param \marvin255\bxfoundation\application\ServiceLocatorInterface $serviceLocator
      */
     private function __construct(\Bitrix\Main\Application $bitrixApplication = null, ServiceLocatorInterface $serviceLocator = null)
     {
@@ -102,7 +102,7 @@ class Application
      * Задает сервисы по умолчанию.
      *
      * @param \Bitrix\Main\Application                                 $bitrixApplication
-     * @param \creative\foundation\application\ServiceLocatorInterface $serviceLocator
+     * @param \marvin255\bxfoundation\application\ServiceLocatorInterface $serviceLocator
      */
     protected function setDefaultServices(\Bitrix\Main\Application $bitrixApplication, ServiceLocatorInterface $serviceLocator)
     {
@@ -157,7 +157,7 @@ class Application
     /**
      * Объект для реализации singleton.
      *
-     * @var \creative\foundation\application\Application
+     * @var \marvin255\bxfoundation\application\Application
      */
     private static $instance = null;
 
@@ -165,7 +165,7 @@ class Application
      * Возвращает объект singleton, если он уже создан, либо создает новый
      * и возвращает новый.
      *
-     * @return \creative\foundation\application\Application
+     * @return \marvin255\bxfoundation\application\Application
      */
     public static function getInstance()
     {

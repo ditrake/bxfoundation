@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\events;
+namespace marvin255\bxfoundation\events;
 
 /**
  * Объект, который представляет результат обработки события.
@@ -40,7 +40,7 @@ class Result implements ResultInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\events\Exception
+     * @throws \marvin255\bxfoundation\events\Exception
      */
     public function __construct($name, $target, array $params = array())
     {

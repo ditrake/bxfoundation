@@ -1,14 +1,14 @@
 <?php
 
-namespace creative\foundation\routing\rule;
+namespace marvin255\bxfoundation\routing\rule;
 
-use creative\foundation\events\EventableInterface;
-use creative\foundation\events\EventableTrait;
-use creative\foundation\events\Result;
-use creative\foundation\routing\Exception;
-use creative\foundation\routing\ForbiddenException;
-use creative\foundation\request\RequestInterface;
-use creative\foundation\routing\filter\FilterInterface;
+use marvin255\bxfoundation\events\EventableInterface;
+use marvin255\bxfoundation\events\EventableTrait;
+use marvin255\bxfoundation\events\Result;
+use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\routing\ForbiddenException;
+use marvin255\bxfoundation\request\RequestInterface;
+use marvin255\bxfoundation\routing\filter\FilterInterface;
 
 /**
  * Абстрактный класс для правила url.
@@ -22,7 +22,7 @@ abstract class Base implements RuleInterface, EventableInterface
      * В случае успеха возваращает параметры, которые правило полуило из запроса.
      * В случае неудачи false.
      *
-     * @param \creative\foundation\request\RequestInterface $request
+     * @param \marvin255\bxfoundation\request\RequestInterface $request
      *
      * @return false|array
      */
@@ -35,7 +35,7 @@ abstract class Base implements RuleInterface, EventableInterface
      * но фильтры после парсинга не сработали, то считаем, что у пользователя
      * нет прав на доступ к данному ресурсу.
      *
-     * @throws \creative\foundation\routing\ForbiddenException
+     * @throws \marvin255\bxfoundation\routing\ForbiddenException
      */
     public function parse(RequestInterface $request, RuleResultInterface $ruleResult = null)
     {
@@ -71,7 +71,7 @@ abstract class Base implements RuleInterface, EventableInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     public function attachFilters(array $filters)
     {

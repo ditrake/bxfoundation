@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\events;
+namespace marvin255\bxfoundation\events;
 
 /**
  * Интерфейс для объекта, у которого есть события.
@@ -10,9 +10,9 @@ interface EventableInterface
     /**
      * Вызывает обработку события.
      *
-     * @param \creative\foundation\events\ResultInterface $result
+     * @param \marvin255\bxfoundation\events\ResultInterface $result
      *
-     * @return \creative\foundation\events\ResultInterface
+     * @return \marvin255\bxfoundation\events\ResultInterface
      */
     public function riseEvent(ResultInterface $result);
 

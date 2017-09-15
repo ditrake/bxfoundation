@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\view;
+namespace marvin255\bxfoundation\view;
 
 /**
  * Шаблонизатор, который подключает указанный php файл.
@@ -32,7 +32,7 @@ class PhpView implements ViewInterface
      *
      * @param array $folders Массив с папками, в которых следует искать файлы для подключения
      *
-     * @throws \creative\foundation\view\Exception
+     * @throws \marvin255\bxfoundation\view\Exception
      */
     public function __construct(array $folders)
     {
@@ -51,7 +51,7 @@ class PhpView implements ViewInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\view\Exception
+     * @throws \marvin255\bxfoundation\view\Exception
      */
     public function render($viewName, array $data = array())
     {

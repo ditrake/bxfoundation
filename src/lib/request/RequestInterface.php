@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\request;
+namespace marvin255\bxfoundation\request;
 
 /**
  * Интерфейс для описания данных текущего запроса.

@@ -4,7 +4,7 @@ use Bitrix\Main\Application;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
 
-defined('ADMIN_MODULE_NAME') or define('ADMIN_MODULE_NAME', 'creative.foundation');
+defined('ADMIN_MODULE_NAME') or define('ADMIN_MODULE_NAME', 'marvin255.bxfoundation');
 
 if (!$USER->isAdmin()) {
     $APPLICATION->authForm('Nope');

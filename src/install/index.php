@@ -8,7 +8,7 @@ use InvalidArgumentException;
 
 Loc::loadMessages(__FILE__);
 
-class creative_foundation extends CModule
+class marvin255_bxfoundation extends CModule
 {
     public function __construct()
     {
@@ -21,11 +21,11 @@ class creative_foundation extends CModule
             $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
         }
 
-        $this->MODULE_ID = 'creative.foundation';
-        $this->MODULE_NAME = Loc::getMessage('CREATIVE_FOUNDATION_MODULE_NAME');
-        $this->MODULE_DESCRIPTION = Loc::getMessage('CREATIVE_FOUNDATION_MODULE_DESCRIPTION');
+        $this->MODULE_ID = 'marvin255.bxfoundation';
+        $this->MODULE_NAME = Loc::getMessage('BX_FOUNDATION_MODULE_NAME');
+        $this->MODULE_DESCRIPTION = Loc::getMessage('BX_FOUNDATION_MODULE_DESCRIPTION');
         $this->MODULE_GROUP_RIGHTS = 'N';
-        $this->PARTNER_NAME = Loc::getMessage('CREATIVE_FOUNDATION_MODULE_PARTNER_NAME');
+        $this->PARTNER_NAME = Loc::getMessage('BX_FOUNDATION_MODULE_PARTNER_NAME');
     }
 
     public function doInstall()

@@ -1,9 +1,9 @@
 <?php
 
-namespace creative\foundation\services\user;
+namespace marvin255\bxfoundation\services\user;
 
 use CUser;
-use creative\foundation\services\Exception;
+use marvin255\bxfoundation\services\Exception;
 
 /**
  * Объект, в котором хранится текущий пользователь.
@@ -84,7 +84,7 @@ class Bitrix implements UserInterface
      *
      * @return \CUser
      *
-     * @throws \creative\foundation\services\Exception
+     * @throws \marvin255\bxfoundation\services\Exception
      */
     protected function getUser()
     {

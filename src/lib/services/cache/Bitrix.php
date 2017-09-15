@@ -1,10 +1,10 @@
 <?php
 
-namespace creative\foundation\services\cache;
+namespace marvin255\bxfoundation\services\cache;
 
 use Bitrix\Main\Data\Cache;
 use Bitrix\Main\Data\TaggedCache;
-use creative\foundation\services\Exception;
+use marvin255\bxfoundation\services\Exception;
 
 /**
  * Объект для кэширования, который упрощает обращение к битриксовому кэшу.
@@ -47,7 +47,7 @@ class Bitrix implements CacheInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\services\Exception
+     * @throws \marvin255\bxfoundation\services\Exception
      */
     public function set($key, $data, $duration = null, array $tags = null)
     {
@@ -88,7 +88,7 @@ class Bitrix implements CacheInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\services\Exception
+     * @throws \marvin255\bxfoundation\services\Exception
      */
     public function clear($key)
     {

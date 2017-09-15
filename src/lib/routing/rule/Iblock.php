@@ -1,10 +1,10 @@
 <?php
 
-namespace creative\foundation\routing\rule;
+namespace marvin255\bxfoundation\routing\rule;
 
-use creative\foundation\routing\Exception;
-use creative\foundation\request\RequestInterface;
-use creative\foundation\services\iblock\Locator;
+use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\request\RequestInterface;
+use marvin255\bxfoundation\services\iblock\Locator;
 
 /**
  * Правило, которое использует настройки инфоблока для проверки url.
@@ -14,7 +14,7 @@ class Iblock extends Base
     /**
      * Ссылка на объект для поиска инфоблоков.
      *
-     * @var \creative\foundation\services\iblock\Locator
+     * @var \marvin255\bxfoundation\services\iblock\Locator
      */
     protected $locator = null;
     /**
@@ -36,12 +36,12 @@ class Iblock extends Base
     /**
      * Конструктор.
      *
-     * @param \creative\foundation\services\iblock\Locator $locator  Ссылка на объект для поиска инфоблоков
+     * @param \marvin255\bxfoundation\services\iblock\Locator $locator  Ссылка на объект для поиска инфоблоков
      * @param string                                       $iblock   Символьный код или идентификатор инфоблока
      * @param array|string                                 $entities Массив с сущностями, которые нужно отображать
      * @param array                                        $filters
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     public function __construct(Locator $locator, $iblock, $entities = null, array $filters = null)
     {
@@ -65,7 +65,7 @@ class Iblock extends Base
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     protected function parseByRule(RequestInterface $request)
     {
@@ -113,7 +113,7 @@ class Iblock extends Base
      * Запускает механизм битрикса для определения данных из ЧПУ.
      *
      * @param string                                        $link    Ссылка, для которой нужно попробовать определить ЧПУ
-     * @param \creative\foundation\request\RequestInterface $request Ссылка на текущий запрос
+     * @param \marvin255\bxfoundation\request\RequestInterface $request Ссылка на текущий запрос
      *
      * @return array|null
      */

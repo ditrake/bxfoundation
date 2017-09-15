@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\services\user;
+namespace marvin255\bxfoundation\services\user;
 
 /**
  * Интерфейс для объекта, в котором хранится текущий пользователь.

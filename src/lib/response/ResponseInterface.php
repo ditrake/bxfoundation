@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\response;
+namespace marvin255\bxfoundation\response;
 
 /**
  * Интерфейс для описания данных для ответа.
@@ -13,7 +13,7 @@ interface ResponseInterface
      * @param string $name  Название заголовка
      * @param string $value Значение заголовка
      *
-     * @return \creative\foundation\response\ResponseInterface
+     * @return \marvin255\bxfoundation\response\ResponseInterface
      */
     public function setHeader($name, $value);
 
@@ -31,7 +31,7 @@ interface ResponseInterface
      *
      * @param string $status
      *
-     * @return \creative\foundation\response\ResponseInterface
+     * @return \marvin255\bxfoundation\response\ResponseInterface
      */
     public function setStatus($status);
 

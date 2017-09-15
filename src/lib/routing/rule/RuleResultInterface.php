@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\routing\rule;
+namespace marvin255\bxfoundation\routing\rule;
 
 /**
  * Интерфейс для объекта, в котором хранится результат,
@@ -22,7 +22,7 @@ interface RuleResultInterface
      *
      * @param array $params Массив вида "название параметра => значение" для дополнительных параметров ответа
      *
-     * @return \creative\foundation\routing\rule\RuleResultInterface
+     * @return \marvin255\bxfoundation\routing\rule\RuleResultInterface
      */
     public function setParams(array $params);
 
@@ -39,7 +39,7 @@ interface RuleResultInterface
      * @param string $name  Имя параметра
      * @param mixed  $value Значение параметра
      *
-     * @return \creative\foundation\routing\rule\RuleResultInterface
+     * @return \marvin255\bxfoundation\routing\rule\RuleResultInterface
      */
     public function setParam($name, $value);
 

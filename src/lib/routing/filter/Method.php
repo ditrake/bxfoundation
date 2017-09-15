@@ -1,10 +1,10 @@
 <?php
 
-namespace creative\foundation\routing\filter;
+namespace marvin255\bxfoundation\routing\filter;
 
-use creative\foundation\routing\Exception;
-use creative\foundation\events\ResultInterface;
-use creative\foundation\events\EventableInterface;
+use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\events\ResultInterface;
+use marvin255\bxfoundation\events\EventableInterface;
 
 /**
  * Фильтр по методу запроса.

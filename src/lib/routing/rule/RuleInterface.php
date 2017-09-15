@@ -1,8 +1,8 @@
 <?php
 
-namespace creative\foundation\routing\rule;
+namespace marvin255\bxfoundation\routing\rule;
 
-use creative\foundation\request\RequestInterface;
+use marvin255\bxfoundation\request\RequestInterface;
 
 /**
  * Интерфейс для правила перехода от url к действию.
@@ -14,10 +14,10 @@ interface RuleInterface
      * В случае успеха возваращает параметры, которые правило получило из запроса.
      * В случае неудачи false.
      *
-     * @param \creative\foundation\request\RequestInterface         $request
-     * @param \creative\foundation\routing\rule\RuleResultInterface $ruleResult
+     * @param \marvin255\bxfoundation\request\RequestInterface         $request
+     * @param \marvin255\bxfoundation\routing\rule\RuleResultInterface $ruleResult
      *
-     * @return null|\creative\foundation\routing\rule\RuleResultInterface
+     * @return null|\marvin255\bxfoundation\routing\rule\RuleResultInterface
      */
     public function parse(RequestInterface $request, RuleResultInterface $ruleResult = null);
 }

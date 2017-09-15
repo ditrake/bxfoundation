@@ -1,11 +1,11 @@
 <?php
 
-namespace creative\foundation\routing\action;
+namespace marvin255\bxfoundation\routing\action;
 
-use creative\foundation\request\RequestInterface;
-use creative\foundation\response\ResponseInterface;
-use creative\foundation\routing\rule\RuleResultInterface;
-use creative\foundation\routing\Exception;
+use marvin255\bxfoundation\request\RequestInterface;
+use marvin255\bxfoundation\response\ResponseInterface;
+use marvin255\bxfoundation\routing\rule\RuleResultInterface;
+use marvin255\bxfoundation\routing\Exception;
 
 /**
  * Цепочка из нескольки последовательно выполняющихся действий.
@@ -24,7 +24,7 @@ class Chain extends Base
      *
      * @param array $actions Список действий, которые нужно выполнить по цепочке
      *
-     * @throws \creative\foundation\routing\Exception
+     * @throws \marvin255\bxfoundation\routing\Exception
      */
     public function __construct(array $actions)
     {

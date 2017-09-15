@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\response;
+namespace marvin255\bxfoundation\response;
 
 /**
  * Обертка над битриксовым классом ответа для того, чтобы добавить к нему интерфейс.

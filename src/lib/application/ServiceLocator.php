@@ -1,6 +1,6 @@
 <?php
 
-namespace creative\foundation\application;
+namespace marvin255\bxfoundation\application;
 
 /**
  * Простейшая реализация паттерна Service Locator для 1С-Битрикс.
@@ -18,7 +18,7 @@ class ServiceLocator implements ServiceLocatorInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\application\Exception
+     * @throws \marvin255\bxfoundation\application\Exception
      */
     public function set($name, $service)
     {
@@ -37,7 +37,7 @@ class ServiceLocator implements ServiceLocatorInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\application\Exception
+     * @throws \marvin255\bxfoundation\application\Exception
      */
     public function get($name)
     {
@@ -62,7 +62,7 @@ class ServiceLocator implements ServiceLocatorInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \creative\foundation\application\Exception
+     * @throws \marvin255\bxfoundation\application\Exception
      */
     public function delete($name)
     {
