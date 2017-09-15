@@ -87,7 +87,7 @@ class Composer
         $packages = $localRepository->getPackages();
         foreach ($packages as $package) {
             if ($package->getName() === 'marvin255/bxfoundation') {
-                $srcFolder = realpath(rtrim($installationManager->getInstallPath($package), '/') . '/src');
+                $srcFolder = realpath(rtrim($installationManager->getInstallPath($package), '/') . '/marvin255.bxfoundation');
                 break;
             }
         }
