@@ -62,7 +62,7 @@ trait EventableTrait
     {
         if ($result->isSuccess()) {
             $event = new Event(
-                'creative.foundation',
+                'marvin255.bxfoundation',
                 $eventName,
                 $result->getParams()
             );
