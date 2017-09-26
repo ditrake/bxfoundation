@@ -101,7 +101,6 @@ $my_new_service = Application::getInstance()->my_new_service;
 Использование данного объекта требует, чтобы все входящие запросы были бы переадресованы на главную страницу (index.php), пример настройки urlrewrite для такого случая:
 
 ```php
-<?
 $arUrlRewrite = array(
 	array(
 		"CONDITION" => "#^/#",
@@ -110,13 +109,11 @@ $arUrlRewrite = array(
 		"PATH" => "/index.php",
 	),
 );
-?>
 ```
 
 Пример главной страницы:
 
 ```php
-<?php
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
