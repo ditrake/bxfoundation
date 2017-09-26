@@ -72,8 +72,8 @@
 
 use Bitrix\Main\Loader;
 use marvin255\bxfoundation\application\Application;
-Loader::includeModule('marvin255.bxfoundation');
 
+Loader::includeModule('marvin255.bxfoundation');
 $app = Application::getInstance();
 
 //регистрируем новый сервис
