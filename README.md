@@ -5,6 +5,17 @@
 [![License](https://poser.pugx.org/marvin255/bxfoundation/license.svg)](https://packagist.org/packages/marvin255/bxfoundation)
 [![Build Status](https://travis-ci.org/marvin255/bxfoundation.svg?branch=master)](https://travis-ci.org/marvin255/bxfoundation)
 
+Набор дополнительных инструметов для 1С-Битрикс "Управление сайтом".
+
+
+
+## Оглавление
+
+* [Установка](#Установка).
+* [Service locator](#Service-locator).
+* [Роутинг](#Роутинг).
+* [Сервисы по умолчанию](#Сервисы-по-умолчанию).
+
 
 
 ## Установка
@@ -45,3 +56,36 @@
 1. Скачайте архив с репозиторием.
 2. Скопируйте папку `marvin255.bxfoundation` из архива репозитория в папку `local/modules` вашего проекта.
 3. Установите модуль в административном разделе 1С-Битрикс "Управление сайтом".
+
+
+
+## Service locator
+
+В D7 появился общий объект для приложения, который доступен из каждого файла скрипта сайта. Тем не менее, он не позволяет эффективно и легально добавлять к себе определения сервисов, которые используются на сайте.
+
+В дополнение к `\Bitrix\Main\Application` предлагается использовать `\marvin255\bxfoundation\application\Application`, который не только дает доступ ко всем стандартным методам `\Bitrix\Main\Application`, но и в дополнение реализует паттерн service locator.
+
+Для использования достаточно объяаить в блоке use `\marvin255\bxfoundation\application\Application` вместо `\Bitrix\Main\Application`.
+
+```php
+//init.php
+
+use Bitrix\Main\Loader;
+use marvin255\bxfoundation\application\Application;
+Loader::includeModule('marvin255.bxfoundation');
+
+$app = Application::getInstance();
+
+//регистрируем новый сервис
+$app->locator->set('my_new_service', new MyNewService);
+```
+
+```php
+//сервис будет доступен в любом другом файле скрипта сайта с помошью
+
+use marvin255\bxfoundation\application\Application;
+
+$my_new_service = Application::getInstance()->locator->get('my_new_service');
+//либо более коротко
+$my_new_service = Application::getInstance()->my_new_service;
+```
