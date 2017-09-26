@@ -89,3 +89,86 @@ $my_new_service = Application::getInstance()->locator->get('my_new_service');
 //либо более коротко
 $my_new_service = Application::getInstance()->my_new_service;
 ```
+
+
+
+## Роутинг
+
+В качестве роутинга в битриксе предлагается использовать комбинацию из комплексных компонентов и urlrewrite.php, но такой подход не всегда позволяет очевидно определить откуда именно будет отображена страница. Кроме того, возникает необходимость в постоянном дублировании шаблонов комплексных компонентов.
+
+В замен такому подходу предлагается использовать объект для роутинга запросов.
+
+Использование данного объекта требует, чтобы все входящие запросы были бы переадресованы на главную страницу (index.php), пример настройки urlrewrite для такого случая:
+
+```php
+<?
+$arUrlRewrite = array(
+	array(
+		"CONDITION" => "#^/#",
+		"RULE" => "",
+		"ID" => "page",
+		"PATH" => "/index.php",
+	),
+);
+?>
+```
+
+Пример главной страницы:
+
+```php
+<?php
+
+require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
+
+use Bitrix\Main\Loader;
+use marvin255\bxfoundation\application\Application;
+use marvin255\bxfoundation\routing\rule\Regexp;
+use marvin255\bxfoundation\routing\action\Component;
+use marvin255\bxfoundation\routing\action\Chain;
+
+$app = Application::getInstance();
+
+//список новостей
+$app->router->registerRoute(
+    new Regexp('/news'),
+    new Chain([
+        new Component('bitrix:catalog.filter', '', [
+            'IBLOCK_TYPE' => 'content',
+            'IBLOCK_ID' => '1',
+            'FILTER_NAME' => 'news_filter',
+            'FIELD_CODE' => ['NAME', 'ACTIVE_FROM'],
+        ]),
+        new Component('bitrix:news.list', '', [
+            'IBLOCK_TYPE' => 'content',
+            'IBLOCK_ID' => '1',
+            'FILTER_NAME' => 'news_filter',
+        ])
+    ])
+);
+
+//новость детально
+$app->router->registerRoute(
+    new Regexp('/news/<ID:\d+>'),
+    new Component('bitrix:news.detail', '', [
+        'IBLOCK_TYPE' => 'content',
+        'IBLOCK_ID' => '1',
+        'ELEMENT_ID' => '$ruleResult.ID',
+    ])
+);
+
+//страница 404
+$app->router->registerRouteException(404, new Component('bitrix:search.page'));
+
+//роутим текущую ссылку и печатаем результат
+echo $app->router->route($app->request, $app->response);
+
+require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/epilog_after.php');
+```
+
+Каждый роут состоит из пары объектов: правила, которое реализует `\marvin255\bxfoundation\routing\rule\RuleInterface`, и действия, которое реализует `\marvin255\bxfoundation\routing\action\ActionInterface`. Соответственно, объект роутер позволяет зарегистрировать любое множество таких пар правило-действие с помощью метода `registerRoute`. При запросе результата роутер будет последовательно вызывать каждое правило до тех пор, пока одно из них не ответит, что url подходит, после этого будет вызвано соответствующее правилу действие, которое вернет строку для отображения. Если же все правила будут опробованы и url не будет соответствовать ни одному из них, то роутер выбросит исключение со статусом 404.
+
+Правило может получить некоторые данные из url, как, например, идентификатор новости из примера выше. Эти данные будут так же переданы в действие и доступны с помощью макроса `'$ruleResult.ID'`, где вместо ID нужно будет укзать имя параметра, которое получило правило.
+
+В качестве правила и действия можно передавать любые объекты, которые реализуют `\marvin255\bxfoundation\routing\rule\RuleInterface` и `\marvin255\bxfoundation\routing\action\ActionInterface` соответственно.
+
+Кроме того, можно зарегистрировать действие на тот случай, если действие или правило вернет исключение. Для этого служит метод `registerRouteException` роутера. Первым параметром нужно передать код статуса состояния (как в примере выше: 404, страница не найдена) и сооттвествующий этому статусу объект, который реализует `\marvin255\bxfoundation\routing\action\ActionInterface`.
