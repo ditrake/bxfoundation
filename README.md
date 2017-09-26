@@ -63,7 +63,7 @@
 
 В D7 появился общий объект для приложения, который доступен из каждого файла скрипта сайта. Тем не менее, он не позволяет эффективно и легально добавлять к себе определения сервисов, которые используются на сайте.
 
-В дополнение к объекту `\Bitrix\Main\Application` предлагается использовать объект `\marvin255\bxfoundation\application\Application`, который не только дает доступ ко всем стандартным методам `\Bitrix\Main\Application` (по факту, он просто содержит в себе ссылку на `\Bitrix\Main\Application` и переадресует на него вызовы всех методов, которые не определены в самом `\marvin255\bxfoundation\application\Application`), но и в дополнение реализует паттерн service locator.
+В дополнение к объекту `\Bitrix\Main\Application` предлагается использовать объект `\marvin255\bxfoundation\application\Application`, который не только дает доступ ко всем стандартным методам `\Bitrix\Main\Application` (по факту, он просто содержит в себе ссылку на `\Bitrix\Main\Application` и переадресует на него вызовы всех методов, которые не определены в самом `\marvin255\bxfoundation\application\Application` с помощью `__call`), но и в дополнение реализует паттерн service locator.
 
 Для использования достаточно объявить в блоке use `\marvin255\bxfoundation\application\Application` вместо `\Bitrix\Main\Application`.
 
