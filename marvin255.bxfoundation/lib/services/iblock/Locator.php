@@ -54,8 +54,10 @@ class Locator
             $this->filter = [
                 'ACTIVE' => 'Y',
                 'CHECK_PERMISSIONS' => 'N',
-                'SITE_ID' => defined('SITE_ID') ? SITE_ID : null,
             ];
+            if (defined('SITE_ID') && (!defined('ADMIN_SECTION') || !ADMIN_SECTION)) {
+                $this->filter['SITE_ID'] = SITE_ID;
+            }
         } else {
             $this->filter = $filter;
         }

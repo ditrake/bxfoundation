@@ -78,7 +78,46 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
         $locator->expects($this->once())
             ->method('loadList')
             ->with(
-                $this->equalTo(['ACTIVE' => 'Y', 'CHECK_PERMISSIONS' => 'N', 'SITE_ID' => null]),
+                $this->equalTo(['ACTIVE' => 'Y', 'CHECK_PERMISSIONS' => 'N']),
+                $this->equalTo([
+                    'ID',
+                    'CODE',
+                    'NAME',
+                    'LID',
+                    'IBLOCK_TYPE_ID',
+                    'DETAIL_PAGE_URL',
+                    'SECTION_PAGE_URL',
+                    'LIST_PAGE_URL',
+                    'PROPERTIES',
+                ])
+            )
+            ->will($this->returnValue($list));
+
+        $this->assertSame($list, $locator->getList());
+    }
+
+    public function testGetListDefaultsFromPublic()
+    {
+        $list = [
+            [
+                'ID' => mt_rand(),
+                'test_key_1' => 'test_li_' . mt_rand(),
+                'test_key_2' => 'test_li_1_' . mt_rand(),
+            ],
+        ];
+        define('SITE_ID', 's1');
+        $locator = $this->getMock(
+            '\marvin255\bxfoundation\services\iblock\Locator',
+            ['loadList'],
+            [],
+            '',
+            true
+        );
+        $testSelect[] = 'ID';
+        $locator->expects($this->once())
+            ->method('loadList')
+            ->with(
+                $this->equalTo(['ACTIVE' => 'Y', 'CHECK_PERMISSIONS' => 'N', 'SITE_ID' => 's1']),
                 $this->equalTo([
                     'ID',
                     'CODE',
