@@ -40,7 +40,7 @@ trait EventableTrait
      * @param string                                         $eventName
      * @param \marvin255\bxfoundation\events\ResultInterface $result
      */
-    protected function riseInternalEvents($eventName, ResultInterface $result)
+    private function riseInternalEvents($eventName, ResultInterface $result)
     {
         if (!empty($this->events[$eventName]) && $result->isSuccess()) {
             foreach ($this->events[$eventName] as $callback) {
@@ -58,7 +58,7 @@ trait EventableTrait
      * @param string                                         $eventName
      * @param \marvin255\bxfoundation\events\ResultInterface $result
      */
-    protected function riseBitrixEvents($eventName, ResultInterface $result)
+    private function riseBitrixEvents($eventName, ResultInterface $result)
     {
         if ($result->isSuccess()) {
             $event = new Event(
@@ -137,7 +137,7 @@ trait EventableTrait
      *
      * @return string
      */
-    protected function prepareEventName($eventName)
+    private function prepareEventName($eventName)
     {
         return strtolower(trim($eventName));
     }
