@@ -43,7 +43,7 @@ class ServiceLocator implements ServiceLocatorInterface
     {
         $name = $this->convertName($name);
         if (!isset($this->services[$name])) {
-            throw new Exception("{$name} service doen't exist");
+            throw new Exception("{$name} service doesn't exist");
         }
 
         return $this->services[$name];
@@ -68,7 +68,7 @@ class ServiceLocator implements ServiceLocatorInterface
     {
         $name = $this->convertName($name);
         if (!isset($this->services[$name])) {
-            throw new Exception("{$name} service doen't exist");
+            throw new Exception("{$name} service doesn't exist");
         }
 
         unset($this->services[$name]);
