@@ -56,7 +56,9 @@ abstract class Base implements ActionInterface, EventableInterface
                 ]
             );
             $this->riseEvent($onAfterActionRun);
-            $return = $onAfterActionRun->getParam('return');
+            if ($onAfterActionRun->isSuccess()) {
+                $return = $onAfterActionRun->getParam('return');
+            }
         }
 
         return $return;
