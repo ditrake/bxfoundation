@@ -9,7 +9,6 @@ use marvin255\bxfoundation\services\cache\Bitrix as LibCache;
 use marvin255\bxfoundation\services\iblock\Locator as IblockLocator;
 use marvin255\bxfoundation\services\config\BitrixOptions;
 use marvin255\bxfoundation\services\user\Bitrix as BitrixUser;
-use marvin255\bxfoundation\view\PhpView;
 
 /**
  * Класс-фасад для битриксового Bitrix\Main\Application.
@@ -25,19 +24,29 @@ class Application
      *
      * @var \marvin255\bxfoundation\application\Application
      */
-    private static $instance = null;
+    private static $instance;
     /**
      * Объект приложения битрикса.
      *
      * @var \Bitrix\Main\Application
      */
-    protected $bitrixApplication = null;
+    protected $bxApp;
     /**
      * Объект service locator.
      *
      * @var \marvin255\bxfoundation\application\ServiceLocatorInterface
      */
-    protected $serviceLocator = null;
+    protected $locator;
+
+    /**
+     * Конструктор
+     */
+    private function __construct()
+    {
+        $this->bxApp = \Bitrix\Main\Application::getInstance();
+        $this->locator = new ServiceLocator;
+        $this->setDefaultServices();
+    }
 
     /**
      * Магия. Передаем неизвестные данному объекту функции в Application или service locator.
@@ -51,14 +60,11 @@ class Application
      */
     public function __call($name, array $params)
     {
-        if (method_exists($this->bitrixApplication, $name)) {
-            return call_user_func_array(
-                [$this->bitrixApplication, $name],
-                $params
-            );
-        } else {
+        if (!method_exists($this->bxApp, $name)) {
             throw new Exception("Method {$name} doesn't exist");
         }
+
+        return call_user_func_array([$this->bxApp, $name], $params);
     }
 
     /**
@@ -74,90 +80,41 @@ class Application
     public function __get($name)
     {
         if ($name === 'locator') {
-            return $this->serviceLocator;
-        } elseif ($this->serviceLocator->has($name)) {
-            return $this->serviceLocator->get($name);
+            $return = $this->locator;
+        } elseif ($this->locator->has($name)) {
+            $return = $this->locator->get($name);
         } else {
             throw new Exception("Property {$name} doesn't exist");
         }
-    }
 
-    /**
-     * Конструктор.
-     *
-     * Реализация singleton. Видимость private апрещает прямое создание новых объектов.
-     *
-     * @param \Bitrix\Main\Application                                    $bitrixApplication
-     * @param \marvin255\bxfoundation\application\ServiceLocatorInterface $serviceLocator
-     */
-    private function __construct(\Bitrix\Main\Application $bitrixApplication = null, ServiceLocatorInterface $serviceLocator = null)
-    {
-        if (empty($bitrixApplication)) {
-            $bitrixApplication = \Bitrix\Main\Application::getInstance();
-        }
-        $this->bitrixApplication = $bitrixApplication;
-
-        if (empty($serviceLocator)) {
-            $serviceLocator = new ServiceLocator;
-        }
-        $this->serviceLocator = $serviceLocator;
-        $this->setDefaultServices($bitrixApplication, $serviceLocator);
+        return $return;
     }
 
     /**
      * Задает сервисы по умолчанию.
-     *
-     * @param \Bitrix\Main\Application                                    $bitrixApplication
-     * @param \marvin255\bxfoundation\application\ServiceLocatorInterface $serviceLocator
      */
-    protected function setDefaultServices(\Bitrix\Main\Application $bitrixApplication, ServiceLocatorInterface $serviceLocator)
+    protected function setDefaultServices()
     {
-        if (!$serviceLocator->has('request')) {
-            $serviceLocator->set(
-                'request',
-                new Request($bitrixApplication->getContext()->getRequest())
-            );
-        }
-        if (!$serviceLocator->has('response')) {
-            $serviceLocator->set(
-                'response',
-                new Response($bitrixApplication->getContext()->getResponse())
-            );
-        }
-        if (!$serviceLocator->has('router')) {
-            $serviceLocator->set('router', new Router);
-        }
-        if (!$serviceLocator->has('db')) {
-            $serviceLocator->set('db', $bitrixApplication->getConnection());
-        }
-        if (!$serviceLocator->has('cache')) {
-            $serviceLocator->set(
-                'cache',
-                new LibCache($bitrixApplication->getCache(), $bitrixApplication->getTaggedCache())
-            );
-        }
-        if (!$serviceLocator->has('iblockLocator')) {
-            $serviceLocator->set(
-                'iblockLocator',
-                new IblockLocator(
-                    null,
-                    null,
-                    $serviceLocator->has('cache') ? $serviceLocator->get('cache') : null
-                )
-            );
-        }
-        if (!$serviceLocator->has('options')) {
-            $serviceLocator->set('options', new BitrixOptions);
-        }
-        if (!$serviceLocator->has('user')) {
-            $serviceLocator->set('user', new BitrixUser);
-        }
-        if (!$serviceLocator->has('view')) {
-            $documentRoot = $bitrixApplication->getContext()
-                ->getServer()
-                ->getDocumentRoot();
-            $serviceLocator->set('view', new PhpView([$documentRoot]));
-        }
+        $this->locator->set(
+            'request',
+            new Request($this->bxApp->getContext()->getRequest())
+        );
+        $this->locator->set(
+            'response',
+            new Response($this->bxApp->getContext()->getResponse())
+        );
+        $this->locator->set('router', new Router);
+        $this->locator->set('db', $this->bxApp->getConnection());
+        $this->locator->set(
+            'cache',
+            new LibCache($this->bxApp->getCache(), $this->bxApp->getTaggedCache())
+        );
+        $this->locator->set(
+            'iblockLocator',
+            new IblockLocator(null, null, $this->locator->get('cache'))
+        );
+        $this->locator->set('options', new BitrixOptions);
+        $this->locator->set('user', new BitrixUser);
     }
 
     /**
