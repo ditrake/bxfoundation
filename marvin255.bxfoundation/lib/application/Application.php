@@ -21,6 +21,12 @@ use marvin255\bxfoundation\view\PhpView;
 class Application
 {
     /**
+     * Объект для реализации singleton.
+     *
+     * @var \marvin255\bxfoundation\application\Application
+     */
+    private static $instance = null;
+    /**
      * Объект приложения битрикса.
      *
      * @var \Bitrix\Main\Application
@@ -153,13 +159,6 @@ class Application
             $serviceLocator->set('view', new PhpView([$documentRoot]));
         }
     }
-
-    /**
-     * Объект для реализации singleton.
-     *
-     * @var \marvin255\bxfoundation\application\Application
-     */
-    private static $instance = null;
 
     /**
      * Возвращает объект singleton, если он уже создан, либо создает новый

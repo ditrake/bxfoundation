@@ -15,7 +15,7 @@ interface ViewInterface
      *
      * @return string
      */
-    public function render($viewName, array $data = array());
+    public function render($viewName, array $data = []);
 
     /**
      * Возвращает список расширений файлов, к которым применим шаблонизатор.

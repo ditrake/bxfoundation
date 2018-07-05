@@ -42,7 +42,7 @@ class Result implements ResultInterface
      *
      * @throws \marvin255\bxfoundation\events\Exception
      */
-    public function __construct($name, $target, array $params = array())
+    public function __construct($name, $target, array $params = [])
     {
         if (empty($name)) {
             throw new Exception('Event result name can\'t be empty');

@@ -53,7 +53,7 @@ class PhpView implements ViewInterface
      *
      * @throws \marvin255\bxfoundation\view\Exception
      */
-    public function render($viewName, array $data = array())
+    public function render($viewName, array $data = [])
     {
         $viewPath = $this->findPathToView($viewName);
         if (!$viewPath) {

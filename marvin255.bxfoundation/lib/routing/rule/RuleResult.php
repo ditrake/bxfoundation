@@ -22,7 +22,7 @@ class RuleResult implements RuleResultInterface
      *
      * @param array $params
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = [])
     {
         if ($params) {
             $this->setParams($params);

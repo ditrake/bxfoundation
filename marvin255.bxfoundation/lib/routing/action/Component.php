@@ -43,7 +43,7 @@ class Component extends Base
      *
      * @throws \marvin255\bxfoundation\routing\Exception
      */
-    public function __construct($component, $template = '', array $params = array())
+    public function __construct($component, $template = '', array $params = [])
     {
         if (empty($component)) {
             throw new Exception('Component name can\'t be empty');
@@ -72,7 +72,7 @@ class Component extends Base
      *
      * @return string
      */
-    protected function includeComponent($componentName, $template = '', array $arParams = array())
+    protected function includeComponent($componentName, $template = '', array $arParams = [])
     {
         ob_start();
         ob_implicit_flush(false);

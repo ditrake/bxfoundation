@@ -15,7 +15,7 @@ interface RuleResultInterface
      *
      * @param array $params
      */
-    public function __construct(array $params = array());
+    public function __construct(array $params = []);
 
     /**
      * Задает список всех параметров ответа.

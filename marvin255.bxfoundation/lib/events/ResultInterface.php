@@ -22,7 +22,7 @@ interface ResultInterface
      * @param mixed  $target Ссылка на объект, который инициировал событие
      * @param array  $params Массив вида "название параметра => значение" для дополнительных параметров события
      */
-    public function __construct($name, $target, array $params = array());
+    public function __construct($name, $target, array $params = []);
 
     /**
      * Возвращает имя события, для которого был создан результат.
