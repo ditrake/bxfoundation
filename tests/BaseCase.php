@@ -7,6 +7,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * Базовый класс для всех тестов.
  */
-class BaseCase extends TestCase
+abstract class BaseCase extends TestCase
 {
 }
