@@ -45,7 +45,7 @@ class Application
     {
         $this->bxApp = \Bitrix\Main\Application::getInstance();
         $this->locator = new ServiceLocator;
-        $this->setDefaultServices();
+        $this->initDefaultServices();
     }
 
     /**
@@ -93,7 +93,7 @@ class Application
     /**
      * Задает сервисы по умолчанию.
      */
-    protected function setDefaultServices()
+    protected function initDefaultServices()
     {
         $this->locator->set(
             'request',
