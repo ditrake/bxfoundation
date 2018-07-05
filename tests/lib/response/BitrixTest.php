@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\response;
 
-class BitrixTest extends \PHPUnit_Framework_TestCase
+class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testSetHeader()
     {

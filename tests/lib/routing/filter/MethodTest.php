@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\filter;
 
-class MethodTest extends \PHPUnit_Framework_TestCase
+class MethodTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testEmptyConstructorException()
     {

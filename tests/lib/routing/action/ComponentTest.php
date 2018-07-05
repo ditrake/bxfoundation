@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\action;
 
-class ComponentTest extends \PHPUnit_Framework_TestCase
+class ComponentTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testConstructorEmptyComponentException()
     {

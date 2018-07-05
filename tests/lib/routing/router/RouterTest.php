@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\router;
 
-class RouterTest extends \PHPUnit_Framework_TestCase
+class RouterTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testRoute()
     {

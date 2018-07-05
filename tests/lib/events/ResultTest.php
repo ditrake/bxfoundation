@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\events;
 
-class ResultTest extends \PHPUnit_Framework_TestCase
+class ResultTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testGetName()
     {

@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\views;
 
-class PhpViewTest extends \PHPUnit_Framework_TestCase
+class PhpViewTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     protected $file = null;
 
@@ -67,7 +67,7 @@ class PhpViewTest extends \PHPUnit_Framework_TestCase
         $view = new \marvin255\bxfoundation\view\PhpView([
             pathinfo($this->file, PATHINFO_DIRNAME),
         ]);
-        $this->setExpectedException('\marvin255\bxfoundation\view\Exception', 2);
+        $this->setExpectedException('\marvin255\bxfoundation\view\Exception', '2');
         $view->render(
             pathinfo($this->file, PATHINFO_FILENAME),
             ['testVariable' => 'test', 2 => 'test2']

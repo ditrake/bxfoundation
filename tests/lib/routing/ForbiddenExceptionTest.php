@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing;
 
-class ForbiddenExceptionTest extends \PHPUnit_Framework_TestCase
+class ForbiddenExceptionTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testGetHttpStatus()
     {

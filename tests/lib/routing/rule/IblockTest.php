@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\rule;
 
-class IblockTest extends \PHPUnit_Framework_TestCase
+class IblockTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testAttachFiltersInConstructor()
     {
@@ -213,7 +213,10 @@ class IblockTest extends \PHPUnit_Framework_TestCase
             true
         );
 
-        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception', $iblockId);
+        $this->setExpectedException(
+            '\marvin255\bxfoundation\routing\Exception',
+            (string) $iblockId
+        );
         $ruleResult = $rule->parse($request);
     }
 

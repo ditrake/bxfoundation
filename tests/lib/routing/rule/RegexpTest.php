@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\rule;
 
-class RegexpTest extends \PHPUnit_Framework_TestCase
+class RegexpTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testAttachFiltersInConstructor()
     {

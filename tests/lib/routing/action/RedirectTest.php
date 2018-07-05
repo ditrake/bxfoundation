@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\action;
 
-class RedirectTest extends \PHPUnit_Framework_TestCase
+class RedirectTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testConstructorEmptyUrlException()
     {

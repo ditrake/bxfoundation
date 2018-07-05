@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\filter;
 
-class HeaderTest extends \PHPUnit_Framework_TestCase
+class HeaderTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testEmptyConstructorException()
     {

@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\services\iblock;
 
-class LocatorTest extends \PHPUnit_Framework_TestCase
+class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testConstructorWrongFilterException()
     {

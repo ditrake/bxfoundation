@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\action;
 
-class ChainTest extends \PHPUnit_Framework_TestCase
+class ChainTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testConstructorEmptyActionsException()
     {

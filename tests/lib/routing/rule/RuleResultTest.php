@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\rule;
 
-class RuleResultTest extends \PHPUnit_Framework_TestCase
+class RuleResultTest extends \marvin255\bxfoundation\tests\BaseCase
 {
     public function testSetParams()
     {

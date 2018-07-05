@@ -3,7 +3,6 @@
 use Bitrix\Main\Application;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
-use Bitrix\Main\IO\Directory;
 use InvalidArgumentException;
 
 Loc::loadMessages(__FILE__);
