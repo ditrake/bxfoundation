@@ -2,60 +2,61 @@
 
 namespace marvin255\bxfoundation\tests\lib\request;
 
-class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
+use marvin255\bxfoundation\tests\BaseCase;
+use marvin255\bxfoundation\request\Bitrix;
+use stdClass;
+
+class BitrixTest extends BaseCase
 {
+    /**
+     * @test
+     */
     public function testGetMethod()
     {
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['getRequestMethod'])
             ->getMock();
-        $bxRequest->method('getRequestMethod')
-            ->will($this->returnValue('PUT'));
+        $bxRequest->method('getRequestMethod')->will($this->returnValue('PUT'));
 
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
-        $this->assertSame(
-            'PUT',
-            $request->getMethod(),
-            'getMethod method must returns method from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame('PUT', $request->getMethod());
     }
 
+    /**
+     * @test
+     */
     public function testGetScheme()
     {
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['isHttps'])
             ->getMock();
-        $bxRequest->method('isHttps')
-            ->will($this->returnValue(true));
+        $bxRequest->method('isHttps')->will($this->returnValue(true));
 
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
-        $this->assertSame(
-            'https',
-            $request->getScheme(),
-            'getScheme method must returns scheme from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame('https', $request->getScheme());
     }
 
+    /**
+     * @test
+     */
     public function testGetHost()
     {
         $host = mt_rand();
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['getHttpHost'])
             ->getMock();
-        $bxRequest->method('getHttpHost')
-            ->will($this->returnValue($host));
+        $bxRequest->method('getHttpHost')->will($this->returnValue($host));
 
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
-        $this->assertSame(
-            $host,
-            $request->getHost(),
-            'getHost method must returns host from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame($host, $request->getHost());
     }
 
+    /**
+     * @test
+     */
     public function testGetPath()
     {
         $path = '/' . mt_rand() . '/';
@@ -63,72 +64,62 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['getRequestUri'])
             ->getMock();
-        $bxRequest->method('getRequestUri')
-            ->will($this->returnValue($uri));
+        $bxRequest->method('getRequestUri')->will($this->returnValue($uri));
 
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
-        $this->assertSame(
-            $path,
-            $request->getPath(),
-            'getPath method must returns path from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame($path, $request->getPath());
     }
 
+    /**
+     * @test
+     */
     public function testGetQueryData()
     {
         $data = ['test1' => mt_rand(), 'test2' => mt_rand()];
 
-        $listMock = $this->getMockBuilder('\StdClass')
+        $listMock = $this->getMockBuilder(stdClass::class)
             ->setMethods(['toArray'])
             ->getMock();
-        $listMock->method('toArray')
-            ->will($this->returnValue($data));
+        $listMock->method('toArray')->will($this->returnValue($data));
 
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['getRequestMethod', 'getQueryList'])
             ->getMock();
-        $bxRequest->method('getRequestMethod')
-            ->will($this->returnValue('GET'));
-        $bxRequest->method('getQueryList')
-            ->will($this->returnValue($listMock));
+        $bxRequest->method('getRequestMethod')->will($this->returnValue('GET'));
+        $bxRequest->method('getQueryList')->will($this->returnValue($listMock));
 
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
-        $this->assertSame(
-            $data,
-            $request->getData(),
-            'getData method must returns query data for GET method from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame($data, $request->getData());
     }
 
+    /**
+     * @test
+     */
     public function testGetPostData()
     {
         $data = ['test1' => mt_rand(), 'test2' => mt_rand()];
 
-        $listMock = $this->getMockBuilder('\StdClass')
+        $listMock = $this->getMockBuilder(stdClass::class)
             ->setMethods(['toArray'])
             ->getMock();
-        $listMock->method('toArray')
-            ->will($this->returnValue($data));
+        $listMock->method('toArray')->will($this->returnValue($data));
 
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['getRequestMethod', 'getPostList'])
             ->getMock();
-        $bxRequest->method('getRequestMethod')
-            ->will($this->returnValue('POST'));
-        $bxRequest->method('getPostList')
-            ->will($this->returnValue($listMock));
+        $bxRequest->method('getRequestMethod')->will($this->returnValue('POST'));
+        $bxRequest->method('getPostList')->will($this->returnValue($listMock));
 
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
-        $this->assertSame(
-            $data,
-            $request->getData(),
-            'getData method must returns post data for POST method from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame($data, $request->getData());
     }
 
+    /**
+     * @test
+     */
     public function testGetInputData()
     {
         $data = 'test=1&test2=2';
@@ -136,30 +127,24 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['getRequestMethod'])
             ->getMock();
-        $bxRequest->method('getRequestMethod')
-            ->will($this->returnValue('PUT'));
+        $bxRequest->method('getRequestMethod')->will($this->returnValue('PUT'));
 
-        $request = $this->getMock(
-            '\marvin255\bxfoundation\request\Bitrix',
-            ['getPhpInputData'],
-            [$bxRequest],
-            '',
-            true
-        );
-        $request->method('getPhpInputData')
-            ->will($this->returnValue($data));
+        $request = $this->getMockBuilder(Bitrix::class)
+            ->setConstructorArgs([$bxRequest])
+            ->setMethods(['getPhpInputData'])
+            ->getMock();
+        $request->method('getPhpInputData')->will($this->returnValue($data));
 
-        $this->assertSame(
-            ['test' => '1', 'test2' => '2'],
-            $request->getData(),
-            'getData method must returns post data for POST method from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame(['test' => '1', 'test2' => '2'], $request->getData());
     }
 
+    /**
+     * @test
+     */
     public function testGetHeadersFromServer()
     {
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')->getMock();
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
         $oldServer = $_SERVER;
         $_SERVER = [
@@ -170,59 +155,52 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
 
         $this->assertSame(
             ['TestHeader' => 'test_value', 'TestHeader2' => 'test value 2'],
-            $request->getHeaders(),
-            'getHeaders method must parse headers from $_SERVER'
+            $request->getHeaders()
         );
 
         $this->assertSame(
             'test value 2',
-            $request->getHeader('TestHeader2'),
-            'getHeader method must returns header by it\'s name'
+            $request->getHeader('TestHeader2')
         );
 
         $_SERVER = $oldServer;
     }
 
+    /**
+     * @test
+     */
     public function testGetCookie()
     {
         $cookie = ['test1' => mt_rand(), 'test2' => mt_rand()];
 
-        $listMock = $this->getMockBuilder('\StdClass')
+        $listMock = $this->getMockBuilder(stdClass::class)
             ->setMethods(['toArray'])
             ->getMock();
-        $listMock->method('toArray')
-            ->will($this->returnValue($cookie));
+        $listMock->method('toArray')->will($this->returnValue($cookie));
 
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['getCookieList'])
             ->getMock();
-        $bxRequest->method('getCookieList')
-            ->will($this->returnValue($listMock));
+        $bxRequest->method('getCookieList')->will($this->returnValue($listMock));
 
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
-        $this->assertSame(
-            $cookie,
-            $request->getCookie(),
-            'getCookie method must returns cookie data from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame($cookie, $request->getCookie());
     }
 
+    /**
+     * @test
+     */
     public function testGetRemoteAddress()
     {
         $remote = mt_rand();
         $bxRequest = $this->getMockBuilder('\Bitrix\Main\HttpRequest')
             ->setMethods(['getRemoteAddress'])
             ->getMock();
-        $bxRequest->method('getRemoteAddress')
-            ->will($this->returnValue($remote));
+        $bxRequest->method('getRemoteAddress')->will($this->returnValue($remote));
 
-        $request = new \marvin255\bxfoundation\request\Bitrix($bxRequest);
+        $request = new Bitrix($bxRequest);
 
-        $this->assertSame(
-            $remote,
-            $request->getRemoteAddress(),
-            'getRemoteAddress method must returns ip from \Bitrix\Main\HttpRequest'
-        );
+        $this->assertSame($remote, $request->getRemoteAddress());
     }
 }
