@@ -11,6 +11,7 @@
             <directory>tests/lib/request</directory>
             <directory>tests/lib/response</directory>
             <directory>tests/lib/events</directory>
+            <directory>tests/lib/services</directory>
         </testsuite>
     </testsuites>
 

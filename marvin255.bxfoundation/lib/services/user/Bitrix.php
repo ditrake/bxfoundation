@@ -18,7 +18,7 @@ class Bitrix implements UserInterface
      *
      * @var \CUser
      */
-    protected $user = null;
+    protected $user;
 
     /**
      * Конструктор.
@@ -69,14 +69,10 @@ class Bitrix implements UserInterface
      */
     public function login($login, $password, $remember = false)
     {
-        $res = $this->getUser()->login(
-            $login,
-            $password,
-            $remember ? 'Y' : 'N',
-            'Y'
-        );
+        $remember = $remember ? 'Y' : 'N';
+        $res = $this->getUser()->login($login, $password, $remember, 'Y');
 
-        return $res === true ?: false;
+        return $res === true;
     }
 
     /**
@@ -94,7 +90,7 @@ class Bitrix implements UserInterface
         } else {
             global $USER;
             if (empty($USER) || !($USER instanceof CUser)) {
-                throw new Exception('Can\'t find user object in bitrix');
+                throw new Exception("Can't find user object in bitrix");
             }
             $user = $USER;
         }

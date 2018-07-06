@@ -2,8 +2,15 @@
 
 namespace marvin255\bxfoundation\tests\lib\services\user;
 
-class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
+use marvin255\bxfoundation\tests\BaseCase;
+use marvin255\bxfoundation\services\user\Bitrix;
+use marvin255\bxfoundation\services\Exception;
+
+class BitrixTest extends BaseCase
 {
+    /**
+     * @test
+     */
     public function testGetId()
     {
         $id = mt_rand();
@@ -15,14 +22,14 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('getId')
             ->will($this->returnValue($id));
 
-        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
+        $user = new Bitrix($bxUser);
 
-        $this->assertSame(
-            $id,
-            $user->getId()
-        );
+        $this->assertSame($id, $user->getId());
     }
 
+    /**
+     * @test
+     */
     public function testIsAuthorized()
     {
         $bxUser = $this->getMockBuilder('\CUser')
@@ -32,14 +39,14 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('isAuthorized')
             ->will($this->returnValue(false));
 
-        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
+        $user = new Bitrix($bxUser);
 
-        $this->assertSame(
-            false,
-            $user->isAuthorized()
-        );
+        $this->assertSame(false, $user->isAuthorized());
     }
 
+    /**
+     * @test
+     */
     public function testIsAdmin()
     {
         $bxUser = $this->getMockBuilder('\CUser')
@@ -49,14 +56,14 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('isAdmin')
             ->will($this->returnValue(true));
 
-        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
+        $user = new Bitrix($bxUser);
 
-        $this->assertSame(
-            true,
-            $user->isAdmin()
-        );
+        $this->assertSame(true, $user->isAdmin());
     }
 
+    /**
+     * @test
+     */
     public function testAuthorize()
     {
         $id = mt_rand();
@@ -70,14 +77,14 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->with($this->equalTo($id), $this->equalTo($remember))
             ->will($this->returnValue(false));
 
-        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
+        $user = new Bitrix($bxUser);
 
-        $this->assertSame(
-            false,
-            $user->authorize($id, $remember)
-        );
+        $this->assertSame(false, $user->authorize($id, $remember));
     }
 
+    /**
+     * @test
+     */
     public function testLogin()
     {
         $login = 'login_' . mt_rand();
@@ -97,14 +104,14 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             )
             ->will($this->returnValue(['error']));
 
-        $user = new \marvin255\bxfoundation\services\user\Bitrix($bxUser);
+        $user = new Bitrix($bxUser);
 
-        $this->assertSame(
-            false,
-            $user->login($login, $password, $remember)
-        );
+        $this->assertSame(false, $user->login($login, $password, $remember));
     }
 
+    /**
+     * @test
+     */
     public function testGlobalUser()
     {
         $id = mt_rand();
@@ -117,18 +124,19 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('getId')
             ->will($this->returnValue($id));
 
-        $user = new \marvin255\bxfoundation\services\user\Bitrix;
+        $user = new Bitrix;
 
-        $this->assertSame(
-            $id,
-            $user->getId()
-        );
+        $this->assertSame($id, $user->getId());
     }
 
+    /**
+     * @test
+     */
     public function testGlobalUserException()
     {
-        $user = new \marvin255\bxfoundation\services\user\Bitrix;
-        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
+        $user = new Bitrix;
+
+        $this->setExpectedException(Exception::class);
         $user->getId();
     }
 }
