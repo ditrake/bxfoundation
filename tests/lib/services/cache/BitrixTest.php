@@ -2,8 +2,15 @@
 
 namespace marvin255\bxfoundation\tests\lib\services\cache;
 
-class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
+use marvin255\bxfoundation\services\cache\Bitrix;
+use marvin255\bxfoundation\tests\BaseCase;
+use marvin255\bxfoundation\services\Exception;
+
+class BitrixTest extends BaseCase
 {
+    /**
+     * @test
+     */
     public function testSet()
     {
         $key = 'key_' . mt_rand();
@@ -39,15 +46,17 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
         $taggedCache->expects($this->once())
             ->method('endTagCache');
 
-        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache, $taggedCache);
+        $bxCache = new Bitrix($cache, $taggedCache);
 
         $this->assertSame(
             $bxCache,
-            $bxCache->set($key, $vars, $time, [$tag1, $tag2]),
-            'set method must returns it\'s object'
+            $bxCache->set($key, $vars, $time, [$tag1, $tag2])
         );
     }
 
+    /**
+     * @test
+     */
     public function testSetWithDefaultTime()
     {
         $key = 'key_' . mt_rand();
@@ -67,21 +76,27 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('endDataCache')
             ->with($this->equalTo($vars));
 
-        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache, null, $time);
+        $bxCache = new Bitrix($cache, null, $time);
         $bxCache->set($key, $vars);
     }
 
+    /**
+     * @test
+     */
     public function testSetEmptyKeyException()
     {
         $cache = $this->getMockBuilder('\Bitrix\Main\Data\Cache')
             ->getMock();
 
-        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
+        $bxCache = new Bitrix($cache);
 
-        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
+        $this->setExpectedException(Exception::class);
         $bxCache->set('', ['test']);
     }
 
+    /**
+     * @test
+     */
     public function testGet()
     {
         $key = 'key_' . mt_rand();
@@ -98,15 +113,14 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('getVars')
             ->will($this->returnValue($vars));
 
-        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
+        $bxCache = new Bitrix($cache);
 
-        $this->assertSame(
-            $vars,
-            $bxCache->get($key),
-            'get method must calls bitrix cache'
-        );
+        $this->assertSame($vars, $bxCache->get($key));
     }
 
+    /**
+     * @test
+     */
     public function testGetEmptyCache()
     {
         $key = 'key_' . mt_rand();
@@ -119,15 +133,14 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->with($this->anything(), $this->equalTo($key), $this->anything())
             ->will($this->returnValue(false));
 
-        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
+        $bxCache = new Bitrix($cache);
 
-        $this->assertSame(
-            false,
-            $bxCache->get($key),
-            'get method must calls bitrix cache'
-        );
+        $this->assertSame(false, $bxCache->get($key));
     }
 
+    /**
+     * @test
+     */
     public function testClear()
     {
         $key = 'key_' . mt_rand();
@@ -143,23 +156,22 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('cleanDir')
             ->with($this->anything());
 
-        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
+        $bxCache = new Bitrix($cache);
 
-        $this->assertSame(
-            $bxCache,
-            $bxCache->clear($key),
-            'clear method must returns it\'s object'
-        );
+        $this->assertSame($bxCache, $bxCache->clear($key));
     }
 
+    /**
+     * @test
+     */
     public function testClearEmptyKeyException()
     {
         $cache = $this->getMockBuilder('\Bitrix\Main\Data\Cache')
             ->getMock();
 
-        $bxCache = new \marvin255\bxfoundation\services\cache\Bitrix($cache);
+        $bxCache = new Bitrix($cache);
 
-        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
+        $this->setExpectedException(Exception::class);
         $bxCache->clear('');
     }
 }
