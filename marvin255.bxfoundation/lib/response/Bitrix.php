@@ -50,9 +50,27 @@ class Bitrix implements ResponseInterface
     /**
      * @inheritdoc
      */
+    public function getHeaders()
+    {
+        $return = $this->headers;
+
+        $sendedHeaders = $this->getSentHeaders();
+        foreach ($sendedHeaders as $header) {
+            list($name, $value) = array_map('trim', explode(':', $header));
+            $return[$name] = $value;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getHeader($name)
     {
-        return isset($this->headers[$name]) ? $this->headers[$name] : null;
+        $allHeaders = $this->getHeaders();
+
+        return isset($allHeaders[$name]) ? $allHeaders[$name] : null;
     }
 
     /**
@@ -72,5 +90,15 @@ class Bitrix implements ResponseInterface
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * возвращает те заголовки, которые уже были отправлены.
+     *
+     * @return array
+     */
+    protected function getSentHeaders()
+    {
+        return headers_list();
     }
 }

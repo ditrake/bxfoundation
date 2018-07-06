@@ -18,11 +18,18 @@ interface ResponseInterface
     public function setHeader($name, $value);
 
     /**
+     * Возвращает список всех установленных заголовков.
+     *
+     * @return array
+     */
+    public function getHeaders();
+
+    /**
      * Возращает заголовок ответа по названию.
      *
      * @param string $name Название заголовка
      *
-     * @return string
+     * @return string|null
      */
     public function getHeader($name);
 

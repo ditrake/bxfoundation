@@ -2,8 +2,14 @@
 
 namespace marvin255\bxfoundation\tests\lib\response;
 
-class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
+use marvin255\bxfoundation\tests\BaseCase;
+use marvin255\bxfoundation\response\Bitrix;
+
+class BitrixTest extends BaseCase
 {
+    /**
+     * @test
+     */
     public function testSetHeader()
     {
         $name = mt_rand();
@@ -16,21 +22,47 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('addHeader')
             ->with($this->equalTo($name), $this->equalTo($value));
 
-        $response = new \marvin255\bxfoundation\response\Bitrix($bxResponse);
+        $response = new Bitrix($bxResponse);
 
-        $this->assertSame(
-            $response,
-            $response->setHeader($name, $value),
-            'setHeader method must returns it\'s object'
-        );
-
-        $this->assertSame(
-            $value,
-            $response->getHeader($name),
-            'getHeader method must gets header value by it\'s name'
-        );
+        $this->assertSame($response, $response->setHeader($name, $value));
+        $this->assertSame($value, $response->getHeader($name));
     }
 
+    /**
+     * @test
+     */
+    public function testGetHeaders()
+    {
+        $name1 = 'name_1_' . mt_rand();
+        $value1 = 'value_1_' . mt_rand();
+        $name2 = 'name_2_' . mt_rand();
+        $value2 = 'value_2_' . mt_rand();
+        $res = [
+            $name1 => $value1,
+            $name2 => $value2,
+        ];
+
+        $bxResponse = $this->getMockBuilder('\Bitrix\Main\HttpResponse')
+            ->setMethods(['addHeader'])
+            ->getMock();
+
+        $response = $this->getMockBuilder(Bitrix::class)
+            ->setConstructorArgs([$bxResponse])
+            ->setMethods(['getSentHeaders'])
+            ->getMock();
+        $response->method('getSentHeaders')->will($this->returnValue([
+            "{$name2}: {$value2}",
+        ]));
+        $response->setHeader($name1, $value1);
+        $responseHeaders = $response->getHeaders();
+        ksort($responseHeaders);
+
+        $this->assertSame($res, $responseHeaders);
+    }
+
+    /**
+     * @test
+     */
     public function testSetStatus()
     {
         $status = mt_rand();
@@ -42,18 +74,9 @@ class BitrixTest extends \marvin255\bxfoundation\tests\BaseCase
             ->method('setStatus')
             ->with($this->equalTo($status));
 
-        $response = new \marvin255\bxfoundation\response\Bitrix($bxResponse);
+        $response = new Bitrix($bxResponse);
 
-        $this->assertSame(
-            $response,
-            $response->setStatus($status),
-            'setStatus method must returns it\'s object'
-        );
-
-        $this->assertSame(
-            $status,
-            $response->getStatus(),
-            'getStatus method must gets status setted by setStatus'
-        );
+        $this->assertSame($response, $response->setStatus($status));
+        $this->assertSame($status, $response->getStatus());
     }
 }

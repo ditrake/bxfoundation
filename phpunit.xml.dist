@@ -9,6 +9,7 @@
         <testsuite name="Bxfoundation test suite">
             <directory>tests/lib/application</directory>
             <directory>tests/lib/request</directory>
+            <directory>tests/lib/response</directory>
         </testsuite>
     </testsuites>
 
