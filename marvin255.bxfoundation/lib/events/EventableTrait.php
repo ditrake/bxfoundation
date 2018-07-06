@@ -19,7 +19,7 @@ trait EventableTrait
      * {@inheritdoc}
      *
      * В данную реализацию добавлен проксирование вызова соответствующего
-     * события из 1C-Битрикс. Собыития из 1C-Битрикс вызываются после событий,
+     * события из 1C-Битрикс. События из 1C-Битрикс вызываются после событий,
      * привязанных к данному объекту.
      */
     public function riseEvent(ResultInterface $result)
@@ -79,7 +79,9 @@ trait EventableTrait
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws \marvin255\bxfoundation\events\Exception
      */
     public function attachEventCallback($eventName, $callback)
     {
@@ -109,7 +111,9 @@ trait EventableTrait
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws \marvin255\bxfoundation\events\Exception
      */
     public function detachEventCallback($eventName, $callback)
     {

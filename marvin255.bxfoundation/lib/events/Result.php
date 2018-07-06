@@ -45,7 +45,7 @@ class Result implements ResultInterface
     public function __construct($name, $target, array $params = [])
     {
         if (empty($name)) {
-            throw new Exception('Event result name can\'t be empty');
+            throw new Exception("Event result name can't be empty");
         }
         $this->name = $name;
         if (!is_object($target)) {
