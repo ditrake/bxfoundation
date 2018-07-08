@@ -80,6 +80,9 @@ class RouterTest extends BaseCase
         $router->route($request, $response);
     }
 
+    /**
+     * @test
+     */
     public function testExceptionAction()
     {
         $content = (string) mt_rand();
