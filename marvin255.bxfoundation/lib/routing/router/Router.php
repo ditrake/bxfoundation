@@ -7,8 +7,7 @@ use marvin255\bxfoundation\routing\action\ActionInterface;
 use marvin255\bxfoundation\routing\rule\RuleResult;
 use marvin255\bxfoundation\request\RequestInterface;
 use marvin255\bxfoundation\response\ResponseInterface;
-use marvin255\bxfoundation\routing\HttpException;
-use marvin255\bxfoundation\routing\NotFoundException;
+use marvin255\bxfoundation\response;
 
 /**
  * Объект, который ищет подходящее правило для url
@@ -42,7 +41,7 @@ class Router implements RouterInterface
     /**
      * @inheritdoc
      */
-    public function registerRouteException($code, ActionInterface $action)
+    public function registerExceptionAction($code, ActionInterface $action)
     {
         $this->routesExceptions[$code] = $action;
 
@@ -59,10 +58,13 @@ class Router implements RouterInterface
         try {
             $return = $this->routeInternal($request, $response);
             if ($return === null) {
-                throw new NotFoundException();
+                throw new response\exception\NotFound;
             }
-        } catch (HttpException $e) {
+        } catch (response\exception\Response $e) {
             $return = $this->routeException($e, $request, $response);
+        } catch (\Exception $e) {
+            $internalException = new response\exception\ServerError($e->getMessage());
+            $return = $this->routeException($internalException, $request, $response);
         }
 
         return $return;
@@ -93,22 +95,22 @@ class Router implements RouterInterface
     /**
      * Обработка исключения, связанного с ответами http.
      *
-     * @param \marvin255\bxfoundation\routing\HttpException      $exception Ссылка на объект пойманного исключения
-     * @param \marvin255\bxfoundation\request\RequestInterface   $request   Ссылка на текущий объект запроса
-     * @param \marvin255\bxfoundation\response\ResponseInterface $response  Ссылка на текущий объект ответа
+     * @param \marvin255\bxfoundation\response\exception\Response $exception Ссылка на объект пойманного исключения
+     * @param \marvin255\bxfoundation\request\RequestInterface    $request   Ссылка на текущий объект запроса
+     * @param \marvin255\bxfoundation\response\ResponseInterface  $response  Ссылка на текущий объект ответа
      *
      * @return string
      *
-     * @throws \marvin255\bxfoundation\routing\HttpException
+     * @throws \marvin255\bxfoundation\response\exception\Response
      */
-    protected function routeException(HttpException $exception, RequestInterface $request, ResponseInterface $response)
+    protected function routeException(response\exception\Response $exception, RequestInterface $request, ResponseInterface $response)
     {
         $return = null;
 
         $response->setStatus($exception->getHttpStatus());
-        if (isset($this->routesExceptions[$exception->getHttpCode()])) {
+        if (isset($this->routesExceptions[$exception->getHttpStatus()])) {
             $ruleResult = new RuleResult(['exception' => $exception]);
-            $action = $this->routesExceptions[$exception->getHttpCode()];
+            $action = $this->routesExceptions[$exception->getHttpStatus()];
             $return = $action->run($ruleResult, $request, $response);
         } else {
             throw $exception;

@@ -31,7 +31,7 @@ interface RouterInterface
      *
      * @return \marvin255\bxfoundation\routing\router\RouterInterface
      */
-    public function registerRouteException($code, ActionInterface $action);
+    public function registerExceptionAction($code, ActionInterface $action);
 
     /**
      * Ищет правило, под которое подходит текущий запрос и выполняет
