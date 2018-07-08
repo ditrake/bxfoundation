@@ -20,4 +20,13 @@ interface RuleInterface
      * @return null|\marvin255\bxfoundation\routing\rule\RuleResultInterface
      */
     public function parse(RequestInterface $request, RuleResultInterface $ruleResult = null);
+
+    /**
+     * создает ссылку на основании указанных параметров.
+     *
+     * @param array $params Параметры для создания ссылки
+     *
+     * @return string
+     */
+    public function createUrl(array $params = []);
 }

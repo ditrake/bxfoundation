@@ -7,7 +7,10 @@ use marvin255\bxfoundation\routing\action\ActionInterface;
 use marvin255\bxfoundation\routing\rule\RuleResult;
 use marvin255\bxfoundation\request\RequestInterface;
 use marvin255\bxfoundation\response\ResponseInterface;
-use marvin255\bxfoundation\response;
+use marvin255\bxfoundation\response\exception\Response as ResponseException;
+use marvin255\bxfoundation\response\exception\NotFound;
+use marvin255\bxfoundation\response\exception\ServerError;
+use InvalidArgumentException;
 
 /**
  * Объект, который ищет подходящее правило для url
@@ -31,9 +34,9 @@ class Router implements RouterInterface
     /**
      * @inheritdoc
      */
-    public function registerRoute(RuleInterface $rule, ActionInterface $action)
+    public function registerRoute(RuleInterface $rule, ActionInterface $action, $routeName = null)
     {
-        $this->routes[] = [$rule, $action];
+        $this->routes[] = [$rule, $action, $routeName];
 
         return $this;
     }
@@ -58,16 +61,35 @@ class Router implements RouterInterface
         try {
             $return = $this->routeInternal($request, $response);
             if ($return === null) {
-                throw new response\exception\NotFound;
+                throw new NotFound;
             }
-        } catch (response\exception\Response $e) {
+        } catch (ResponseException $e) {
             $return = $this->routeException($e, $request, $response);
         } catch (\Exception $e) {
-            $internalException = new response\exception\ServerError($e->getMessage());
+            $internalException = new ServerError($e->getMessage(), $e->getCode(), $e);
             $return = $this->routeException($internalException, $request, $response);
         }
 
         return $return;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function url($routeName, array $params = [])
+    {
+        $route = $this->findRouteByName($routeName);
+        if ($route === null) {
+            throw new InvalidArgumentException(
+                "Can't find route with name {$routeName}"
+            );
+        }
+
+        list($rule, $action, $name) = $route;
+
+        return $rule->createUrl($params);
     }
 
     /**
@@ -93,6 +115,27 @@ class Router implements RouterInterface
     }
 
     /**
+     * Ищет роут по указанному имени.
+     *
+     * @param string $routeName
+     *
+     * @return array|null
+     */
+    protected function findRouteByName($routeName)
+    {
+        $return = null;
+        foreach ($this->routes as $route) {
+            list($rule, $action, $currentRouteName) = $route;
+            if ($currentRouteName === $routeName) {
+                $return = $route;
+                break;
+            }
+        }
+
+        return $return;
+    }
+
+    /**
      * Обработка исключения, связанного с ответами http.
      *
      * @param \marvin255\bxfoundation\response\exception\Response $exception Ссылка на объект пойманного исключения
@@ -103,7 +146,7 @@ class Router implements RouterInterface
      *
      * @throws \marvin255\bxfoundation\response\exception\Response
      */
-    protected function routeException(response\exception\Response $exception, RequestInterface $request, ResponseInterface $response)
+    protected function routeException(ResponseException $exception, RequestInterface $request, ResponseInterface $response)
     {
         $return = null;
 

@@ -18,10 +18,11 @@ interface RouterInterface
      *
      * @param \marvin255\bxfoundation\routing\rule\RuleInterface     $rule   Ссылка на правило
      * @param \marvin255\bxfoundation\routing\action\ActionInterface $action Ссылка на действие
+     * @param string                                                 $name   Псевдоним для правила
      *
      * @return \marvin255\bxfoundation\routing\router\RouterInterface
      */
-    public function registerRoute(RuleInterface $rule, ActionInterface $action);
+    public function registerRoute(RuleInterface $rule, ActionInterface $action, $routeName = null);
 
     /**
      * Регистрирует соответствие между правилом и действием для исключительной ситуации.
@@ -43,4 +44,15 @@ interface RouterInterface
      * @return string
      */
     public function route(RequestInterface $request, ResponseInterface $response);
+
+    /**
+     * Создает ссылку на основании правила, которое задано для указанного псевдонима
+     * и указанных параметров.
+     *
+     * @param string $routeName Псевдоним для правила
+     * @param array  $params    Параметры, из которых нужно создать ссылку
+     *
+     * @return string
+     */
+    public function url($routeName, array $params = []);
 }
