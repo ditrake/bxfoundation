@@ -2,20 +2,32 @@
 
 namespace marvin255\bxfoundation\tests\lib\services\iblock;
 
+use marvin255\bxfoundation\services\iblock\Locator;
+use marvin255\bxfoundation\services\Exception;
+
 class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
 {
+    /**
+     * @test
+     */
     public function testConstructorWrongFilterException()
     {
-        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
-        new \marvin255\bxfoundation\services\iblock\Locator(123, []);
+        $this->setExpectedException(Exception::class);
+        new Locator(123, []);
     }
 
+    /**
+     * @test
+     */
     public function testConstructorWrongSelectException()
     {
-        $this->setExpectedException('\marvin255\bxfoundation\services\Exception');
-        new \marvin255\bxfoundation\services\iblock\Locator([], 123);
+        $this->setExpectedException(Exception::class);
+        new Locator([], 123);
     }
 
+    /**
+     * @test
+     */
     public function testGetList()
     {
         $testFilter = [
@@ -38,13 +50,11 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
                 'test_key_2' => 'test_li_1_' . mt_rand(),
             ],
         ];
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [$testFilter, $testSelect],
-            '',
-            true
-        );
+
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setConstructorArgs([$testFilter, $testSelect])
+            ->setMethods(['loadList'])
+            ->getMock();
         $testSelect[] = 'ID';
         $locator->expects($this->once())
             ->method('loadList')
@@ -58,6 +68,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         $this->assertSame($list, $locator->getList());
     }
 
+    /**
+     * @test
+     */
     public function testGetListDefaults()
     {
         $list = [
@@ -67,13 +80,10 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
                 'test_key_2' => 'test_li_1_' . mt_rand(),
             ],
         ];
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [],
-            '',
-            true
-        );
+
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setMethods(['loadList'])
+            ->getMock();
         $testSelect[] = 'ID';
         $locator->expects($this->once())
             ->method('loadList')
@@ -96,6 +106,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         $this->assertSame($list, $locator->getList());
     }
 
+    /**
+     * @test
+     */
     public function testGetListDefaultsFromPublic()
     {
         $list = [
@@ -106,13 +119,10 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
             ],
         ];
         define('SITE_ID', 's1');
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [],
-            '',
-            true
-        );
+
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setMethods(['loadList'])
+            ->getMock();
         $testSelect[] = 'ID';
         $locator->expects($this->once())
             ->method('loadList')
@@ -135,6 +145,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         $this->assertSame($list, $locator->getList());
     }
 
+    /**
+     * @test
+     */
     public function testGetListCreateCache()
     {
         $testFilter = [
@@ -161,13 +174,10 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         $cache = $this->getMockBuilder('\marvin255\bxfoundation\services\cache\CacheInterface')
             ->getMock();
 
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [$testFilter, $testSelect, $cache],
-            '',
-            true
-        );
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setConstructorArgs([$testFilter, $testSelect, $cache])
+            ->setMethods(['loadList'])
+            ->getMock();
         $testSelect[] = 'ID';
         $locator->expects($this->once())
             ->method('loadList')
@@ -191,6 +201,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         $this->assertSame($list, $locator->getList());
     }
 
+    /**
+     * @test
+     */
     public function testGetListFromCache()
     {
         $testFilter = [
@@ -217,13 +230,10 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         $cache = $this->getMockBuilder('\marvin255\bxfoundation\services\cache\CacheInterface')
             ->getMock();
 
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [$testFilter, $testSelect, $cache],
-            '',
-            true
-        );
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setConstructorArgs([$testFilter, $testSelect, $cache])
+            ->setMethods(['loadList'])
+            ->getMock();
         $locator->expects($this->never())->method('loadList');
 
         $testSelect[] = 'ID';
@@ -236,6 +246,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         $this->assertSame($list, $locator->getList());
     }
 
+    /**
+     * @test
+     */
     public function testFindAllBy()
     {
         $list = [
@@ -251,13 +264,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
             ],
         ];
 
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [],
-            '',
-            true
-        );
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setMethods(['loadList'])
+            ->getMock();
         $locator->method('loadList')
             ->will($this->returnValue($list));
 
@@ -272,6 +281,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         );
     }
 
+    /**
+     * @test
+     */
     public function testFindBy()
     {
         $list = [
@@ -287,13 +299,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
             ],
         ];
 
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [],
-            '',
-            true
-        );
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setMethods(['loadList'])
+            ->getMock();
         $locator->method('loadList')
             ->will($this->returnValue($list));
 
@@ -308,6 +316,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         );
     }
 
+    /**
+     * @test
+     */
     public function testGetCodeById()
     {
         $list = [
@@ -321,13 +332,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
             ],
         ];
 
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [],
-            '',
-            true
-        );
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setMethods(['loadList'])
+            ->getMock();
         $locator->method('loadList')
             ->will($this->returnValue($list));
 
@@ -342,6 +349,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
         );
     }
 
+    /**
+     * @test
+     */
     public function testGetIdByCode()
     {
         $list = [
@@ -355,13 +365,9 @@ class LocatorTest extends \marvin255\bxfoundation\tests\BaseCase
             ],
         ];
 
-        $locator = $this->getMock(
-            '\marvin255\bxfoundation\services\iblock\Locator',
-            ['loadList'],
-            [],
-            '',
-            true
-        );
+        $locator = $this->getMockBuilder(Locator::class)
+            ->setMethods(['loadList'])
+            ->getMock();
         $locator->method('loadList')
             ->will($this->returnValue($list));
 
