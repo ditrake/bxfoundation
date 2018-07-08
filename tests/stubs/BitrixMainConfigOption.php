@@ -1,17 +1,19 @@
 <?php
 
-namespace marvin255\bxfoundation\services\config;
-
-use Bitrix\Main\Config\Option;
+namespace  Bitrix\Main\Config;
 
 /**
- * Класс, который инкапсулирует в себе обращение к \Bitrix\Main\Config\Option.
- *
- * Вызовы методов Option должны быть статичными, поэтому они не поддаются
- * перехвату, что вызывает необходимость писать код с высоким зацеплением.
+ * Мок для Bitrix\Main\Config\Option.
  */
-class BitrixOptions
+class Option
 {
+    /**
+     * Массив опций для тестов.
+     *
+     * @var array
+     */
+    public static $settedOptions = [];
+
     /**
      * Возвращает значение указанной опции.
      *
@@ -22,9 +24,11 @@ class BitrixOptions
      *
      * @return mixed
      */
-    public function get($moduleId, $name, $default = null, $siteId = false)
+    public static function get($moduleId, $name, $default = null, $siteId = false)
     {
-        return Option::get($moduleId, $name, $default, $siteId);
+        return isset(self::$settedOptions[$moduleId][$name])
+            ? self::$settedOptions[$moduleId][$name]
+            : $default;
     }
 
     /**
@@ -34,13 +38,9 @@ class BitrixOptions
      * @param string $name     Название опции
      * @param string $value    Новое значение опции
      * @param string $siteId   Идентификатор сайта, для которого нужно искать опцию
-     *
-     * @return \Bitrix\Main\Config\Option\BitrixOptions
      */
     public function set($moduleId, $name, $value, $siteId = false)
     {
-        Option::set($moduleId, $name, $value, $siteId);
-
-        return $this;
+        self::$settedOptions[$moduleId][$name] = $value;
     }
 }
