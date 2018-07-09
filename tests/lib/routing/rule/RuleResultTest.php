@@ -2,57 +2,38 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\rule;
 
-class RuleResultTest extends \marvin255\bxfoundation\tests\BaseCase
+use marvin255\bxfoundation\tests\BaseCase;
+use marvin255\bxfoundation\routing\rule\RuleResult;
+
+class RuleResultTest extends BaseCase
 {
+    /**
+     * @test
+     */
     public function testSetParams()
     {
         $defaultParams = ['default1' => mt_rand(), 'default2' => mt_rand(), 'default3' => mt_rand()];
         $newParams = ['new1' => mt_rand(), 'new2' => mt_rand()];
 
-        $result = new \marvin255\bxfoundation\routing\rule\RuleResult($defaultParams);
+        $result = new RuleResult($defaultParams);
 
-        $this->assertSame(
-            $defaultParams,
-            $result->getParams(),
-            'getParams method must returns parameters that was set in constructor by default'
-        );
-
-        $this->assertSame(
-            $result,
-            $result->setParams($newParams),
-            'setParams method must returns it\'s object'
-        );
-
-        $this->assertSame(
-            $newParams,
-            $result->getParams(),
-            'setParams method must change params returned by getParams'
-        );
+        $this->assertSame($defaultParams, $result->getParams());
+        $this->assertSame($result, $result->setParams($newParams));
+        $this->assertSame($newParams, $result->getParams());
     }
 
+    /**
+     * @test
+     */
     public function testSetParam()
     {
         $defaultParams = ['default1' => mt_rand(), 'default2' => mt_rand(), 'default3' => mt_rand()];
         $newParam = mt_rand();
 
-        $result = new \marvin255\bxfoundation\routing\rule\RuleResult($defaultParams);
+        $result = new RuleResult($defaultParams);
 
-        $this->assertSame(
-            $defaultParams['default2'],
-            $result->getParam('default2'),
-            'getParam method must returns parametersthat was set in constructor by default'
-        );
-
-        $this->assertSame(
-            $result,
-            $result->setParam('new_param', $newParam),
-            'setParam method must returns it\'s object'
-        );
-
-        $this->assertSame(
-            $newParam,
-            $result->getParam('new_param'),
-            'setParam method must change param returned by getParam'
-        );
+        $this->assertSame($defaultParams['default2'], $result->getParam('default2'));
+        $this->assertSame($result, $result->setParam('new_param', $newParam));
+        $this->assertSame($newParam, $result->getParam('new_param'));
     }
 }
