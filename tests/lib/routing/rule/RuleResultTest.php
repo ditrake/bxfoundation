@@ -19,6 +19,7 @@ class RuleResultTest extends BaseCase
 
         $this->assertSame($defaultParams, $result->getParams());
         $this->assertSame($result, $result->setParams($newParams));
+        $this->assertSame($newParams['new1'], $result->getParam('new1'));
         $this->assertSame($newParams, $result->getParams());
     }
 
