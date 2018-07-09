@@ -71,7 +71,7 @@ class RegexpTest extends BaseCase
         $id = mt_rand();
         $code = 'code_' . mt_rand();
 
-        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z]+>_after');
+        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z0-9_]+>_after');
 
         $this->assertSame(
             "/test/{$id}/before_{$code}_after",
@@ -86,9 +86,23 @@ class RegexpTest extends BaseCase
     {
         $code = 'code_' . mt_rand();
 
-        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z]+>_after');
+        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z0-9_]+>_after');
 
         $this->setExpectedException(Exception::class, 'id');
         $rule->createUrl(['code' => $code]);
+    }
+
+    /**
+     * @test
+     */
+    public function testCreateUrlWrongParamTypeException()
+    {
+        $id = 'string_' . mt_rand();
+        $code = 'code_' . mt_rand();
+
+        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z]+>_after');
+
+        $this->setExpectedException(Exception::class, 'id');
+        $rule->createUrl(['code' => $code, 'id' => $id]);
     }
 }

@@ -38,15 +38,16 @@ class Regexp extends Base
     protected function parseByRule(RequestInterface $request)
     {
         $return = null;
-        list($regexp, $params) = $this->getPreparedRegexp();
+        $prepared = $this->getPreparedRegexp();
         $path = trim($request->getPath(), " \t\n\r\0\x0B/");
-        if (preg_match($regexp, $path, $matches)) {
+
+        if (preg_match($prepared['parse'], $path, $matches)) {
             $return = [];
             foreach ($matches as $key => $value) {
-                if ($key === 0 || !isset($params[$key - 1])) {
+                if ($key === 0) {
                     continue;
                 }
-                $return[$params[$key - 1]] = $value;
+                $return[$prepared['params'][$key - 1]['code']] = $value;
             }
         }
 
@@ -60,24 +61,26 @@ class Regexp extends Base
      */
     protected function createUrlByRule(array $params)
     {
-        list($regexp, $regexpParams, $url) = $this->getPreparedRegexp();
+        $prepared = $this->getPreparedRegexp();
 
-        $urlParts = [];
-        foreach ($url as $urlPart) {
-            if (is_array($urlPart)) {
-                list($before, $param, $after) = $urlPart;
-                if (!isset($params[$param])) {
-                    throw new Exception(
-                        "Param {$param} is required for url creating"
-                    );
-                }
-                $urlParts[] = $before . $params[$param] . $after;
+        $toSearch = [];
+        $toReplace = [];
+        foreach ($prepared['params'] as $arParam) {
+            if (!isset($params[$arParam['code']])) {
+                throw new Exception(
+                    "Param `{$arParam['code']}` is required for url creation"
+                );
+            } elseif (!preg_match("/^{$arParam['regexp']}$/i", $params[$arParam['code']])) {
+                throw new Exception(
+                    "Param `{$arParam['code']}` has wrong type for regexp {$arParam['regexp']}"
+                );
             } else {
-                $urlParts[] = $urlPart;
+                $toSearch[] = "##{$arParam['code']}##";
+                $toReplace[] = $params[$arParam['code']];
             }
         }
 
-        return '/' . implode('/', $urlParts);
+        return str_replace($toSearch, $toReplace, $prepared['create']);
     }
 
     /**
@@ -90,24 +93,43 @@ class Regexp extends Base
     protected function getPreparedRegexp()
     {
         if ($this->preparegRegexp === null) {
-            $this->preparegRegexp = [];
-            $arRegexp = explode('/', trim($this->regexp, " \t\n\r\0\x0B/"));
+            $this->preparegRegexp = [
+                'parse' => '',
+                'create' => '',
+                'params' => [],
+            ];
+
+            $trimmedRegexp = trim($this->regexp, " \t\n\r\0\x0B/");
+            list($indignificantBegin, $indignificantEnd) = explode($trimmedRegexp, $this->regexp);
+            $arRegexp = explode('/', $trimmedRegexp);
+
             foreach ($arRegexp as $key => $value) {
+                $this->preparegRegexp['parse'] .= $this->preparegRegexp['parse'] ? '\/' : '';
+                $this->preparegRegexp['create'] .= $this->preparegRegexp['create'] ? '/' : '';
                 if (preg_match('/^([a-z_0-9\-]*)<([a-z_]{1}[a-z_0-9]*):?\s*([^><:]*)\s*>([a-z_0-9\-]*)$/i', $value, $matches)) {
-                    $this->preparegRegexp[1][] = $matches[2];
-                    $this->preparegRegexp[2][] = [$matches[1], $matches[2], $matches[4]];
-                    $arRegexp[$key] = '';
-                    $arRegexp[$key] .= preg_quote($matches[1]);
-                    $arRegexp[$key] .= empty($matches[3]) ? '([a-z_0-9\-]+)' : "({$matches[3]})";
-                    $arRegexp[$key] .= preg_quote($matches[4]);
+                    $paramRegexp = empty($matches[3]) ? '[a-z_0-9\-]+' : $matches[3];
+                    $this->preparegRegexp['parse'] .= preg_quote($matches[1], '/');
+                    $this->preparegRegexp['parse'] .= "({$paramRegexp})";
+                    $this->preparegRegexp['parse'] .= preg_quote($matches[4], '/');
+                    $this->preparegRegexp['create'] .= "{$matches[1]}##{$matches[2]}##{$matches[4]}";
+                    $this->preparegRegexp['params'][] = [
+                        'regexp' => $paramRegexp,
+                        'code' => $matches[2],
+                    ];
                 } elseif (preg_match('/^[a-z_0-9\-]*$/i', $value)) {
-                    $arRegexp[$key] = preg_quote($value);
-                    $this->preparegRegexp[2][] = $value;
+                    $this->preparegRegexp['parse'] .= preg_quote($value, '/');
+                    $this->preparegRegexp['create'] .= $value;
                 } else {
                     throw new Exception("Wrong regexp part: {$value}");
                 }
             }
-            $this->preparegRegexp[0] = '/^' . implode('\/', $arRegexp) . '$/i';
+
+            $this->preparegRegexp['create'] = $indignificantBegin
+                . $this->preparegRegexp['create']
+                . $indignificantEnd;
+            $this->preparegRegexp['parse'] = '/^'
+                . $this->preparegRegexp['parse']
+                . '$/i';
         }
 
         return $this->preparegRegexp;
