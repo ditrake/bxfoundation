@@ -48,4 +48,13 @@ interface UserInterface
      * @return bool
      */
     public function login($login, $password, $rememder = false);
+
+    /**
+     * Метод проверяет может ли пользователь выполнить указанную операцию rbac.
+     *
+     * @param string $operation Название операции
+     *
+     * @return bool
+     */
+    public function canDoOperation($operation);
 }

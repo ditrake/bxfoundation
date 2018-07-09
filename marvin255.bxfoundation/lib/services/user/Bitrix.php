@@ -76,6 +76,16 @@ class Bitrix implements UserInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function canDoOperation($operation)
+    {
+        return $this->getUser()
+            && $this->isAuthorized()
+            && $this->getUser()->canDoOperation($operation);
+    }
+
+    /**
      * Возвращает текущего пользователя битрикса.
      *
      * @return \CUser

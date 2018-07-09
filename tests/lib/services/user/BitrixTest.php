@@ -112,6 +112,28 @@ class BitrixTest extends BaseCase
     /**
      * @test
      */
+    public function testCanDoOperation()
+    {
+        $operation1 = 'operation_1_' . mt_rand();
+        $operation2 = 'operation_2_' . mt_rand();
+
+        $bxUser = $this->getMockBuilder('\CUser')
+            ->setMethods(['canDoOperation', 'isAuthorized'])
+            ->getMock();
+        $bxUser->method('canDoOperation')->will($this->returnCallback(function ($name) use ($operation1) {
+            return $name === $operation1;
+        }));
+        $bxUser->method('isAuthorized')->will($this->returnValue(true));
+
+        $user = new Bitrix($bxUser);
+
+        $this->assertSame(true, $user->canDoOperation($operation1));
+        $this->assertSame(false, $user->canDoOperation($operation2));
+    }
+
+    /**
+     * @test
+     */
     public function testGlobalUser()
     {
         $id = mt_rand();
