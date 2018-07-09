@@ -6,6 +6,7 @@ use marvin255\bxfoundation\tests\BaseCase;
 use marvin255\bxfoundation\Exception;
 use marvin255\bxfoundation\routing\rule\Regexp;
 use marvin255\bxfoundation\request\Bitrix as Request;
+use marvin255\bxfoundation\routing\filter\FilterInterface;
 
 class RegexpTest extends BaseCase
 {
@@ -104,5 +105,58 @@ class RegexpTest extends BaseCase
 
         $this->setExpectedException(Exception::class, 'id');
         $rule->createUrl(['code' => $code, 'id' => $id]);
+    }
+
+    /**
+     * @test
+     */
+    public function testFilterParsing()
+    {
+        $filter = $this->getMockBuilder(FilterInterface::class)
+            ->setMethods([
+                'onBeforeRouteParsing',
+                'onAfterRouteParsing',
+                'attachTo',
+                'filter',
+            ])->getMock();
+        $filter->expects($this->once())->method('onBeforeRouteParsing');
+        $filter->expects($this->once())->method('onAfterRouteParsing');
+        $filter->method('attachTo')->will($this->returnCallback(function ($rule) use ($filter) {
+            $rule->attachEventCallback('onBeforeRouteParsing', [$filter, 'onBeforeRouteParsing']);
+            $rule->attachEventCallback('onAfterRouteParsing', [$filter, 'onAfterRouteParsing']);
+        }));
+
+        $request = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getPath'])
+            ->getMock();
+        $request->method('getPath')
+            ->will($this->returnValue('/test/10/before_code_after/'));
+
+        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z]+>_after');
+        $rule->filter($filter)->parse($request);
+    }
+
+    /**
+     * @test
+     */
+    public function testFilterCreatingUrl()
+    {
+        $filter = $this->getMockBuilder(FilterInterface::class)
+            ->setMethods([
+                'onBeforeUrlCreating',
+                'onAfterUrlCreating',
+                'attachTo',
+                'filter',
+            ])->getMock();
+        $filter->expects($this->once())->method('onBeforeUrlCreating');
+        $filter->expects($this->once())->method('onAfterUrlCreating');
+        $filter->method('attachTo')->will($this->returnCallback(function ($rule) use ($filter) {
+            $rule->attachEventCallback('onBeforeUrlCreating', [$filter, 'onBeforeUrlCreating']);
+            $rule->attachEventCallback('onAfterUrlCreating', [$filter, 'onAfterUrlCreating']);
+        }));
+
+        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z0-9_]+>_after');
+        $rule->filter($filter)->createUrl(['id' => 10, 'code' => 'code']);
     }
 }

@@ -7,6 +7,7 @@ use marvin255\bxfoundation\events\EventableTrait;
 use marvin255\bxfoundation\events\Result;
 use marvin255\bxfoundation\response\exception\Forbidden;
 use marvin255\bxfoundation\request\RequestInterface;
+use marvin255\bxfoundation\routing\filter\FilterInterface;
 
 /**
  * Абстрактный класс для правила url.
@@ -98,5 +99,15 @@ abstract class Base implements RuleInterface, EventableInterface
         }
 
         return $return;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function filter(FilterInterface $filter)
+    {
+        $filter->attachTo($this);
+
+        return $this;
     }
 }
