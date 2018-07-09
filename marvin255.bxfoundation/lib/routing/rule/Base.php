@@ -49,23 +49,18 @@ abstract class Base implements RuleInterface, EventableInterface
     {
         $return = null;
 
-        $onBeforeRouteParsing = new Result(
-            'onBeforeRouteParsing',
-            $this,
-            ['request' => $request]
-        );
+        $onBeforeRouteParsing = new Result('onBeforeRouteParsing', $this, [
+            'request' => $request,
+        ]);
         $this->riseEvent($onBeforeRouteParsing);
 
         if ($onBeforeRouteParsing->isSuccess() && ($parseResult = $this->parseByRule($request)) !== null) {
-            $onAfterRouteParsing = new Result(
-                'onAfterRouteParsing',
-                $this,
-                [
-                    'request' => $request,
-                    'parseResult' => $parseResult,
-                ]
-            );
+            $onAfterRouteParsing = new Result('onAfterRouteParsing', $this, [
+                'request' => $request,
+                'parseResult' => $parseResult,
+            ]);
             $this->riseEvent($onAfterRouteParsing);
+
             if (!$onAfterRouteParsing->isSuccess()) {
                 throw new Forbidden;
             }
@@ -83,24 +78,20 @@ abstract class Base implements RuleInterface, EventableInterface
     {
         $return = null;
 
-        $onBeforeUrlCreating = new Result(
-            'onBeforeUrlCreating',
-            $this,
-            ['params' => $params]
-        );
+        $onBeforeUrlCreating = new Result('onBeforeUrlCreating', $this, [
+            'params' => $params,
+        ]);
         $this->riseEvent($onBeforeUrlCreating);
 
         if ($onBeforeUrlCreating->isSuccess()) {
             $url = $this->createUrlByRule($onBeforeUrlCreating->getParam('params'));
-            $onAfterUrlCreating = new Result(
-                'onAfterUrlCreating',
-                $this,
-                [
-                    'params' => $onBeforeUrlCreating->getParam('params'),
-                    'url' => $url,
-                ]
-            );
+
+            $onAfterUrlCreating = new Result('onAfterUrlCreating', $this, [
+                'params' => $onBeforeUrlCreating->getParam('params'),
+                'url' => $url,
+            ]);
             $this->riseEvent($onAfterUrlCreating);
+
             if ($onAfterUrlCreating->isSuccess()) {
                 $return = $onAfterUrlCreating->getParam('url');
             }

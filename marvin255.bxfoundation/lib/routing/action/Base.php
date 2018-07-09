@@ -33,29 +33,24 @@ abstract class Base implements ActionInterface, EventableInterface
     public function run(RuleResultInterface $ruleResult, RequestInterface $request, ResponseInterface $response)
     {
         $return = null;
-        $onBeforeActionRun = new Result(
-            'onBeforeActionRun',
-            $this,
-            [
+
+        $onBeforeActionRun = new Result('onBeforeActionRun', $this, [
+            'ruleResult' => $ruleResult,
+            'request' => $request,
+            'response' => $response,
+        ]);
+        $this->riseEvent($onBeforeActionRun);
+
+        if ($onBeforeActionRun->isSuccess()) {
+            $return = $this->runInternal($ruleResult, $request, $response);
+            $onAfterActionRun = new Result('onAfterActionRun', $this, [
                 'ruleResult' => $ruleResult,
                 'request' => $request,
                 'response' => $response,
-            ]
-        );
-        $this->riseEvent($onBeforeActionRun);
-        if ($onBeforeActionRun->isSuccess()) {
-            $return = $this->runInternal($ruleResult, $request, $response);
-            $onAfterActionRun = new Result(
-                'onAfterActionRun',
-                $this,
-                [
-                    'ruleResult' => $ruleResult,
-                    'request' => $request,
-                    'response' => $response,
-                    'return' => $return,
-                ]
-            );
+                'return' => $return,
+            ]);
             $this->riseEvent($onAfterActionRun);
+
             if ($onAfterActionRun->isSuccess()) {
                 $return = $onAfterActionRun->getParam('return');
             }
