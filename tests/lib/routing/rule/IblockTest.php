@@ -6,6 +6,7 @@ use marvin255\bxfoundation\tests\BaseCase;
 use marvin255\bxfoundation\services\iblock\Locator;
 use marvin255\bxfoundation\request\Bitrix as Request;
 use marvin255\bxfoundation\routing\rule\Iblock;
+use marvin255\bxfoundation\routing\filter\FilterInterface;
 use marvin255\bxfoundation\Exception;
 
 class IblockTest extends BaseCase
@@ -192,5 +193,111 @@ class IblockTest extends BaseCase
 
         $this->setExpectedException(Exception::class, 'SECTION_CODE');
         $rule->createUrl(['ID' => $iblockElementId]);
+    }
+
+    /**
+     * @test
+     */
+    public function testFilterParsing()
+    {
+        $filter = $this->getMockBuilder(FilterInterface::class)
+            ->setMethods([
+                'onBeforeRouteParsing',
+                'onAfterRouteParsing',
+                'attachTo',
+                'filter',
+            ])->getMock();
+        $filter->expects($this->once())->method('onBeforeRouteParsing');
+        $filter->expects($this->once())->method('onAfterRouteParsing');
+        $filter->method('attachTo')->will($this->returnCallback(function ($rule) use ($filter) {
+            $rule->attachEventCallback('onBeforeRouteParsing', [$filter, 'onBeforeRouteParsing']);
+            $rule->attachEventCallback('onAfterRouteParsing', [$filter, 'onAfterRouteParsing']);
+        }));
+
+        $iblockId = mt_rand();
+        $iblockType = mt_rand();
+        $iblockElementId = mt_rand();
+        $iblockSectionCode = 'section_code_' . mt_rand();
+        $detailPageUrl = '/news/#SECTION_CODE#/#ID#';
+
+        $locator = $this->getMockBuilder(Locator::class)
+            ->getMock();
+        $locator->method('findBy')
+            ->with($this->equalTo('ID'), $this->equalTo($iblockId))
+            ->will($this->returnValue([
+                'DETAIL_PAGE_URL' => $detailPageUrl,
+                'SECTION_PAGE_URL' => '/news/#SECTION_CODE#/',
+                'LIST_PAGE_URL' => '/news/',
+                'ID' => $iblockId,
+                'IBLOCK_TYPE_ID' => $iblockType,
+            ]));
+
+        $request = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getPath'])
+            ->getMock();
+        $request->method('getPath')
+            ->will($this->returnValue('/news/section_code/123'));
+
+        $rule = $this->getMockBuilder(Iblock::class)
+            ->setConstructorArgs([$locator, $iblockId, 'element'])
+            ->setMethods(['processBitrixSef'])
+            ->getMock();
+        $rule->method('processBitrixSef')
+            ->with(
+                $this->equalTo($detailPageUrl),
+                $this->equalTo($request)
+            )
+            ->will($this->returnValue([
+                'SECTION_CODE' => $iblockSectionCode,
+                'ID' => $iblockElementId,
+            ]));
+
+        $rule->filter($filter)->parse($request);
+    }
+
+    /**
+     * @test
+     */
+    public function testFilterCreatingUrl()
+    {
+        $filter = $this->getMockBuilder(FilterInterface::class)
+            ->setMethods([
+                'onBeforeUrlCreating',
+                'onAfterUrlCreating',
+                'attachTo',
+                'filter',
+            ])->getMock();
+        $filter->expects($this->once())->method('onBeforeUrlCreating');
+        $filter->expects($this->once())->method('onAfterUrlCreating');
+        $filter->method('attachTo')->will($this->returnCallback(function ($rule) use ($filter) {
+            $rule->attachEventCallback('onBeforeUrlCreating', [$filter, 'onBeforeUrlCreating']);
+            $rule->attachEventCallback('onAfterUrlCreating', [$filter, 'onAfterUrlCreating']);
+        }));
+
+        $iblockId = mt_rand();
+        $iblockType = mt_rand();
+        $iblockElementId = mt_rand();
+        $iblockSectionCode = 'section_code_' . mt_rand();
+        $detailPageUrl = '/news/#SECTION_CODE#/#ID#';
+        $awaitedUrl = "/news/{$iblockSectionCode}/{$iblockElementId}";
+
+        $locator = $this->getMockBuilder(Locator::class)
+            ->getMock();
+        $locator->method('findBy')
+            ->with($this->equalTo('ID'), $this->equalTo($iblockId))
+            ->will($this->returnValue([
+                'DETAIL_PAGE_URL' => $detailPageUrl,
+                'SECTION_PAGE_URL' => '/news/#SECTION_CODE#/',
+                'LIST_PAGE_URL' => '/news/',
+                'ID' => $iblockId,
+                'IBLOCK_TYPE_ID' => $iblockType,
+            ]));
+
+        $rule = new Iblock($locator, $iblockId, 'element');
+        $rule->filter($filter)->createUrl([
+            'SECTION_CODE' => $iblockSectionCode,
+            'ID' => $iblockElementId,
+        ]);
     }
 }
