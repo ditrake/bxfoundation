@@ -23,7 +23,7 @@ interface FilterInterface
     public function attachTo(EventableInterface $route);
 
     /**
-     * Проверяет, чтобы в текущем запросе был верныйй метод http.
+     * Проверяет, чтобы параметры события соответствовали бы фильтру.
      *
      * @param \marvin255\bxfoundation\events\ResultInterface $eventResult
      */

@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\routing\filter;
 
-use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\Exception;
 use marvin255\bxfoundation\events\ResultInterface;
 use marvin255\bxfoundation\events\EventableInterface;
 
@@ -26,7 +26,9 @@ class Method implements FilterInterface
     public function __construct($method)
     {
         if (empty($method)) {
-            throw new Exception('Constructor parameter can\'t be empty');
+            throw new Exception(
+                'Method parameter must be a string or array of valid http methods'
+            );
         }
         $method = is_array($method) ? $method : [$method];
         $this->methods = array_map('mb_strtoupper', $method);
@@ -51,7 +53,7 @@ class Method implements FilterInterface
     public function filter(ResultInterface $eventResult)
     {
         $request = $eventResult->getParam('request');
-        if (!$request || !in_array($request->getMethod(), $this->methods, true)) {
+        if (!in_array($request->getMethod(), $this->methods, true)) {
             $eventResult->fail();
         }
     }

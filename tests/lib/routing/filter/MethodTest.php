@@ -2,19 +2,32 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\filter;
 
-class MethodTest extends \marvin255\bxfoundation\tests\BaseCase
+use marvin255\bxfoundation\tests\BaseCase;
+use marvin255\bxfoundation\Exception;
+use marvin255\bxfoundation\routing\filter\Method;
+use marvin255\bxfoundation\events\EventableInterface;
+use marvin255\bxfoundation\request\RequestInterface;
+use marvin255\bxfoundation\events\ResultInterface;
+
+class MethodTest extends BaseCase
 {
+    /**
+     * @test
+     */
     public function testEmptyConstructorException()
     {
-        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
-        $filter = new \marvin255\bxfoundation\routing\filter\Method([]);
+        $this->setExpectedException(Exception::class);
+        $filter = new Method([]);
     }
 
+    /**
+     * @test
+     */
     public function testAttachTo()
     {
-        $filter = new \marvin255\bxfoundation\routing\filter\Method(['POST']);
+        $filter = new Method(['POST']);
 
-        $eventable = $this->getMockBuilder('\marvin255\bxfoundation\events\EventableInterface')
+        $eventable = $this->getMockBuilder(EventableInterface::class)
             ->getMock();
         $eventable->expects($this->once())
             ->method('attachEventCallback')
@@ -23,21 +36,20 @@ class MethodTest extends \marvin255\bxfoundation\tests\BaseCase
                 $this->equalTo([$filter, 'filter'])
             );
 
-        $this->assertSame(
-            $filter,
-            $filter->attachTo($eventable),
-            'attachTo method must return it\'s object'
-        );
+        $this->assertSame($filter, $filter->attachTo($eventable));
     }
 
+    /**
+     * @test
+     */
     public function testFilter()
     {
-        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\RequestInterface')
+        $request = $this->getMockBuilder(RequestInterface::class)
             ->getMock();
         $request->method('getMethod')
             ->will($this->returnValue('PUT'));
 
-        $result = $this->getMockBuilder('\marvin255\bxfoundation\events\ResultInterface')
+        $result = $this->getMockBuilder(ResultInterface::class)
             ->getMock();
         $result->method('getParam')
             ->with($this->equalTo('request'))
@@ -45,7 +57,7 @@ class MethodTest extends \marvin255\bxfoundation\tests\BaseCase
         $result->expects($this->once())
             ->method('fail');
 
-        $filter = new \marvin255\bxfoundation\routing\filter\Method(['POST', 'DELETE']);
+        $filter = new Method(['POST', 'DELETE']);
         $filter->filter($result);
     }
 }

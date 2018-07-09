@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\routing\filter;
 
-use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\Exception;
 use marvin255\bxfoundation\events\ResultInterface;
 use marvin255\bxfoundation\events\EventableInterface;
 
@@ -29,7 +29,9 @@ class Header implements FilterInterface
     public function __construct(array $headers)
     {
         if (empty($headers)) {
-            throw new Exception('Constructor parameter can\'t be empty');
+            throw new Exception(
+                'Headersmust be an array of awaited headers'
+            );
         }
         $this->headers = $headers;
     }
@@ -39,10 +41,7 @@ class Header implements FilterInterface
      */
     public function attachTo(EventableInterface $route)
     {
-        $route->attachEventCallback('onBeforeRouteParsing', [
-            $this,
-            'filter',
-        ]);
+        $route->attachEventCallback('onBeforeRouteParsing', [$this, 'filter']);
 
         return $this;
     }
