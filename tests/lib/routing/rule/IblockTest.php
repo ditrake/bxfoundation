@@ -39,13 +39,13 @@ class IblockTest extends BaseCase
     {
         $iblockId = mt_rand();
         $iblockType = mt_rand();
-        $iblockEmentId = mt_rand();
+        $iblockElementId = mt_rand();
         $iblockSectionCode = 'section_code_' . mt_rand();
         $detailPageUrl = '/news/#SECTION_CODE#/#ID#';
         $awaitedParams = [
             'IBLOCK_ID' => $iblockId,
             'IBLOCK_TYPE_ID' => $iblockType,
-            'ID' => $iblockEmentId,
+            'ID' => $iblockElementId,
             'SECTION_CODE' => $iblockSectionCode,
         ];
 
@@ -79,7 +79,7 @@ class IblockTest extends BaseCase
             )
             ->will($this->returnValue([
                 'SECTION_CODE' => $iblockSectionCode,
-                'ID' => $iblockEmentId,
+                'ID' => $iblockElementId,
             ]));
 
         $ruleResult = $rule->parse($request);
@@ -108,5 +108,89 @@ class IblockTest extends BaseCase
 
         $this->setExpectedException(Exception::class, (string) $iblockId);
         $ruleResult = $rule->parse($request);
+    }
+
+    /**
+     * @test
+     */
+    public function testCreateUrl()
+    {
+        $iblockId = mt_rand();
+        $iblockType = mt_rand();
+        $iblockElementId = mt_rand();
+        $iblockSectionCode = 'section_code_' . mt_rand();
+        $detailPageUrl = '/news/#SECTION_CODE#/#ID#';
+        $awaitedUrl = "/news/{$iblockSectionCode}/{$iblockElementId}";
+
+        $locator = $this->getMockBuilder(Locator::class)
+            ->getMock();
+        $locator->method('findBy')
+            ->with($this->equalTo('ID'), $this->equalTo($iblockId))
+            ->will($this->returnValue([
+                'DETAIL_PAGE_URL' => $detailPageUrl,
+                'SECTION_PAGE_URL' => '/news/#SECTION_CODE#/',
+                'LIST_PAGE_URL' => '/news/',
+                'ID' => $iblockId,
+                'IBLOCK_TYPE_ID' => $iblockType,
+            ]));
+
+        $rule = new Iblock($locator, $iblockId, 'element');
+        $url = $rule->createUrl([
+            'SECTION_CODE' => $iblockSectionCode,
+            'ID' => $iblockElementId,
+        ]);
+
+        $this->assertSame($awaitedUrl, $url);
+    }
+
+    /**
+     * @test
+     */
+    public function testCreateUrlIblockIdentityException()
+    {
+        $iblockId = mt_rand();
+
+        $locator = $this->getMockBuilder(Locator::class)
+            ->getMock();
+        $locator->method('findBy')->will($this->returnValue(null));
+
+        $request = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $rule = new Iblock($locator, $iblockId);
+
+        $this->setExpectedException(Exception::class, (string) $iblockId);
+        $ruleResult = $rule->createUrl([]);
+    }
+
+    /**
+     * @test
+     */
+    public function testCreateUrlRequiredParamException()
+    {
+        $iblockId = mt_rand();
+        $iblockType = mt_rand();
+        $iblockElementId = mt_rand();
+        $iblockSectionCode = 'section_code_' . mt_rand();
+        $detailPageUrl = '/news/#SECTION_CODE#/#ID#';
+        $awaitedUrl = "/news/{$iblockSectionCode}/{$iblockElementId}";
+
+        $locator = $this->getMockBuilder(Locator::class)
+            ->getMock();
+        $locator->method('findBy')
+            ->with($this->equalTo('ID'), $this->equalTo($iblockId))
+            ->will($this->returnValue([
+                'DETAIL_PAGE_URL' => $detailPageUrl,
+                'SECTION_PAGE_URL' => '/news/#SECTION_CODE#/',
+                'LIST_PAGE_URL' => '/news/',
+                'ID' => $iblockId,
+                'IBLOCK_TYPE_ID' => $iblockType,
+            ]));
+
+        $rule = new Iblock($locator, $iblockId, 'element');
+
+        $this->setExpectedException(Exception::class, 'SECTION_CODE');
+        $rule->createUrl(['ID' => $iblockElementId]);
     }
 }

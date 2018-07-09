@@ -108,6 +108,33 @@ class Iblock extends Base
      */
     protected function createUrlByRule(array $params)
     {
+        $return = null;
+
+        $iblock = $this->getIblockArrayByIdentity($this->iblock);
+        if ($iblock === null) {
+            throw new Exception(
+                "Can't find iblock by identity: {$this->iblock}"
+            );
+        }
+
+        $link = $iblock[$this->entity];
+        $toSearch = [];
+        $toReplace = [];
+        foreach (explode('/', trim($link, '/')) as $linkItem) {
+            if (!preg_match('/^#([^#]+)#$/', $linkItem, $matches)) {
+                continue;
+            }
+            if (isset($params[$matches[1]])) {
+                $toSearch[] = "#{$matches[1]}#";
+                $toReplace[] = $params[$matches[1]];
+            } else {
+                throw new Exception(
+                    "Param `{$matches[1]}` is required for url creation"
+                );
+            }
+        }
+
+        return str_replace($toSearch, $toReplace, $link);
     }
 
     /**
@@ -120,7 +147,7 @@ class Iblock extends Base
      */
     protected function processBitrixSef($link, RequestInterface $request)
     {
-        $engine = new CComponentEngine();
+        $engine = new CComponentEngine;
         $engine->addGreedyPart('#SECTION_CODE_PATH#');
         $engine->setResolveCallback(['CIBlockFindTools', 'resolveComponentEngine']);
         $arVariables = [];
