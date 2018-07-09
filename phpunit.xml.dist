@@ -7,7 +7,7 @@
 
     <testsuites>
         <testsuite name="Bxfoundation test suite">
-            <directory>tests/lib/routing/rule/RegexpTest.php</directory>
+            <directory>tests/lib/routing/rule/IblockTest.php</directory>
         </testsuite>
     </testsuites>
 

@@ -2,9 +2,10 @@
 
 namespace marvin255\bxfoundation\routing\rule;
 
-use marvin255\bxfoundation\routing\Exception;
 use marvin255\bxfoundation\request\RequestInterface;
 use marvin255\bxfoundation\services\iblock\Locator;
+use marvin255\bxfoundation\Exception;
+use CComponentEngine;
 
 /**
  * Правило, которое использует настройки инфоблока для проверки url.
@@ -24,48 +25,58 @@ class Iblock extends Base
      */
     protected $iblock = null;
     /**
-     * Массив с сущностями, которые нужно отображать.
+     * Сущность, для которой будет построен url.
+     *
      * iblock - инфоблок
      * section - раздел инфоблока
-     * element - элемент инфоблока.
+     * element - элемент инфоблока
+     *
+     * @var string
+     */
+    protected $entity;
+    /**
+     * Массив с сущностями, которые можно отображать. Массив вида
+     * "человекопонятное название" => "название поля в битриксе".
      *
      * @var array
      */
-    protected $entities = ['iblock', 'section', 'element'];
+    protected $entities = [
+        'iblock' => 'LIST_PAGE_URL',
+        'section' => 'SECTION_PAGE_URL',
+        'element' => 'DETAIL_PAGE_URL',
+    ];
 
     /**
      * Конструктор.
      *
-     * @param \marvin255\bxfoundation\services\iblock\Locator $locator  Ссылка на объект для поиска инфоблоков
-     * @param string                                          $iblock   Символьный код или идентификатор инфоблока
-     * @param array|string                                    $entities Массив с сущностями, которые нужно отображать
-     * @param array                                           $filters
+     * @param \marvin255\bxfoundation\services\iblock\Locator $locator Ссылка на объект для поиска инфоблоков
+     * @param string                                          $iblock  Символьный код или идентификатор инфоблока
+     * @param string                                          $entity  Сущност, для которой будет работать правило
      *
-     * @throws \marvin255\bxfoundation\routing\Exception
+     * @throws \marvin255\bxfoundation\Exception
      */
-    public function __construct(Locator $locator, $iblock, $entities = null, array $filters = null)
+    public function __construct(Locator $locator, $iblock, $entity = 'element')
     {
         $this->locator = $locator;
+
         if (empty($iblock)) {
             throw new Exception('Empty iblock identity');
         }
         $this->iblock = $iblock;
-        if ($entities !== null) {
-            $entities = is_array($entities) ? array_unique($entities) : [$entities];
-            if ($diff = array_diff($entities, ['iblock', 'section', 'element'])) {
-                throw new Exception('Undefined entities: ' . implode(', ', $diff));
-            }
-            $this->entities = $entities;
-        }
-        if ($filters) {
-            $this->attachFilters($filters);
+
+        if (isset($this->entities[$entity])) {
+            $this->entity = $this->entities[$entity];
+        } else {
+            throw new Exception(
+                "There is no '{$entity}' entity for Iblock rule"
+            );
         }
     }
 
     /**
      * {@inheritdoc}
      *
-     * @throws \marvin255\bxfoundation\routing\Exception
+     * @throws \marvin255\bxfoundation\Exception
      */
     protected function parseByRule(RequestInterface $request)
     {
@@ -73,32 +84,13 @@ class Iblock extends Base
 
         $iblock = $this->getIblockArrayByIdentity($this->iblock);
         if ($iblock === null) {
-            throw new Exception('Wrong iblock identity: ' . $this->iblock);
+            throw new Exception(
+                "Can't find iblock by identity: {$this->iblock}"
+            );
         }
 
-        $path = trim($request->getPath(), " \t\n\r\0\x0B/");
-        $link = null;
-        if (
-            in_array('element', $this->entities)
-            && ($regexp = $this->convertBitrixLinkToRegexp($iblock['DETAIL_PAGE_URL']))
-            && preg_match($regexp, $path)
-        ) {
-            $link = $iblock['DETAIL_PAGE_URL'];
-        } elseif (
-            in_array('section', $this->entities)
-            && ($regexp = $this->convertBitrixLinkToRegexp($iblock['SECTION_PAGE_URL']))
-            && preg_match($regexp, $path)
-        ) {
-            $link = $iblock['SECTION_PAGE_URL'];
-        } elseif (
-            in_array('iblock', $this->entities)
-            && ($regexp = $this->convertBitrixLinkToRegexp($iblock['LIST_PAGE_URL']))
-            && preg_match($regexp, $path)
-        ) {
-            $link = $iblock['LIST_PAGE_URL'];
-        }
-
-        if ($link !== null) {
+        $link = $iblock[$this->entity];
+        if ($link) {
             $return = $this->processBitrixSef($link, $request);
             if ($return !== null) {
                 $return['IBLOCK_ID'] = (int) $iblock['ID'];
@@ -107,6 +99,15 @@ class Iblock extends Base
         }
 
         return $return;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \marvin255\bxfoundation\Exception
+     */
+    protected function createUrlByRule(array $params)
+    {
     }
 
     /**
@@ -119,7 +120,7 @@ class Iblock extends Base
      */
     protected function processBitrixSef($link, RequestInterface $request)
     {
-        $engine = new \CComponentEngine();
+        $engine = new CComponentEngine();
         $engine->addGreedyPart('#SECTION_CODE_PATH#');
         $engine->setResolveCallback(['CIBlockFindTools', 'resolveComponentEngine']);
         $arVariables = [];
@@ -131,30 +132,6 @@ class Iblock extends Base
         );
 
         return $componentPage === 'resolved' ? $arVariables : null;
-    }
-
-    /**
-     * Конвертирует ссылку с заменами битрикса в регулярное выражение для
-     * предварительной проверки.
-     *
-     * @param string $link
-     *
-     * @return string
-     */
-    protected function convertBitrixLinkToRegexp($link)
-    {
-        $return = null;
-        $path = trim($link, " \t\n\r\0\x0B/");
-        $arPath = explode('/', $path);
-        foreach ($arPath as $chainItem) {
-            if (preg_match('/^#[^#]+#$/', $chainItem)) {
-                $return[] = '[^\/]+';
-            } else {
-                $return[] = preg_quote($chainItem);
-            }
-        }
-
-        return $return ? '/^' . implode('\/', $return) . '$/' : null;
     }
 
     /**
