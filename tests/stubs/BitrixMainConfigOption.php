@@ -39,7 +39,7 @@ class Option
      * @param string $value    Новое значение опции
      * @param string $siteId   Идентификатор сайта, для которого нужно искать опцию
      */
-    public function set($moduleId, $name, $value, $siteId = false)
+    public static function set($moduleId, $name, $value, $siteId = false)
     {
         self::$settedOptions[$moduleId][$name] = $value;
     }
