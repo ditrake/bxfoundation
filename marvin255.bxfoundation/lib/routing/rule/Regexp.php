@@ -17,7 +17,7 @@ class Regexp extends Base
     /**
      * @var array
      */
-    protected $preparegRegexp;
+    protected $preparedRegexp;
 
     /**
      * @param string $regexp
@@ -92,8 +92,8 @@ class Regexp extends Base
      */
     protected function getPreparedRegexp()
     {
-        if ($this->preparegRegexp === null) {
-            $this->preparegRegexp = [
+        if ($this->preparedRegexp === null) {
+            $this->preparedRegexp = [
                 'parse' => '',
                 'create' => '',
                 'params' => [],
@@ -104,34 +104,34 @@ class Regexp extends Base
             $arRegexp = explode('/', $trimmedRegexp);
 
             foreach ($arRegexp as $key => $value) {
-                $this->preparegRegexp['parse'] .= $this->preparegRegexp['parse'] ? '\/' : '';
-                $this->preparegRegexp['create'] .= $this->preparegRegexp['create'] ? '/' : '';
+                $this->preparedRegexp['parse'] .= $this->preparedRegexp['parse'] ? '\/' : '';
+                $this->preparedRegexp['create'] .= $this->preparedRegexp['create'] ? '/' : '';
                 if (preg_match('/^([a-z_0-9\-]*)<([a-z_]{1}[a-z_0-9]*):?\s*([^><:]*)\s*>([a-z_0-9\-]*)$/i', $value, $matches)) {
                     $paramRegexp = empty($matches[3]) ? '[a-z_0-9\-]+' : $matches[3];
-                    $this->preparegRegexp['parse'] .= preg_quote($matches[1], '/');
-                    $this->preparegRegexp['parse'] .= "({$paramRegexp})";
-                    $this->preparegRegexp['parse'] .= preg_quote($matches[4], '/');
-                    $this->preparegRegexp['create'] .= "{$matches[1]}##{$matches[2]}##{$matches[4]}";
-                    $this->preparegRegexp['params'][] = [
+                    $this->preparedRegexp['parse'] .= preg_quote($matches[1], '/');
+                    $this->preparedRegexp['parse'] .= "({$paramRegexp})";
+                    $this->preparedRegexp['parse'] .= preg_quote($matches[4], '/');
+                    $this->preparedRegexp['create'] .= "{$matches[1]}##{$matches[2]}##{$matches[4]}";
+                    $this->preparedRegexp['params'][] = [
                         'regexp' => $paramRegexp,
                         'code' => $matches[2],
                     ];
                 } elseif (preg_match('/^[a-z_0-9\-]*$/i', $value)) {
-                    $this->preparegRegexp['parse'] .= preg_quote($value, '/');
-                    $this->preparegRegexp['create'] .= $value;
+                    $this->preparedRegexp['parse'] .= preg_quote($value, '/');
+                    $this->preparedRegexp['create'] .= $value;
                 } else {
                     throw new Exception("Wrong regexp part: {$value}");
                 }
             }
 
-            $this->preparegRegexp['create'] = $indignificantBegin
-                . $this->preparegRegexp['create']
+            $this->preparedRegexp['create'] = $indignificantBegin
+                . $this->preparedRegexp['create']
                 . $indignificantEnd;
-            $this->preparegRegexp['parse'] = '/^'
-                . $this->preparegRegexp['parse']
+            $this->preparedRegexp['parse'] = '/^'
+                . $this->preparedRegexp['parse']
                 . '$/i';
         }
 
-        return $this->preparegRegexp;
+        return $this->preparedRegexp;
     }
 }
