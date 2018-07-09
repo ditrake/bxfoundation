@@ -7,8 +7,7 @@
 
     <testsuites>
         <testsuite name="Bxfoundation test suite">
-            <directory>tests/lib/routing/filter</directory>
-            <directory>tests/lib/services</directory>
+            <directory>tests/lib</directory>
         </testsuite>
     </testsuites>
 

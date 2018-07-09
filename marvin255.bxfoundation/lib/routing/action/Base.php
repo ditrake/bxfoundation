@@ -21,7 +21,7 @@ abstract class Base implements ActionInterface, EventableInterface
      *
      * @param \marvin255\bxfoundation\routing\rule\RuleResultInterface $ruleResult Ссылка на объект с параметрами, полученными от обработчика url
      * @param \marvin255\bxfoundation\request\RequestInterface         $request    Ссылка на текущий объект запроса
-     * @param \marvin255\bxfoundation\response\ResponseInterface       $response   Ссылка на текущий объект запроса
+     * @param \marvin255\bxfoundation\response\ResponseInterface       $response   Ссылка на текущий объект ответа
      *
      * @return string
      */

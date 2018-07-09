@@ -5,7 +5,7 @@ namespace marvin255\bxfoundation\routing\action;
 use marvin255\bxfoundation\request\RequestInterface;
 use marvin255\bxfoundation\response\ResponseInterface;
 use marvin255\bxfoundation\routing\rule\RuleResultInterface;
-use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\Exception;
 
 /**
  * Переадресация на указанную ссылку.
@@ -28,9 +28,10 @@ class Redirect extends Base
      */
     public function __construct($url)
     {
-        $url = trim($url);
-        if ($url === '') {
-            throw new Exception('Url parameter can\'t be empty');
+        if (trim($url) === '') {
+            throw new Exception(
+                "Url parameter can't be empty"
+            );
         }
         $this->url = $url;
     }

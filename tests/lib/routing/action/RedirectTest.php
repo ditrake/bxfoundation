@@ -2,33 +2,43 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\action;
 
-class RedirectTest extends \marvin255\bxfoundation\tests\BaseCase
+use marvin255\bxfoundation\tests\BaseCase;
+use marvin255\bxfoundation\Exception;
+use marvin255\bxfoundation\routing\action\Redirect;
+use marvin255\bxfoundation\request\Bitrix as Request;
+use marvin255\bxfoundation\response\Bitrix as Response;
+use marvin255\bxfoundation\routing\rule\RuleResultInterface;
+
+class RedirectTest extends BaseCase
 {
+    /**
+     * @test
+     */
     public function testConstructorEmptyUrlException()
     {
-        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
-        new \marvin255\bxfoundation\routing\action\Redirect(null);
+        $this->setExpectedException(Exception::class);
+        new Redirect(null);
     }
 
+    /**
+     * @test
+     */
     public function testRun()
     {
-        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
+        $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $response = $this->getMockBuilder('\marvin255\bxfoundation\response\Bitrix')
+        $response = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $ruleResult = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\RuleResultInterface')
+        $ruleResult = $this->getMockBuilder(RuleResultInterface::class)
             ->getMock();
 
         $url = '/' . mt_rand() . '/';
-        $action = $this->getMock(
-            '\marvin255\bxfoundation\routing\action\Redirect',
-            ['localRedirect'],
-            [$url],
-            '',
-            true
-        );
+        $action = $this->getMockBuilder(Redirect::class)
+            ->setConstructorArgs([$url])
+            ->setMethods(['localRedirect'])
+            ->getMock();
         $action->expects($this->once())
             ->method('localRedirect')
             ->with($this->equalTo($url));

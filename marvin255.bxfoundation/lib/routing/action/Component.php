@@ -5,7 +5,7 @@ namespace marvin255\bxfoundation\routing\action;
 use marvin255\bxfoundation\request\RequestInterface;
 use marvin255\bxfoundation\response\ResponseInterface;
 use marvin255\bxfoundation\routing\rule\RuleResultInterface;
-use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\Exception;
 
 /**
  * Действие, которое вызывает компонент битрикса с указанными настройками.
@@ -46,7 +46,9 @@ class Component extends Base
     public function __construct($component, $template = '', array $params = [])
     {
         if (empty($component)) {
-            throw new Exception('Component name can\'t be empty');
+            throw new Exception(
+                "Component name can't be empty"
+            );
         }
         $this->component = $component;
         $this->params = $params;

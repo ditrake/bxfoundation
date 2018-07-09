@@ -5,7 +5,7 @@ namespace marvin255\bxfoundation\routing\action;
 use marvin255\bxfoundation\request\RequestInterface;
 use marvin255\bxfoundation\response\ResponseInterface;
 use marvin255\bxfoundation\routing\rule\RuleResultInterface;
-use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\Exception;
 
 /**
  * Цепочка из нескольки последовательно выполняющихся действий.
@@ -35,7 +35,9 @@ class Chain extends Base
             if ($action instanceof ActionInterface) {
                 continue;
             }
-            throw new Exception("Action with key {$key} is not an ActionInterface instance");
+            throw new Exception(
+                "Action with key {$key} is not an ActionInterface instance"
+            );
         }
         $this->actions = $actions;
     }
