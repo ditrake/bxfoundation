@@ -2,7 +2,7 @@
 
 namespace marvin255\bxfoundation\routing\rule;
 
-use marvin255\bxfoundation\routing\Exception;
+use marvin255\bxfoundation\Exception;
 use marvin255\bxfoundation\request\RequestInterface;
 
 /**
@@ -14,23 +14,22 @@ class Regexp extends Base
      * @var string
      */
     protected $regexp = null;
+    /**
+     * @var array
+     */
+    protected $preparegRegexp;
 
     /**
      * @param string $regexp
-     * @param array  $filters
      *
      * @throws \marvin255\bxfoundation\routing\Exception
      */
-    public function __construct($regexp, array $filters = null)
+    public function __construct($regexp)
     {
-        $regexp = trim($regexp);
-        if (!$regexp) {
+        if (trim($regexp) === '') {
             throw new Exception('regexp param must be set');
         }
         $this->regexp = $regexp;
-        if ($filters) {
-            $this->attachFilters($filters);
-        }
     }
 
     /**
@@ -55,6 +54,33 @@ class Regexp extends Base
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @throws \marvin255\bxfoundation\Exception
+     */
+    protected function createUrlByRule(array $params)
+    {
+        list($regexp, $regexpParams, $url) = $this->getPreparedRegexp();
+
+        $urlParts = [];
+        foreach ($url as $urlPart) {
+            if (is_array($urlPart)) {
+                list($before, $param, $after) = $urlPart;
+                if (!isset($params[$param])) {
+                    throw new Exception(
+                        "Param {$param} is required for url creating"
+                    );
+                }
+                $urlParts[] = $before . $params[$param] . $after;
+            } else {
+                $urlParts[] = $urlPart;
+            }
+        }
+
+        return '/' . implode('/', $urlParts);
+    }
+
+    /**
      * Возвращает подготовленное к проверке регулярное выражение.
      *
      * @return string
@@ -63,26 +89,27 @@ class Regexp extends Base
      */
     protected function getPreparedRegexp()
     {
-        $return = [
-            'regexp' => null,
-            'params' => [],
-        ];
-        $arRegexp = explode('/', trim($this->regexp, " \t\n\r\0\x0B/"));
-        foreach ($arRegexp as $key => $value) {
-            if (preg_match('/^([a-z_0-9\-]*)<([a-z_]{1}[a-z_0-9]*):?\s*([^><:]*)\s*>([a-z_0-9\-]*)$/i', $value, $matches)) {
-                $return['params'][] = $matches[2];
-                $arRegexp[$key] = '';
-                $arRegexp[$key] .= preg_quote($matches[1]);
-                $arRegexp[$key] .= empty($matches[3]) ? '([a-z_0-9\-]+)' : "({$matches[3]})";
-                $arRegexp[$key] .= preg_quote($matches[4]);
-            } elseif (preg_match('/^[a-z_0-9\-]*$/i', $value)) {
-                $arRegexp[$key] = preg_quote($value);
-            } else {
-                throw new Exception("Wrong regexp part: {$value}");
+        if ($this->preparegRegexp === null) {
+            $this->preparegRegexp = [];
+            $arRegexp = explode('/', trim($this->regexp, " \t\n\r\0\x0B/"));
+            foreach ($arRegexp as $key => $value) {
+                if (preg_match('/^([a-z_0-9\-]*)<([a-z_]{1}[a-z_0-9]*):?\s*([^><:]*)\s*>([a-z_0-9\-]*)$/i', $value, $matches)) {
+                    $this->preparegRegexp[1][] = $matches[2];
+                    $this->preparegRegexp[2][] = [$matches[1], $matches[2], $matches[4]];
+                    $arRegexp[$key] = '';
+                    $arRegexp[$key] .= preg_quote($matches[1]);
+                    $arRegexp[$key] .= empty($matches[3]) ? '([a-z_0-9\-]+)' : "({$matches[3]})";
+                    $arRegexp[$key] .= preg_quote($matches[4]);
+                } elseif (preg_match('/^[a-z_0-9\-]*$/i', $value)) {
+                    $arRegexp[$key] = preg_quote($value);
+                    $this->preparegRegexp[2][] = $value;
+                } else {
+                    throw new Exception("Wrong regexp part: {$value}");
+                }
             }
+            $this->preparegRegexp[0] = '/^' . implode('\/', $arRegexp) . '$/i';
         }
-        $return['regexp'] = '/^' . implode('\/', $arRegexp) . '$/i';
 
-        return array_values($return);
+        return $this->preparegRegexp;
     }
 }

@@ -2,33 +2,33 @@
 
 namespace marvin255\bxfoundation\tests\lib\routing\rule;
 
-class RegexpTest extends \marvin255\bxfoundation\tests\BaseCase
+use marvin255\bxfoundation\tests\BaseCase;
+use marvin255\bxfoundation\Exception;
+use marvin255\bxfoundation\routing\rule\Regexp;
+use marvin255\bxfoundation\request\Bitrix as Request;
+
+class RegexpTest extends BaseCase
 {
-    public function testAttachFiltersInConstructor()
-    {
-        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
-            ->disableOriginalConstructor()
-            ->setMethods(['attachTo'])
-            ->getMock();
-
-        $filter->expects($this->once())
-            ->method('attachTo');
-
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test', [$filter]);
-    }
-
+    /**
+     * @test
+     */
     public function testEmptyRegexpConstructorException()
     {
-        $this->setExpectedException('\marvin255\bxfoundation\routing\Exception');
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp(null);
+        $this->setExpectedException(Exception::class);
+        $rule = new Regexp(null);
     }
 
+    /**
+     * @test
+     */
     public function testParse()
     {
         $id = (string) mt_rand();
         $code = 'qwe';
-        $truePath = "/test/{$id}/{$code}/";
-        $requestTrue = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
+        $roteParams = ['id' => $id, 'code' => $code];
+
+        $truePath = "/test/{$id}/before_{$code}_after/";
+        $requestTrue = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
@@ -36,196 +36,59 @@ class RegexpTest extends \marvin255\bxfoundation\tests\BaseCase
             ->will($this->returnValue($truePath));
 
         $falsePath = '/test1/' . mt_rand() . '/qwe/' . mt_rand();
-        $requestFalse = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
+        $requestFalse = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getPath'])
             ->getMock();
         $requestFalse->method('getPath')
             ->will($this->returnValue($falsePath));
 
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('/test/<id:\d+>/<code:[a-z]+>');
+        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z]+>_after');
 
-        $this->assertSame(
-            ['id' => $id, 'code' => $code],
-            $rule->parse($requestTrue)->getParams(),
-            'parse method must checks url and returns parsed data'
-        );
-
-        $this->assertSame(
-            null,
-            $rule->parse($requestFalse),
-            'parse method must checks url and returns null if it is wrong'
-        );
+        $this->assertSame($roteParams, $rule->parse($requestTrue)->getParams());
+        $this->assertSame(null, $rule->parse($requestFalse));
     }
 
+    /**
+     * @test
+     */
     public function testParseException()
     {
-        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
+        $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('/test/ ewer/<code:[a-z]+>');
-        $this->setExpectedException(
-            '\marvin255\bxfoundation\routing\Exception',
-            ' ewer'
-        );
+        $rule = new Regexp('/test/ ewer/<code:[a-z]+>');
+
+        $this->setExpectedException(Exception::class, ' ewer');
         $rule->parse($request);
     }
 
-    public function testAttachFilters()
+    /**
+     * @test
+     */
+    public function testCreateUrl()
     {
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
+        $id = mt_rand();
+        $code = 'code_' . mt_rand();
 
-        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
-            ->disableOriginalConstructor()
-            ->setMethods(['attachTo'])
-            ->getMock();
-        $filter->expects($this->once())
-            ->method('attachTo')
-            ->with($this->equalTo($rule));
-
-        $rule->attachFilters([$filter]);
-    }
-
-    public function testAttachFiltersWrongClassException()
-    {
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
-
-        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\rule\Regexp')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->setExpectedException(
-            '\marvin255\bxfoundation\routing\Exception',
-            'testKey'
-        );
-        $rule->attachFilters(['testKey' => $filter]);
-    }
-
-    public function testOnBeforeRouteParsing()
-    {
-        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
-            ->disableOriginalConstructor()
-            ->setMethods(['getPath'])
-            ->getMock();
-        $request->method('getPath')
-            ->will($this->returnValue('test'));
-
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
-
-        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
-            ->disableOriginalConstructor()
-            ->setMethods(['attachTo'])
-            ->getMock();
-        $filter->method('attachTo')
-            ->will($this->returnCallback(function ($target) use ($filter, $rule) {
-                $target->attachEventCallback('onBeforeRouteParsing', function ($eventResult) use ($filter, $rule) {
-                    if ($rule === $eventResult->getTarget()) {
-                        $eventResult->fail();
-                    }
-                });
-            }));
-
-        $rule->attachFilters([$filter]);
+        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z]+>_after');
 
         $this->assertSame(
-            null,
-            $rule->parse($request),
-            'parse method must rises onBeforeRouteParsing event'
+            "/test/{$id}/before_{$code}_after",
+            $rule->createUrl(['id' => $id, 'code' => $code])
         );
     }
 
-    public function testOnAfterRouteParsing()
+    /**
+     * @test
+     */
+    public function testCreateUrlEmptyParamException()
     {
-        $request = $this->getMockBuilder('\marvin255\bxfoundation\request\Bitrix')
-            ->disableOriginalConstructor()
-            ->setMethods(['getPath'])
-            ->getMock();
-        $request->method('getPath')
-            ->will($this->returnValue('test'));
+        $code = 'code_' . mt_rand();
 
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
+        $rule = new Regexp('/test/<id:\d+>/before_<code:[a-z]+>_after');
 
-        $filter = $this->getMockBuilder('\marvin255\bxfoundation\routing\filter\Header')
-            ->disableOriginalConstructor()
-            ->setMethods(['attachTo'])
-            ->getMock();
-        $filter->method('attachTo')
-            ->will($this->returnCallback(function ($target) {
-                $target->attachEventCallback('onAfterRouteParsing', function ($eventResult) {
-                    $eventResult->fail();
-                });
-            }));
-
-        $rule->attachFilters([$filter]);
-
-        $this->setExpectedException('\marvin255\bxfoundation\routing\ForbiddenException');
-        $rule->parse($request);
-    }
-
-    public function testAttachEventCallbackEmptyNameException()
-    {
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
-        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
-        $rule->attachEventCallback(null, function () {});
-    }
-
-    public function testAttachEventCallbackEmptyCallbackException()
-    {
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
-        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
-        $rule->attachEventCallback('test', 123);
-    }
-
-    public function testAttachEventCallbackDuplicateException()
-    {
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
-        $callback1 = function () {};
-        $callback2 = function () {};
-        $rule->attachEventCallback('test_event', $callback1);
-        $rule->attachEventCallback('test_event', $callback2);
-        $this->setExpectedException('\marvin255\bxfoundation\events\Exception', 'test_event');
-        $rule->attachEventCallback('test_event', $callback1);
-    }
-
-    public function testDetachEventCallback()
-    {
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
-
-        $eventTrigger2 = 0;
-        $callback2 = function () use (&$eventTrigger2) { ++$eventTrigger2; };
-        $rule->attachEventCallback('test_event', $callback2);
-
-        $eventTrigger1 = 0;
-        $callback1 = function () use (&$eventTrigger1) { ++$eventTrigger1; };
-        $rule->attachEventCallback('test_event', $callback1);
-        $rule->detachEventCallback('test_event', $callback1);
-
-        $event = $this->getMockBuilder('\marvin255\bxfoundation\events\ResultInterface')
-            ->getMock();
-        $event->method('getName')->will($this->returnValue('test_event'));
-        $event->method('isSuccess')->will($this->returnValue(true));
-        $rule->riseEvent($event);
-        $rule->riseEvent($event);
-        $rule->riseEvent($event);
-
-        $this->assertSame(
-            0,
-            $eventTrigger1,
-            'event handler must not fire if it was detached'
-        );
-
-        $this->assertSame(
-            3,
-            $eventTrigger2,
-            'event handler must fire if it was not detached'
-        );
-    }
-
-    public function testDetachEventCallbackEmptyNameException()
-    {
-        $rule = new \marvin255\bxfoundation\routing\rule\Regexp('test');
-        $callback = function () {};
-        $this->setExpectedException('\marvin255\bxfoundation\events\Exception');
-        $rule->detachEventCallback(null, $callback);
+        $this->setExpectedException(Exception::class, 'id');
+        $rule->createUrl(['code' => $code]);
     }
 }

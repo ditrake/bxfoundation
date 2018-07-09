@@ -5,10 +5,8 @@ namespace marvin255\bxfoundation\routing\rule;
 use marvin255\bxfoundation\events\EventableInterface;
 use marvin255\bxfoundation\events\EventableTrait;
 use marvin255\bxfoundation\events\Result;
-use marvin255\bxfoundation\routing\Exception;
-use marvin255\bxfoundation\routing\ForbiddenException;
+use marvin255\bxfoundation\response\exception\Forbidden;
 use marvin255\bxfoundation\request\RequestInterface;
-use marvin255\bxfoundation\routing\filter\FilterInterface;
 
 /**
  * Абстрактный класс для правила url.
@@ -29,13 +27,23 @@ abstract class Base implements RuleInterface, EventableInterface
     abstract protected function parseByRule(RequestInterface $request);
 
     /**
+     * Фкнкция, которая осуществляет непосредственное создание url из
+     * параметров.
+     *
+     * @param array $params
+     *
+     * @return string|null
+     */
+    abstract protected function createUrlByRule(array $params);
+
+    /**
      * {@inheritdoc}
      *
      * Если отработали все фильтры до парсинга, сам парсинг,
      * но фильтры после парсинга не сработали, то считаем, что у пользователя
      * нет прав на доступ к данному ресурсу.
      *
-     * @throws \marvin255\bxfoundation\routing\ForbiddenException
+     * @throws \marvin255\bxfoundation\response\exception\Forbidden
      */
     public function parse(RequestInterface $request, RuleResultInterface $ruleResult = null)
     {
@@ -59,7 +67,7 @@ abstract class Base implements RuleInterface, EventableInterface
             );
             $this->riseEvent($onAfterRouteParsing);
             if (!$onAfterRouteParsing->isSuccess()) {
-                throw new ForbiddenException();
+                throw new Forbidden;
             }
             $return = $ruleResult ?: new RuleResult;
             $return->setParams($onAfterRouteParsing->getParam('parseResult'));
@@ -69,19 +77,35 @@ abstract class Base implements RuleInterface, EventableInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws \marvin255\bxfoundation\routing\Exception
+     * @inheritdoc
      */
-    public function attachFilters(array $filters)
+    public function createUrl(array $params = [])
     {
-        foreach ($filters as $key => $filter) {
-            if (!($filter instanceof FilterInterface)) {
-                throw new Exception("Filter object with key {$key} must be a FilterInterface instance");
+        $return = null;
+
+        $onBeforeUrlCreating = new Result(
+            'onBeforeUrlCreating',
+            $this,
+            ['params' => $params]
+        );
+        $this->riseEvent($onBeforeUrlCreating);
+
+        if ($onBeforeUrlCreating->isSuccess()) {
+            $url = $this->createUrlByRule($onBeforeUrlCreating->getParam('params'));
+            $onAfterUrlCreating = new Result(
+                'onAfterUrlCreating',
+                $this,
+                [
+                    'params' => $onBeforeUrlCreating->getParam('params'),
+                    'url' => $url,
+                ]
+            );
+            $this->riseEvent($onAfterUrlCreating);
+            if ($onAfterUrlCreating->isSuccess()) {
+                $return = $onAfterUrlCreating->getParam('url');
             }
-            $filter->attachTo($this);
         }
 
-        return $this;
+        return $return;
     }
 }
