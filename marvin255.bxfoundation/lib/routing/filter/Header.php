@@ -30,7 +30,7 @@ class Header implements FilterInterface
     {
         if (empty($headers)) {
             throw new Exception(
-                'Headersmust be an array of awaited headers'
+                'Headers must be an array of awaited headers'
             );
         }
         $this->headers = $headers;
