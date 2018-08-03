@@ -41,7 +41,7 @@ class Component extends Base
      * @param array  $params    Список параметров для инициализации компонента
      * @param string $template  Название шаблона компонента битрикса
      *
-     * @throws \marvin255\bxfoundation\routing\Exception
+     * @throws \marvin255\bxfoundation\Exception
      */
     public function __construct($component, $template = '', array $params = [])
     {
