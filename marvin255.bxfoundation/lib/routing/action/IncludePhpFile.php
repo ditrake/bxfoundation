@@ -29,7 +29,7 @@ class IncludePhpFile extends Base
      * Конструктор.
      *
      * @param string $filePath Путь к файлу, который следует отобразить
-     * @param array  $params   Список параметров для инициализации компонента
+     * @param array  $params   Список параметров, которые будут переданы в отображаемый файл
      *
      * @throws \marvin255\bxfoundation\Exception
      */
