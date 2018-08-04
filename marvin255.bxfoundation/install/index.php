@@ -3,7 +3,7 @@
 use Bitrix\Main\Application;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
-use InvalidArgumentException;
+use Bitrix\Main\IO\Directory;
 
 Loc::loadMessages(__FILE__);
 
@@ -67,7 +67,12 @@ class marvin255_bxfoundation extends CModule
     public function installFiles()
     {
         CopyDirFiles($this->getInstallatorPath() . '/admin', $this->getComponentPath('admin'), true, true);
-        CopyDirFiles($this->getInstallatorPath() . '/components', $this->getComponentPath('components'), true, true);
+        CopyDirFiles(
+            $this->getInstallatorPath() . '/components',
+            $this->getComponentPath('components') . '/' . $this->MODULE_ID,
+            true,
+            true
+        );
 
         return true;
     }
@@ -81,45 +86,10 @@ class marvin255_bxfoundation extends CModule
     {
         DeleteDirFiles($this->getInstallatorPath() . '/admin', $this->getComponentPath('admin'));
         if (is_dir($this->getInstallatorPath() . '/components')) {
-            self::deleteByEtalon(
-                $this->getInstallatorPath() . '/components',
-                $this->getComponentPath('components')
-            );
+            Directory::deleteDirectory($this->getComponentPath('components') . '/' . $this->MODULE_ID);
         }
 
         return true;
-    }
-
-    /**
-     * Проходится рекурсивно по содержимому папки назначения
-     * и удаляет из него все пути эталонной папки.
-     *
-     * @param string $etalon
-     * @param string $dest
-     */
-    protected static function deleteByEtalon($etalon, $dest)
-    {
-        $etalon = rtrim($etalon, '/\\');
-        $dest = rtrim($dest, '/\\');
-        if (!is_dir($etalon)) {
-            throw new InvalidArgumentException("Path is not a directory: {$etalon}");
-        } elseif (!is_dir($dest)) {
-            throw new InvalidArgumentException("Path is not a directory: {$dest}");
-        }
-        foreach (scandir($etalon) as $file) {
-            if ('.' === $file || '..' === $file || !file_exists($dest . '/' . $file)) {
-                continue;
-            }
-            if (is_dir($dest . '/' . $file)) {
-                self::deleteByEtalon($etalon . '/' . $file, $dest . '/' . $file);
-            } else {
-                unlink($dest . '/' . $file);
-            }
-        }
-        $content = array_diff(scandir($dest), ['..', '.']);
-        if (!$content) {
-            rmdir($dest);
-        }
     }
 
     /**
