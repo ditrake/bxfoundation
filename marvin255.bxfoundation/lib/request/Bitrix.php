@@ -92,7 +92,7 @@ class Bitrix implements RequestInterface
             if (strpos($key, 'HTTP_') !== 0) {
                 continue;
             }
-            $return[str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))))] = $value;
+            $return[mb_strtolower(str_replace('_', '-', strtolower(substr($key, 5))))] = $value;
         }
 
         return $return;

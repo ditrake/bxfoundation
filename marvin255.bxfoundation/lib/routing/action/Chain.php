@@ -5,7 +5,6 @@ namespace marvin255\bxfoundation\routing\action;
 use marvin255\bxfoundation\request\RequestInterface;
 use marvin255\bxfoundation\response\ResponseInterface;
 use marvin255\bxfoundation\routing\rule\RuleResultInterface;
-use marvin255\bxfoundation\Exception;
 
 /**
  * Цепочка из нескольки последовательно выполняющихся действий.
@@ -28,18 +27,23 @@ class Chain extends Base
      */
     public function __construct(array $actions)
     {
-        if (empty($actions)) {
-            throw new Exception('Actions list can\'t be empty');
+        foreach ($actions as $action) {
+            $this->chain($action);
         }
-        foreach ($actions as $key => $action) {
-            if ($action instanceof ActionInterface) {
-                continue;
-            }
-            throw new Exception(
-                "Action with key {$key} is not an ActionInterface instance"
-            );
-        }
-        $this->actions = $actions;
+    }
+
+    /**
+     * Добавляет действие в цепочку.
+     *
+     * @param \marvin255\bxfoundation\routing\action\ActionInterface $action
+     *
+     * @return self
+     */
+    public function chain(ActionInterface $action)
+    {
+        $this->actions[] = $action;
+
+        return $this;
     }
 
     /**

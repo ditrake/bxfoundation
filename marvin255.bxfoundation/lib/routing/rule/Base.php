@@ -54,8 +54,9 @@ abstract class Base implements RuleInterface, EventableInterface
             'request' => $request,
         ]);
         $this->riseEvent($onBeforeRouteParsing);
+        $innerRequest = $onBeforeRouteParsing->getParam('request');
 
-        if ($onBeforeRouteParsing->isSuccess() && ($parseResult = $this->parseByRule($request)) !== null) {
+        if ($onBeforeRouteParsing->isSuccess() && ($parseResult = $this->parseByRule($innerRequest)) !== null) {
             $onAfterRouteParsing = new Result('onAfterRouteParsing', $this, [
                 'request' => $request,
                 'parseResult' => $parseResult,
@@ -65,6 +66,7 @@ abstract class Base implements RuleInterface, EventableInterface
             if (!$onAfterRouteParsing->isSuccess()) {
                 throw new Forbidden;
             }
+
             $return = $ruleResult ?: new RuleResult;
             $return->setParams($onAfterRouteParsing->getParam('parseResult'));
         }

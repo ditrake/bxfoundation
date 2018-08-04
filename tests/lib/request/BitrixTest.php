@@ -151,16 +151,21 @@ class BitrixTest extends BaseCase
             'HTTP_TEST_HEADER' => 'test_value',
             'HTTP_TEST_HEADER_2' => 'test value 2',
             'REQUEST_URI' => 'test',
+            'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
         ];
 
         $this->assertSame(
-            ['TestHeader' => 'test_value', 'TestHeader2' => 'test value 2'],
+            [
+                'test-header' => 'test_value',
+                'test-header-2' => 'test value 2',
+                'x-requested-with' => 'XMLHttpRequest',
+            ],
             $request->getHeaders()
         );
 
         $this->assertSame(
             'test value 2',
-            $request->getHeader('TestHeader2')
+            $request->getHeader('test-header-2')
         );
 
         $_SERVER = $oldServer;
