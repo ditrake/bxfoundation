@@ -7,16 +7,65 @@ use Composer\Factory;
 use Composer\Util\Filesystem;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use InvalidArgumentException;
 
 /**
  * Класс-установщик, который необходим для того, чтобы скопировать файлы модуля
  * из папки composer внутрь структуры битрикса. Это требуется для того, чтобы
  * модуль был внутри структуры битрикса и обрабатывался как именно как модуль
- * битрикса. Весь код библиотеки не нужен, следует переносить только папку src.
+ * битрикса. Весь код библиотеки не нужен, следует переносить только папку с классами модуля.
  */
 class Composer
 {
+    /**
+     * Название вендора.
+     *
+     * @var string
+     */
+    protected static $vendor = 'marvin255';
+    /**
+     * Название модуля.
+     *
+     * @var string
+     */
+    protected static $module = 'bxfoundation';
+
+    /**
+     * Возвращает массив вида "путь до папки бибилиотеки" => "путь для установки".
+     * Для копироания данных в битрикс. Эти данные будут скопированы и при установке,
+     * и при обновлении.
+     *
+     * @return array
+     */
+    protected static function getInstallingFoldersPathes(Event $event)
+    {
+        $libFolder = self::getLibraryFolder($event, self::$vendor, self::$module);
+        $libFolder .= '/' . self::$vendor . '.' . self::$module;
+
+        $modulesFolder = self::getModulesFolder($event);
+
+        return [
+            $libFolder => $modulesFolder . '/' . self::$vendor . '.' . self::$module,
+        ];
+    }
+
+    /**
+     * Возвращает массив вида "путь до папки бибилиотеки" => "путь для установки".
+     * Для копироания данных в битрикс. Эти данные будут скопированы только при обновлении.
+     *
+     * @return array
+     */
+    protected static function getUpdatingFoldersPathes(Event $event)
+    {
+        $moduleName = self::$vendor . '.' . self::$module;
+        $libFolder = self::getLibraryFolder($event, self::$vendor, self::$module) . "/{$moduleName}";
+        $libComponentsFolder = "{$libFolder}/install/components/{$moduleName}";
+        $bitrixComponentsFolder = self::getComponentsFolder($event) . "/{$moduleName}";
+
+        return [
+            $libComponentsFolder => $bitrixComponentsFolder,
+        ];
+    }
+
     /**
      * Устанавливает модуль в структуру битрикса.
      *
@@ -26,27 +75,48 @@ class Composer
      */
     public static function injectModule(Event $event)
     {
-        $composer = $event->getComposer();
-
-        $bitrixModulesFolder = self::getModulesFolder($event);
-        if (!$bitrixModulesFolder) {
-            throw new InvalidArgumentException('Can\'t find modules\' folder');
-        }
-        $bitrixModulesFolder .= '/marvin255.bxfoundation';
-
-        $libraryFolder = self::getLibraryFolder($event);
-        if (!$libraryFolder) {
-            throw new InvalidArgumentException('Can\'t find src folder');
-        }
-
+        $installingFoldersPathes = self::getInstallingFoldersPathes($event);
+        $updatingFoldersPathes = self::getUpdatingFoldersPathes($event);
         $fileSystem = new Filesystem();
-        if (is_dir($bitrixModulesFolder)) {
-            $fileSystem->removeDirectory($bitrixModulesFolder);
+
+        foreach ($installingFoldersPathes as $from => $to) {
+            if ($to && is_dir($to)) {
+                $fileSystem->removeDirectory($to);
+            }
+            if (!$to || !$from || !is_dir($from)) {
+                continue;
+            }
+            self::copy($from, $to, $fileSystem);
         }
 
-        if (!self::copy($libraryFolder, $bitrixModulesFolder, $fileSystem)) {
-            throw new InvalidArgumentException('Can\'t project src folder');
+        foreach ($updatingFoldersPathes as $from => $to) {
+            if (!is_dir($to) || !is_dir($from)) {
+                continue;
+            }
+            $fileSystem->removeDirectory($to);
+            self::copy($from, $to, $fileSystem);
         }
+    }
+
+    /**
+     * Возвращает полный путь до папки битрикса.
+     *
+     * @param \Composer\Script\Event $event
+     *
+     * @return string
+     */
+    protected static function getBitrixFolder(Event $event)
+    {
+        $projectRootPath = rtrim(dirname(Factory::getComposerFile()), '/');
+
+        $extras = $event->getComposer()->getPackage()->getExtra();
+        if (!empty($extras['install-bitrix'])) {
+            $bitrixModulesFolder = $extras['install-bitrix'];
+        } else {
+            $bitrixModulesFolder = 'web/bitrix';
+        }
+
+        return (string) realpath($projectRootPath . '/' . trim($bitrixModulesFolder, '/'));
     }
 
     /**
@@ -62,22 +132,45 @@ class Composer
 
         $extras = $event->getComposer()->getPackage()->getExtra();
         if (!empty($extras['install-bitrix-modules'])) {
-            $bitrixModulesFolder = $extras['install-bitrix-modules'];
+            $bitrixFolder = $extras['install-bitrix-modules'];
         } else {
-            $bitrixModulesFolder = 'web/local/modules';
+            $bitrixFolder = 'web/local/modules';
         }
 
-        return (string) realpath($projectRootPath . '/' . trim($bitrixModulesFolder, '/'));
+        return (string) realpath($projectRootPath . '/' . trim($bitrixFolder, '/'));
+    }
+
+    /**
+     * Возвращает полный путь до папки модулей.
+     *
+     * @param \Composer\Script\Event $event
+     *
+     * @return string
+     */
+    protected static function getComponentsFolder(Event $event)
+    {
+        $projectRootPath = rtrim(dirname(Factory::getComposerFile()), '/');
+
+        $extras = $event->getComposer()->getPackage()->getExtra();
+        if (!empty($extras['install-bitrix-components'])) {
+            $bitrixFolder = $extras['install-bitrix-components'];
+        } else {
+            $bitrixFolder = 'web/local/components';
+        }
+
+        return (string) realpath($projectRootPath . '/' . trim($bitrixFolder, '/'));
     }
 
     /**
      * Возвращает путь до папки, в которую установлена бибилиотека.
      *
      * @param \Composer\Script\Event $event
+     * @param string                 $vendor
+     * @param string                 $module
      *
      * @return string
      */
-    protected static function getLibraryFolder(Event $event)
+    protected static function getLibraryFolder(Event $event, $vendor, $module)
     {
         $srcFolder = false;
         $composer = $event->getComposer();
@@ -86,8 +179,8 @@ class Composer
         $localRepository = $repositoryManager->getLocalRepository();
         $packages = $localRepository->getPackages();
         foreach ($packages as $package) {
-            if ($package->getName() === 'marvin255/bxfoundation') {
-                $srcFolder = realpath(rtrim($installationManager->getInstallPath($package), '/') . '/marvin255.bxfoundation');
+            if ($package->getName() === $vendor . '/' . $module) {
+                $srcFolder = realpath(rtrim($installationManager->getInstallPath($package), '/'));
                 break;
             }
         }
