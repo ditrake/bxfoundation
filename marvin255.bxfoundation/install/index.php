@@ -7,8 +7,14 @@ use Bitrix\Main\IO\Directory;
 
 Loc::loadMessages(__FILE__);
 
+/**
+ * Установщик для модуля marvin255.bxfoundation.
+ */
 class marvin255_bxfoundation extends CModule
 {
+    /**
+     * @inheritdoc
+     */
     public function __construct()
     {
         $arModuleVersion = [];
@@ -27,6 +33,9 @@ class marvin255_bxfoundation extends CModule
         $this->PARTNER_NAME = Loc::getMessage('BX_FOUNDATION_MODULE_PARTNER_NAME');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doInstall()
     {
         ModuleManager::registerModule($this->MODULE_ID);
@@ -34,6 +43,9 @@ class marvin255_bxfoundation extends CModule
         $this->installDB();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doUninstall()
     {
         $this->unInstallFiles();
@@ -66,13 +78,14 @@ class marvin255_bxfoundation extends CModule
      */
     public function installFiles()
     {
-        CopyDirFiles($this->getInstallatorPath() . '/admin', $this->getComponentPath('admin'), true, true);
-        CopyDirFiles(
-            $this->getInstallatorPath() . '/components',
-            $this->getComponentPath('components') . '/' . $this->MODULE_ID,
-            true,
-            true
-        );
+        if (is_dir($this->getInstallatorPath() . '/components')) {
+            CopyDirFiles(
+                $this->getInstallatorPath() . '/components',
+                $this->getComponentPath('components') . '/' . $this->MODULE_ID,
+                true,
+                true
+            );
+        }
 
         return true;
     }
@@ -84,8 +97,7 @@ class marvin255_bxfoundation extends CModule
      */
     public function unInstallFiles()
     {
-        DeleteDirFiles($this->getInstallatorPath() . '/admin', $this->getComponentPath('admin'));
-        if (is_dir($this->getInstallatorPath() . '/components')) {
+        if (is_dir($this->getComponentPath('components') . '/' . $this->MODULE_ID)) {
             Directory::deleteDirectory($this->getComponentPath('components') . '/' . $this->MODULE_ID);
         }
 
