@@ -58,7 +58,7 @@ class Composer
     {
         $moduleName = self::$vendor . '.' . self::$module;
         $libFolder = self::getLibraryFolder($event, self::$vendor, self::$module) . "/{$moduleName}";
-        $libComponentsFolder = "{$libFolder}/install/components/{$moduleName}";
+        $libComponentsFolder = "{$libFolder}/install/components";
         $bitrixComponentsFolder = self::getComponentsFolder($event) . "/{$moduleName}";
 
         return [
