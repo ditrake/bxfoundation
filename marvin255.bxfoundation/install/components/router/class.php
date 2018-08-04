@@ -38,6 +38,9 @@ class Router extends CBitrixComponent
         $p['MODULES'] = array_unique($p['MODULES']);
 
         //список роутов
+        if (!empty($p['SEF_URL_TEMPLATES'])) {
+            $p['ROUTES'] = $p['SEF_URL_TEMPLATES'];
+        }
         if (empty($p['ROUTES']) || !is_array($p['ROUTES'])) {
             throw new InvalidArgumentException(
                 'ROUTES parameter must be an non empty array'
