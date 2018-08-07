@@ -102,6 +102,18 @@ class Bitrix implements CacheInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function clearByTag($tag)
+    {
+        if ($this->taggedCache) {
+            $this->taggedCache->clearByTag($tag);
+        }
+
+        return $this;
+    }
+
+    /**
      * Возвращает каталог для сохранения данных кэша.
      *
      * @param string $key Ключ кэша

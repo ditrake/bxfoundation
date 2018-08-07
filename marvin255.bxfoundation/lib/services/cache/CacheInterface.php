@@ -36,4 +36,13 @@ interface CacheInterface
      * @return \marvin255\bxfoundation\services\cache\CacheInterface
      */
     public function clear($key);
+
+    /**
+     * Очищает кэшированные данные по тегу.
+     *
+     * @param string $tag
+     *
+     * @return \marvin255\bxfoundation\services\cache\CacheInterface
+     */
+    public function clearByTag($tag);
 }

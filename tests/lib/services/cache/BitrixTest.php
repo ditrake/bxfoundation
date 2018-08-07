@@ -164,6 +164,27 @@ class BitrixTest extends BaseCase
     /**
      * @test
      */
+    public function testClearByTag()
+    {
+        $tag = 'tag_' . mt_rand();
+
+        $cache = $this->getMockBuilder('\Bitrix\Main\Data\Cache')
+            ->getMock();
+        $taggedCache = $this->getMockBuilder('\Bitrix\Main\Data\TaggedCache')
+            ->setMethods(['clearByTag'])
+            ->getMock();
+        $taggedCache->expects($this->once())
+            ->method('clearByTag')
+            ->with($this->equalTo($tag));
+
+        $bxCache = new Bitrix($cache, $taggedCache);
+
+        $this->assertSame($bxCache, $bxCache->clearByTag($tag));
+    }
+
+    /**
+     * @test
+     */
     public function testClearEmptyKeyException()
     {
         $cache = $this->getMockBuilder('\Bitrix\Main\Data\Cache')
