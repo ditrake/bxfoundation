@@ -56,7 +56,9 @@ class Bitrix implements CacheInterface
         }
         $time = $duration !== null ? (int) $duration : $this->defaultTime;
         if ($time) {
-            $this->cache->initCache($time, $key, $this->getFolder($key));
+            if ($this->cache->initCache($time, $key, $this->getFolder($key))) {
+                $this->clear($key);
+            }
             $this->cache->startDataCache();
             if ($this->taggedCache && $tags) {
                 $this->taggedCache->startTagCache($this->getFolder($key));
@@ -95,8 +97,7 @@ class Bitrix implements CacheInterface
         if (trim($key) === '') {
             throw new Exception('key parameter for cache clearing can\'t be empty');
         }
-        $this->cache->initCache(100, $key, $this->getFolder($key));
-        $this->cache->cleanDir($this->getFolder($key));
+        $this->cache->clean($key, $this->getFolder($key));
 
         return $this;
     }

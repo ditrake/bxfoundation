@@ -20,12 +20,15 @@ class BitrixTest extends BaseCase
         $time = mt_rand();
 
         $cache = $this->getMockBuilder('\Bitrix\Main\Data\Cache')
-            ->setMethods(['initCache', 'startDataCache', 'endDataCache'])
+            ->setMethods(['initCache', 'startDataCache', 'endDataCache', 'clean'])
             ->getMock();
         $cache->expects($this->once())
             ->method('initCache')
             ->with($this->equalTo($time), $this->equalTo($key), $this->anything())
             ->will($this->returnValue(true));
+        $cache->expects($this->once())
+            ->method('clean')
+            ->with($this->equalTo($key), $this->anything());
         $cache->expects($this->once())
             ->method('startDataCache');
         $cache->expects($this->once())
@@ -69,7 +72,7 @@ class BitrixTest extends BaseCase
         $cache->expects($this->once())
             ->method('initCache')
             ->with($this->equalTo($time), $this->equalTo($key), $this->anything())
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(false));
         $cache->expects($this->once())
             ->method('startDataCache');
         $cache->expects($this->once())
@@ -146,15 +149,13 @@ class BitrixTest extends BaseCase
         $key = 'key_' . mt_rand();
 
         $cache = $this->getMockBuilder('\Bitrix\Main\Data\Cache')
-            ->setMethods(['initCache', 'cleanDir'])
+            ->setMethods(['initCache', 'cleanDir', 'clean'])
             ->getMock();
+        $cache->expects($this->never())
+            ->method('initCache');
         $cache->expects($this->once())
-            ->method('initCache')
-            ->with($this->anything(), $this->equalTo($key), $this->anything())
-            ->will($this->returnValue(false));
-        $cache->expects($this->once())
-            ->method('cleanDir')
-            ->with($this->anything());
+            ->method('clean')
+            ->with($this->equalTo($key), $this->anything());
 
         $bxCache = new Bitrix($cache);
 
