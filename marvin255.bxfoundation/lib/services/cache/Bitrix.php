@@ -78,10 +78,11 @@ class Bitrix implements CacheInterface
      *
      * @return mixed
      */
-    public function get($key)
+    public function get($key, $duration = null)
     {
-        //@TODO find a way to check is cache expired
-        if ($this->cache->initCache(time(), $key, $this->getFolder($key))) {
+        //@TODO find a better way to check is cache expired
+        $time = $duration !== null ? (int) $duration : $this->defaultTime;
+        if ($this->cache->initCache($time, $key, $this->getFolder($key))) {
             return $this->cache->getVars();
         } else {
             return false;
