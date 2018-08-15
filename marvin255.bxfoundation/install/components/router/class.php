@@ -211,8 +211,13 @@ class Router extends CBitrixComponent
     protected function instantiateObject(array $options)
     {
         $class = array_shift($options);
-        $reflect = new ReflectionClass($class);
+        if (empty($options)) {
+            $return = new $class;
+        } else {
+            $reflect = new ReflectionClass($class);
+            $return = $reflect->newInstanceArgs($options);
+        }
 
-        return $reflect->newInstanceArgs($options);
+        return $return;
     }
 }
