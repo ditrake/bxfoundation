@@ -33,6 +33,12 @@ class IblockContent extends Base
      * @var string
      */
     protected $isComplexProperty;
+    /**
+     * Дополнительные свойства, которые нужно запросить из элемента или раздела.
+     *
+     * @var array
+     */
+    protected $additionalProperties;
 
     /**
      * Конструктор.
@@ -40,10 +46,11 @@ class IblockContent extends Base
      * @param \marvin255\bxfoundation\services\iblock\Locator $locator           Ссылка на объект для поиска инфоблоков
      * @param string                                          $iblock            Символьный код или идентификатор инфоблока
      * @param string                                          $isComplexProperty Название флага, который указывает, что в элементе комплексный компонент
+     * @param array                                           $isComplexProperty Дополнительные свойства, которые нужно запросить из элемента или раздела
      *
      * @throws \marvin255\bxfoundation\Exception
      */
-    public function __construct(Locator $locator, $iblock, $isComplexProperty = 'is_complex')
+    public function __construct(Locator $locator, $iblock, $isComplexProperty = 'is_complex', array $additionalProperties = [])
     {
         $this->locator = $locator;
 
@@ -53,6 +60,7 @@ class IblockContent extends Base
         $this->iblock = $iblock;
 
         $this->isComplexProperty = trim($isComplexProperty);
+        $this->additionalProperties = array_map('trim', $additionalProperties);
     }
 
     /**
@@ -155,6 +163,21 @@ class IblockContent extends Base
     {
         $arIblock = $this->getIblockArrayByIdentity();
 
+        $select = [
+            'ID',
+            'NAME',
+            'CODE',
+            'PICTURE',
+            'DESCRIPTION',
+            'DETAIL_PICTURE',
+            'IBLOCK_SECTION_ID',
+            'DEPTH_LEVEL',
+            'SECTION_PAGE_URL',
+        ];
+        foreach ($this->additionalProperties as $property) {
+            $select[] = 'UF_' . strtoupper($property);
+        }
+
         $res = CIBlockSection::getList(
             ['depth_level' => 'asc', 'id' => 'asc'],
             [
@@ -163,17 +186,7 @@ class IblockContent extends Base
                 'ACTIVE' => 'Y',
             ],
             false,
-            [
-                'ID',
-                'NAME',
-                'CODE',
-                'PICTURE',
-                'DESCRIPTION',
-                'DETAIL_PICTURE',
-                'IBLOCK_SECTION_ID',
-                'DEPTH_LEVEL',
-                'SECTION_PAGE_URL',
-            ]
+            $select
         );
 
         $sections = [];
@@ -195,6 +208,10 @@ class IblockContent extends Base
                 'parent_id' => (int) $ob['IBLOCK_SECTION_ID'] ?: false,
                 'depth' => (int) $ob['DEPTH_LEVEL'],
             ];
+            foreach ($this->additionalProperties as $property) {
+                $ufName = 'UF_' . strtoupper($property);
+                $section[$property] = isset($ob[$ufName]) ? $ob[$ufName] : null;
+            }
             $sections[] = $section;
         }
 
@@ -228,6 +245,9 @@ class IblockContent extends Base
         ];
         if ($this->isComplexProperty) {
             $select[] = 'PROPERTY_' . $this->isComplexProperty;
+        }
+        foreach ($this->additionalProperties as $property) {
+            $select[] = 'PROPERTIES_' . strtoupper($property);
         }
 
         $res = CIBlockElement::getList(
@@ -264,6 +284,10 @@ class IblockContent extends Base
                 'is_complex' => $this->isComplexProperty
                     && !empty($ob[strtoupper("PROPERTY_{$this->isComplexProperty}_VALUE")]),
             ];
+            foreach ($this->additionalProperties as $property) {
+                $propertyName = 'PROPERTY_' . strtoupper($property) . '_VALUE';
+                $element[$property] = isset($ob[$propertyName]) ? $ob[$propertyName] : null;
+            }
         }
 
         return $element;
