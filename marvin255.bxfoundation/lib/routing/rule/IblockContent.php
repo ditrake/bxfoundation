@@ -172,6 +172,7 @@ class IblockContent extends Base
                 'DETAIL_PICTURE',
                 'IBLOCK_SECTION_ID',
                 'DEPTH_LEVEL',
+                'SECTION_PAGE_URL',
             ]
         );
 
@@ -182,6 +183,7 @@ class IblockContent extends Base
                 'type' => 'section',
                 'name' => $ob['NAME'],
                 'code' => $ob['CODE'],
+                'url' => $ob['SECTION_PAGE_URL'],
                 'preview_text' => '',
                 'preview_picture' => !empty($ob['PICTURE'])
                     ? CFile::getFileArray($ob['PICTURE'])
@@ -222,6 +224,7 @@ class IblockContent extends Base
             'DETAIL_TEXT',
             'DETAIL_PICTURE',
             'IBLOCK_SECTION_ID',
+            'DETAIL_PAGE_URL',
         ];
         if ($this->isComplexProperty) {
             $select[] = 'PROPERTY_' . $this->isComplexProperty;
@@ -248,6 +251,7 @@ class IblockContent extends Base
                 'type' => 'element',
                 'name' => $ob['NAME'],
                 'code' => $ob['CODE'],
+                'url' => $ob['DETAIL_PAGE_URL'],
                 'preview_text' => $ob['PREVIEW_TEXT'],
                 'preview_picture' => !empty($ob['PREVIEW_PICTURE'])
                     ? CFile::getFileArray($ob['PREVIEW_PICTURE'])

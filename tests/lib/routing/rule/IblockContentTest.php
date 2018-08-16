@@ -328,6 +328,7 @@ class IblockContentTest extends BaseCase
             'type' => 'section',
             'name' => "name_{$id}_" . mt_rand(),
             'code' => "code_section_{$id}",
+            'url' => "url_{$id}",
             'preview_text' => "preview_text_{$id}_" . mt_rand(),
             'preview_picture' => [
                 'SRC' => "src_picture_{$id}",
@@ -359,6 +360,7 @@ class IblockContentTest extends BaseCase
             'type' => 'element',
             'name' => "name_{$id}_" . mt_rand(),
             'code' => "code_element_{$id}",
+            'url' => "url_{$id}",
             'preview_text' => "preview_text_{$id}_" . mt_rand(),
             'preview_picture' => [
                 'SRC' => "src_picture_{$id}",
