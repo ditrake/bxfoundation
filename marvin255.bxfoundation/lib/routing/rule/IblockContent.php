@@ -285,7 +285,7 @@ class IblockContent extends Base
                     && !empty($ob[strtoupper("PROPERTY_{$this->isComplexProperty}_VALUE")]),
             ];
             foreach ($this->additionalProperties as $property) {
-                $propertyName = 'PROPERTY_' . strtoupper($property) . '_VALUE';
+                $propertyName = '~PROPERTY_' . strtoupper($property) . '_VALUE';
                 $element[$property] = isset($ob[$propertyName]) ? $ob[$propertyName] : null;
             }
         }
