@@ -247,7 +247,7 @@ class IblockContent extends Base
             $select[] = 'PROPERTY_' . $this->isComplexProperty;
         }
         foreach ($this->additionalProperties as $property) {
-            $select[] = 'PROPERTIES_' . strtoupper($property);
+            $select[] = 'PROPERTY_' . $property;
         }
 
         $res = CIBlockElement::getList(
