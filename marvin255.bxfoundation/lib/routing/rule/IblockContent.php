@@ -254,7 +254,7 @@ class IblockContent extends Base
             ['id' => 'asc'],
             [
                 'IBLOCK_ID' => $arIblock['ID'],
-                'CODE' => $code,
+                'CODE' => $code === '' ? false : $code,
                 'SECTION_ID' => $sectionId,
                 'ACTIVE' => 'Y',
                 'ACTIVE_DATE' => 'Y',
