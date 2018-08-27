@@ -5,6 +5,7 @@ namespace marvin255\bxfoundation\routing\rule;
 use marvin255\bxfoundation\request\RequestInterface;
 use marvin255\bxfoundation\services\iblock\Locator;
 use marvin255\bxfoundation\Exception;
+use Bitrix\Main\Loader;
 use CIBlockSection;
 use CIBlockElement;
 use CFile;
@@ -161,6 +162,8 @@ class IblockContent extends Base
      */
     protected function loadSectionsByCodes(array $codes)
     {
+        Loader::includeModule('iblock');
+
         $arIblock = $this->getIblockArrayByIdentity();
 
         $select = [
@@ -230,6 +233,8 @@ class IblockContent extends Base
      */
     protected function loadElementByCodeAndSection($code, $sectionId = false)
     {
+        Loader::includeModule('iblock');
+
         $arIblock = $this->getIblockArrayByIdentity();
 
         $select = [
