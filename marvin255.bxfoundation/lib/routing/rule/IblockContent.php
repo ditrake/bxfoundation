@@ -162,9 +162,9 @@ class IblockContent extends Base
      */
     protected function loadSectionsByCodes(array $codes)
     {
-        Loader::includeModule('iblock');
-
         $arIblock = $this->getIblockArrayByIdentity();
+
+        Loader::includeModule('iblock');
 
         $select = [
             'ID',
@@ -233,9 +233,9 @@ class IblockContent extends Base
      */
     protected function loadElementByCodeAndSection($code, $sectionId = false)
     {
-        Loader::includeModule('iblock');
-
         $arIblock = $this->getIblockArrayByIdentity();
+
+        Loader::includeModule('iblock');
 
         $select = [
             'ID',
