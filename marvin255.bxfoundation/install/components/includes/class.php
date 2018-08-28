@@ -34,6 +34,9 @@ class Includes extends CBitrixComponent
         if (!Loader::includeModule('iblock')) {
             throw new LoaderException("Can't load module iblock");
         }
+        if (!Loader::includeModule('marvin255.bxfoundation')) {
+            throw new LoaderException("Can't load module marvin255.bxfoundation");
+        }
 
         $p['IBLOCK'] = empty($p['IBLOCK']) ? 'includes' : $p['IBLOCK'];
 
