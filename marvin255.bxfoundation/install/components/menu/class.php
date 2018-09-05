@@ -118,7 +118,7 @@ class Menu extends CBitrixComponent
         $res = CIBlockSection::GetList(
             ['depth_level' => 'asc'],
             [
-                'IBLOCK_ID' => $iblockId,
+                '=IBLOCK_ID' => $iblockId,
                 'ACTIVE' => 'Y',
             ],
             false
@@ -163,7 +163,7 @@ class Menu extends CBitrixComponent
         $res = CIBlockElement::GetList(
             ['sort' => 'asc', 'name' => 'asc'],
             [
-                'IBLOCK_ID' => $iblockId,
+                '=IBLOCK_ID' => $iblockId,
                 'ACTIVE' => 'Y',
                 'ACTIVE_DATE' => 'Y',
             ],

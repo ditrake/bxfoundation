@@ -151,7 +151,7 @@ class Includes extends CBitrixComponent
         $res = CIBlockElement::getList(
             [],
             [
-                'IBLOCK_ID' => $iblockId,
+                '=IBLOCK_ID' => $iblockId,
                 'ACTIVE' => 'Y',
                 'ACTIVE_DATE' => 'Y',
             ],
