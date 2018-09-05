@@ -184,8 +184,8 @@ class IblockContent extends Base
         $res = CIBlockSection::getList(
             ['depth_level' => 'asc', 'id' => 'asc'],
             [
-                'IBLOCK_ID' => $arIblock['ID'],
-                'CODE' => $codes,
+                '=IBLOCK_ID' => $arIblock['ID'],
+                '=CODE' => $codes,
                 'ACTIVE' => 'Y',
             ],
             false,
@@ -258,9 +258,9 @@ class IblockContent extends Base
         $res = CIBlockElement::getList(
             ['id' => 'asc'],
             [
-                'IBLOCK_ID' => $arIblock['ID'],
-                'CODE' => $code === '' ? false : $code,
-                'SECTION_ID' => $sectionId,
+                '=IBLOCK_ID' => $arIblock['ID'],
+                '=CODE' => $code === '' ? false : $code,
+                '=SECTION_ID' => $sectionId,
                 'ACTIVE' => 'Y',
                 'ACTIVE_DATE' => 'Y',
             ],
