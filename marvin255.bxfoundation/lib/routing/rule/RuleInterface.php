@@ -18,7 +18,7 @@ interface RuleInterface
      * @param \marvin255\bxfoundation\request\RequestInterface         $request
      * @param \marvin255\bxfoundation\routing\rule\RuleResultInterface $ruleResult
      *
-     * @return null|\marvin255\bxfoundation\routing\rule\RuleResultInterface
+     * @return \marvin255\bxfoundation\routing\rule\RuleResultInterface|null
      */
     public function parse(RequestInterface $request, RuleResultInterface $ruleResult = null);
 
