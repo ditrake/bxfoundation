@@ -118,18 +118,18 @@ class Includes extends CBitrixComponent
      */
     protected function getAreasForIblock($iblockId)
     {
-        if (!isset(self::$areas[$iblockId])) {
+        if (!isset(static::$areas[$iblockId])) {
             $cache = Application::getInstance()->cache;
             $cid = get_class($this) . '_' . $iblockId;
             $duration = 60 * 60 * 24;
-            self::$areas[$iblockId] = $cache->get($cid, $duration);
-            if (self::$areas[$iblockId] === false) {
-                self::$areas[$iblockId] = $this->getIblockElementsList($iblockId);
-                $cache->set($cid, self::$areas[$iblockId], $duration, ["iblock_id_{$iblockId}"]);
+            static::$areas[$iblockId] = $cache->get($cid, $duration);
+            if (static::$areas[$iblockId] === false) {
+                static::$areas[$iblockId] = $this->getIblockElementsList($iblockId);
+                $cache->set($cid, static::$areas[$iblockId], $duration, ["iblock_id_{$iblockId}"]);
             }
         }
 
-        return self::$areas[$iblockId];
+        return static::$areas[$iblockId];
     }
 
     /**
